@@ -1,0 +1,134 @@
+{
+  "scenario_id": "defect-lean-injector",
+  "kind": "base",
+  "title": "Diagnóstico: bico injetor entupido",
+  "briefing": "O hatch 2.0 turbo GDI (ECU de série, perfil OEM-Stage, gasolina E27) tem uma EGT estranha em carga plena. A lambda geral parece só um pouco pobre, mas um dos cilindros esquenta muito mais que os outros. Use a EGT por cilindro e a lambda por cilindro para achar o culpado, declare o defeito na submissão e entregue um acerto seguro: lambda de plena carga entre 0,75 e 0,90 acima de 4.000 rpm, EGT pré-turbina até 950 °C, knock até 3° e o motor intacto.",
+  "vehicle_id": "hatch-20t-gdi",
+  "initial_profile_id": "oem-stage",
+  "initial_calibration": {
+    "source": "vehicle_stock"
+  },
+  "fuel_id": "e27",
+  "ambient": {
+    "temperature_c": 25.0,
+    "pressure_kpa": 99.0,
+    "relative_humidity": 0.0
+  },
+  "correction_standard": "sae_j1349",
+  "seed": null,
+  "objectives": [
+    "Declarar o defeito correto na submissão",
+    "Lambda de plena carga entre 0,75 e 0,90 acima de 4000 rpm",
+    "Manter a EGT pré-turbina em até 950 °C",
+    "Manter o retardo de knock em até 3°",
+    "Terminar com o motor 100 % íntegro",
+    "Fazer 2 puxadas válidas com dispersão até 3 %"
+  ],
+  "constraints": {
+    "allowed_run_types": [
+      "baseline_pull",
+      "sweep_pull",
+      "multi_pull"
+    ],
+    "gear": 4,
+    "allowed_final_profiles": [
+      "oem-stage"
+    ],
+    "swap_allowed": false,
+    "locked_table_ids": [],
+    "max_submissions": 5,
+    "time_limit_min": null,
+    "operator_protection": false
+  },
+  "criteria": {
+    "required_valid_pulls": 2,
+    "min_end_rpm": null,
+    "lambda_window_min_rpm": 4000,
+    "require_defect_diagnosis": true,
+    "criteria": [
+      {
+        "criterion_id": "diagnosis",
+        "kind": "defect_diagnosis",
+        "comparator": "bool",
+        "weight": 3.0
+      },
+      {
+        "criterion_id": "lambda-max",
+        "kind": "lambda_wot_max",
+        "comparator": "le",
+        "threshold": 0.9
+      },
+      {
+        "criterion_id": "lambda-min",
+        "kind": "lambda_wot_min",
+        "comparator": "ge",
+        "threshold": 0.75
+      },
+      {
+        "criterion_id": "egt",
+        "kind": "max_egt_c",
+        "comparator": "le",
+        "threshold": 950
+      },
+      {
+        "criterion_id": "knock",
+        "kind": "max_knock_retard_deg",
+        "comparator": "le",
+        "threshold": 3
+      },
+      {
+        "criterion_id": "integrity",
+        "kind": "integrity",
+        "comparator": "ge",
+        "threshold": 100
+      },
+      {
+        "criterion_id": "pulls",
+        "kind": "valid_pulls",
+        "comparator": "ge",
+        "threshold": 2
+      },
+      {
+        "criterion_id": "spread",
+        "kind": "max_spread_pct",
+        "comparator": "le",
+        "threshold": 3
+      },
+      {
+        "criterion_id": "final-profile",
+        "kind": "final_profile",
+        "comparator": "bool"
+      }
+    ]
+  },
+  "hidden_defect": {
+    "kind": "injector_clogged",
+    "cylinder": 3,
+    "injector_flow_factor": 0.85,
+    "start_t_sim_s": 0.0
+  },
+  "hints": [
+    {
+      "order": 1,
+      "text": "Abra os canais egt_c_cyl1 a egt_c_cyl4 na puxada base. Acima de 4.500 rpm um deles se afasta dos outros.",
+      "unlock": {}
+    },
+    {
+      "order": 2,
+      "text": "Compare lambda_cyl3 com os outros cilindros: o mesmo injector_pw_ms entrega menos combustível nesse cilindro.",
+      "unlock": {
+        "after_failed_submissions": 1
+      }
+    },
+    {
+      "order": 3,
+      "text": "Enriqueça o lambda_target em plena carga (0,80 a 0,82) para proteger o cilindro pobre até a troca do bico.",
+      "unlock": {
+        "after_event": "egt_limit"
+      }
+    }
+  ],
+  "author_nickname": null,
+  "builtin": true,
+  "origin": "builtin"
+}

@@ -1,0 +1,18 @@
+# Perfil prod (estação do aluno/instrutor; platform-foundation RF-18; D-03): imagem com tag
+# fixa, SQLite no volume simremap-data, limites do hardware de referência e reinício
+# automático (código de saída 3 = banco indisponível no arranque).
+#   docker compose -f compose.yaml -f compose.prod.yaml up -d
+services:
+  app:
+    image: simremap:${SIMREMAP_VERSION:-0.1.0}
+    environment:
+      SIMREMAP_ENV: prod
+    cpus: 2.0
+    mem_limit: 3g
+    pids_limit: 256
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]

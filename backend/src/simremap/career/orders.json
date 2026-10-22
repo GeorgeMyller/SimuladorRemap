@@ -1,0 +1,72 @@
+[
+  {
+    "order_id": "stage1-diario-seguro",
+    "title": "Stage 1 diário seguro",
+    "client": "Marina, dona de um hatch 2.0 turbo",
+    "briefing": "Uso diário na cidade e na estrada. Quer mais fôlego nas retomadas sem knock e com a EGT sob controle. Entregue o Stage 1 na ECU de série com o motor intacto.",
+    "scenario_id": "stage1-oem",
+    "payout_brl": 120000,
+    "engine_cost_brl": 900000,
+    "min_reputation": 0
+  },
+  {
+    "order_id": "pista-two-step-pops",
+    "title": "Acerto de pista com Two-Step",
+    "client": "Equipe Track Day do Autódromo",
+    "briefing": "Carro de pista: querem Two-Step para a largada e pops na desaceleração sem passar do limite de EGT. Mais potência, mais risco: cuidado com o motor.",
+    "scenario_id": "stage2-pops-bangs",
+    "payout_brl": 180000,
+    "engine_cost_brl": 900000,
+    "min_reputation": 40
+  },
+  {
+    "order_id": "swap-standalone",
+    "title": "Swap standalone",
+    "client": "Oficina Clássicos do Vale",
+    "briefing": "Motor 2.0 turbo num clássico com ECU standalone e etanol E100. Faça o setup base e entregue pelo menos 300 whp com margem de knock.",
+    "scenario_id": "standalone-swap",
+    "payout_brl": 450000,
+    "engine_cost_brl": 1500000,
+    "min_reputation": 60
+  },
+  {
+    "order_id": "diagnostico-bomba-combustivel",
+    "title": "Diagnóstico de falha + acerto: falta de combustível em alta",
+    "client": "Rafael, motorista de aplicativo",
+    "briefing": "O carro \"morre\" no fim das marchas. Descubra a causa pelo datalog, declare o defeito e entregue um acerto seguro até a peça ser trocada.",
+    "scenario_id": "defect-fuel-pump",
+    "payout_brl": 80000,
+    "engine_cost_brl": 900000,
+    "min_reputation": 20
+  },
+  {
+    "order_id": "diagnostico-vazamento-pressao",
+    "title": "Diagnóstico de falha + acerto: turbo trabalhando demais",
+    "client": "Bruno, piloto amador",
+    "briefing": "Perdeu potência e o turbo soa diferente. Descubra a causa pelo datalog, declare o defeito e entregue um acerto seguro com pelo menos 200 whp.",
+    "scenario_id": "defect-boost-leak",
+    "payout_brl": 90000,
+    "engine_cost_brl": 900000,
+    "min_reputation": 30
+  },
+  {
+    "order_id": "diagnostico-cilindro-quente",
+    "title": "Diagnóstico de falha + acerto: um cilindro quente",
+    "client": "Locadora Frota Sul",
+    "briefing": "A EGT está estranha em carga plena. Ache o cilindro com problema pela EGT individual, declare o defeito e proteja o motor com o acerto.",
+    "scenario_id": "defect-lean-injector",
+    "payout_brl": 100000,
+    "engine_cost_brl": 900000,
+    "min_reputation": 40
+  },
+  {
+    "order_id": "diagnostico-turbo-nao-enche",
+    "title": "Diagnóstico de falha + acerto: turbo que não enche",
+    "client": "Dona Cida, aposentada",
+    "briefing": "O carro ficou fraco de repente e a pressão não sobe. Descubra a causa pelo datalog, declare o defeito e entregue o carro seguro.",
+    "scenario_id": "defect-wastegate-stuck",
+    "payout_brl": 70000,
+    "engine_cost_brl": 900000,
+    "min_reputation": 20
+  }
+]

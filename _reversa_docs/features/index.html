@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Features | SimuladorRemap</title>
+<meta name="reversa-category" content="diagram">
+<meta name="reversa-producer-agent" content="reversa-docs-storyteller">
+<meta name="reversa-template" content="feature">
+<meta name="reversa-generated-at" content="2026-10-19T02:13:52+00:00">
+
+<link rel="stylesheet" href="../assets/css/site.css">
+
+</head>
+<body data-style="sober" data-page-id="features" data-base="../">
+<a class="skip" href="#main">Pular para o conteúdo</a>
+<header class="rv-header">
+  <a class="rv-brand" href="../index.html"><span class="seal-slot"><svg class="seal-mini" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Selo do projeto SimuladorRemap" data-pattern="noise-strata" data-seed="40d6644e"><circle cx="32.0" cy="32.0" r="32.0" fill="#f5f3ee"/><path d="M47.2,55.7 L22.9,58.7 L5.5,41.5 L8.0,17.2 L28.6,4.0 L51.8,11.9 L60.0,34.9 Z" fill="#4f6b5d" fill-opacity="0.10" stroke="#4f6b5d" stroke-width="3.2" stroke-linejoin="round"/><path d="M22.9,48.4 L13.5,35.1 L18.0,19.5 L33.1,13.3 L47.3,21.2 L50.0,37.2 L39.2,49.4 Z" fill="#a06b4a" fill-opacity="0.20" stroke="#a06b4a" stroke-width="3.2" stroke-linejoin="round"/><path d="M41.2,33.7 L36.4,40.3 L28.3,40.6 L23.0,34.5 L24.4,26.5 L31.6,22.6 L39.1,25.8 Z" fill="#4f6b5d" fill-opacity="0.15" stroke="#4f6b5d" stroke-width="3.2" stroke-linejoin="round"/><line x1="32.0" y1="32.0" x2="60.2" y2="32.0" stroke="#1e2937" stroke-opacity="0.25" stroke-width="2.24"/><line x1="32.0" y1="32.0" x2="49.6" y2="54.0" stroke="#1e2937" stroke-opacity="0.25" stroke-width="2.24"/><line x1="32.0" y1="32.0" x2="25.7" y2="59.5" stroke="#1e2937" stroke-opacity="0.25" stroke-width="2.24"/><line x1="32.0" y1="32.0" x2="6.6" y2="44.2" stroke="#1e2937" stroke-opacity="0.25" stroke-width="2.24"/><line x1="32.0" y1="32.0" x2="6.6" y2="19.8" stroke="#1e2937" stroke-opacity="0.25" stroke-width="2.24"/><line x1="32.0" y1="32.0" x2="25.7" y2="4.5" stroke="#1e2937" stroke-opacity="0.25" stroke-width="2.24"/><line x1="32.0" y1="32.0" x2="49.6" y2="10.0" stroke="#1e2937" stroke-opacity="0.25" stroke-width="2.24"/><circle cx="32.0" cy="32.0" r="5.1" fill="#1e2937"/><circle cx="32.0" cy="32.0" r="2.2" fill="#a06b4a"/></svg></span><span>SimuladorRemap <small>docs</small></span></a>
+  <nav class="reversa-doc-nav" aria-label="Navegação do mini-site"><a href="../index.html" data-page-id="index">Visão geral</a><a href="../arquitetura.html" data-page-id="arquitetura">Arquitetura 3D</a><a href="../modulos.html" data-page-id="modulos">Módulos</a><a href="../metricas.html" data-page-id="metricas">Métricas</a><a href="../timeline.html" data-page-id="timeline">Timeline</a><a href="../glossario.html" data-page-id="glossario">Glossário</a><a href="../deck.html" data-page-id="deck">Deck</a><a href="../features/index.html" data-page-id="features">Features</a></nav>
+</header>
+<main id="main" class="rv-main">
+
+<h1>Features e specs</h1>
+<p class="lead">O projeto nasceu greenfield: 11 specs SDD em <code>_reversa_sdd/sdd/</code> descrevem os componentes, e três features do ciclo forward
+em <code>_reversa_forward/</code> os implementaram e evoluíram.</p>
+<h2>Features</h2>
+<div class="grid g2">
+<a class="card" href="001-simulador-remap.html"><h3>001 · Simulador Completo de Remap em Dinamômetro</h3><p>MVP integrado das 11 specs: física 0D/1D, 4 veículos, 4 perfis de ECU, falhas com laudo, telemetria e cenários avaliáveis.</p>
+<span class="badge ok">452 de 453 ações</span><span class="badge">4 sprints</span><span class="badge">3 jornadas E2E</span></a>
+<a class="card" href="002-evolucao-comercial.html"><h3>002 · Evolução Comercial</h3><p>Seis frentes: blindagem de cenários, Live Tuning, VVT + oficina + flex fuel, imersão, defeitos + carreira, build e documentação.</p>
+<span class="badge ok">62 de 62 ações</span><span class="badge new">28 RF</span><span class="badge">chunks ≤ 500 kB</span></a>
+<a class="card" href="003-rust-audio-qa-total.html"><h3>003 · Motor Nativo em Rust, Acústica Realista, QA Total e E2E</h3><p>Quatro frentes: kernels em Rust (PyO3 ABI3) com fallback Python, nova síntese de áudio, QA total com make type limpo, e E2E Playwright com build de produção.</p>
+<span class="badge ok">30 de 33 ações</span><span class="badge n3">18 RF</span><span class="badge">física 2,8×</span><span class="badge">8 specs E2E novos</span></a>
+</div>
+<h2>Specs SDD (componentes)</h2>
+<div class="grid g3">
+<div class="card"><h3>Fundação da plataforma</h3><p class="mono muted" style="font-size:12px">_reversa_sdd/sdd/platform-foundation.md</p><p>Monorepo, FastAPI com lifespan, config SIMREMAP_, erros RFC 7807, Alembic, worker do laço, Docker e portões de qualidade.</p><span class="badge">24 RF</span><span class="badge">core, api, db</span></div><div class="card"><h3>Física do motor</h3><p class="mono muted" style="font-size:12px">_reversa_sdd/sdd/engine-physics-core.md</p><p>Modelo termodinâmico 0D/1D do ciclo Otto (aspirado, turbo, supercharged), passo fixo determinístico de 100 a 1000 Hz.</p><span class="badge">26 RF</span><span class="badge">physics</span></div><div class="card"><h3>Catálogo de veículos</h3><p class="mono muted" style="font-size:12px">_reversa_sdd/sdd/vehicle-catalog.md</p><p>Fonte única dos 4 veículos: geometria, sobrealimentação, bicos, combustíveis, limites e calibração de fábrica.</p><span class="badge">29 RF</span><span class="badge">catalog</span></div><div class="card"><h3>Dinamômetro</h3><p class="mono muted" style="font-size:12px">_reversa_sdd/sdd/dyno-bench.md</p><p>Rolo inercial, absorvedor de Foucault, sessões e as 4 puxadas, com correção SAE J1349 ou DIN 70020.</p><span class="badge">26 RF</span><span class="badge">dyno</span></div><div class="card"><h3>Knock e falhas</h3><p class="mono muted" style="font-size:12px">_reversa_sdd/sdd/knock-and-failure-model.md</p><p>Livengood-Wu e Douaud-Eyzat, pré-ignição, dano por componente, 6 modos de falha e laudo forense.</p><span class="badge">32 RF</span><span class="badge">damage</span></div><div class="card"><h3>Núcleo da ECU</h3><p class="mono muted" style="font-size:12px">_reversa_sdd/sdd/ecu-core.md</p><p>Tabelas 2D/3D, calibração versionada, estratégias e arbitragem determinística, em até 0,1 ms por tick.</p><span class="badge">33 RF</span><span class="badge">ecu</span></div><div class="card"><h3>Perfis de ECU</h3><p class="mono muted" style="font-size:12px">_reversa_sdd/sdd/ecu-profiles.md</p><p>OEM-Stage, FT-Pro, M1-Race e HT-Elite; BaseSetup standalone; swap OEM para standalone com assistente.</p><span class="badge">31 RF</span><span class="badge">profiles</span></div><div class="card"><h3>Telemetria e datalogger</h3><p class="mono muted" style="font-size:12px">_reversa_sdd/sdd/telemetry-datalogger.md</p><p>WebSocket com envelope seq, decimação para 30 a 60 FPS, DataLog com SHA-256, export e import.</p><span class="badge">25 RF</span><span class="badge">telemetry</span></div><div class="card"><h3>Cenários de treino</h3><p class="mono muted" style="font-size:12px">_reversa_sdd/sdd/training-scenarios.md</p><p>Perfis locais, cenários com defeitos ocultos, tentativas, avaliação objetiva e pacotes assinados.</p><span class="badge">27 RF</span><span class="badge">scenarios</span></div><div class="card"><h3>Bancada (UI)</h3><p class="mono muted" style="font-size:12px">_reversa_sdd/sdd/dyno-cockpit-ui.md</p><p>Curvas, gauges, espectrograma, carro no rolo, som do motor, datalogger e laudo no navegador.</p><span class="badge">22 RF</span><span class="badge">frontend dyno-cockpit</span></div><div class="card"><h3>Software de ECU (UI)</h3><p class="mono muted" style="font-size:12px">_reversa_sdd/sdd/ecu-tuning-ui.md</p><p>Editor de tabelas 2D/3D até 32×32, estratégias, assistente de swap, histórico com diff.</p><span class="badge">22 RF</span><span class="badge">frontend ecu-tuning</span></div>
+</div>
+
+</main>
+<footer class="rv-footer">Gerado por reversa-docs-storyteller em 2026-10-19T02:13:52+00:00 · Time Reversa Docs · funciona offline via file://</footer>
+<script src="../assets/js/data.js"></script>
+<script src="../assets/js/nav.js"></script>
+<script src="../assets/js/sidebar.js"></script>
+
+</body>
+</html>

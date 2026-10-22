@@ -1,0 +1,323 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-19T02:11:18+00:00",
+  "source": "progress.jsonl das features + datas dos artefatos (sem .reversa/chronicle.md)",
+  "events": [
+    {
+      "ts": "2026-10-17T23:20:42Z",
+      "title": "Brief inicial",
+      "category": "Ideação",
+      "detail": "/reversa-new registra a ideia: simulador de remap em dinamômetro com física real, ECU OEM e standalone, falhas catastróficas.",
+      "source": "_reversa_sdd/newproject-brief.md"
+    },
+    {
+      "ts": "2026-10-17T23:21:42Z",
+      "title": "Ideation",
+      "category": "Ideação",
+      "detail": "Problema, valor, alternativas (FTManager, MoTeC, WinOLS, BeamNG) e premissas a validar.",
+      "source": "_reversa_sdd/ideation.md"
+    },
+    {
+      "ts": "2026-10-17T23:23:13Z",
+      "title": "Personas",
+      "category": "Ideação",
+      "detail": "Lucas (aluno OEM), Rodrigo (preparador standalone) e Prof. Marcos (instrutor) com jornadas.",
+      "source": "_reversa_sdd/personas.md"
+    },
+    {
+      "ts": "2026-10-17T23:25:39Z",
+      "title": "PRD 1.0 a 1.2",
+      "category": "Ideação",
+      "detail": "Métricas de sucesso (desvio < 5 %, conclusão >= 80 %, laço >= 100 Hz), escopo, não objetivos e revisão R1.",
+      "source": "_reversa_sdd/prd.md"
+    },
+    {
+      "ts": "2026-10-17T23:59:44Z",
+      "title": "11 specs SDD",
+      "category": "Especificação",
+      "detail": "platform-foundation, engine-physics-core, vehicle-catalog, dyno-bench, knock-and-failure-model, ecu-core, ecu-profiles, telemetry-datalogger, training-scenarios, dyno-cockpit-ui, ecu-tuning-ui. Horário pela data de modificação.",
+      "source": "_reversa_sdd/sdd/*.md"
+    },
+    {
+      "ts": "2026-10-18T00:10:12Z",
+      "title": "Requirements e plano da 001",
+      "category": "Feature 001",
+      "detail": "Requirements integrando as 11 specs, roadmap com 34 decisões, data-model com 19 tabelas e actions com 453 ações em 5 fases.",
+      "source": "_reversa_forward/001-simulador-remap/"
+    },
+    {
+      "ts": "2026-10-18T01:11:05Z",
+      "title": "Início do código da 001",
+      "category": "Feature 001",
+      "detail": "T001: pyproject.toml, uv.lock e Python 3.12. T002 cria os 11 pacotes simremap.*.",
+      "source": "progress.jsonl T001"
+    },
+    {
+      "ts": "2026-10-18T02:00:00Z",
+      "title": "Pico de entrega",
+      "category": "Feature 001",
+      "detail": "201 ações registradas entre 02:00 e 03:00 UTC: contratos, testes vermelhos e física.",
+      "source": "progress.jsonl"
+    },
+    {
+      "ts": "2026-10-18T04:19:51Z",
+      "title": "Benchmark do laço",
+      "category": "Feature 001",
+      "detail": "T128: bench do laço do dyno. Física a 0,078 ms por tick, laço >= 1000 Hz em Apple Silicon.",
+      "source": "progress.jsonl T128"
+    },
+    {
+      "ts": "2026-10-18T06:03:26Z",
+      "title": "UI de cenários",
+      "category": "Feature 001",
+      "detail": "T398: painel de progresso da tentativa; perfis, avaliação e pacotes assinados.",
+      "source": "progress.jsonl T398"
+    },
+    {
+      "ts": "2026-10-18T09:11:49Z",
+      "title": "Fecho da 001",
+      "category": "Feature 001",
+      "detail": "T223 e T224: jornadas Playwright e acessibilidade; T453 determinismo 20x. 452 de 453 ações; T091 (smoke do container) bloqueada por disco do Docker.",
+      "source": "progress.jsonl T453"
+    },
+    {
+      "ts": "2026-10-18T11:03:17Z",
+      "title": "Adendo da 001",
+      "category": "Sincronização",
+      "detail": "Sincronização parcial: deltas por spec, benchmark atingido nos 4 veículos, 2035 testes no backend e 450 no frontend.",
+      "source": "_reversa_sdd/addenda/001-simulador-remap.md"
+    },
+    {
+      "ts": "2026-10-18T21:02:58Z",
+      "title": "Snapshot pré-002",
+      "category": "Feature 002",
+      "detail": "Projeto sem git: snapshot .reversa/snapshots/pre-002-20261018-220258.tgz antes de editar.",
+      "source": ".reversa/snapshots/"
+    },
+    {
+      "ts": "2026-10-18T21:08:06Z",
+      "title": "Requirements da 002",
+      "category": "Feature 002",
+      "detail": "28 requisitos funcionais em 6 frentes; roadmap com 17 decisões; 62 ações em 6 trilhas paralelas.",
+      "source": "_reversa_forward/002-evolucao-comercial/requirements.md"
+    },
+    {
+      "ts": "2026-10-18T21:25:34Z",
+      "title": "Imersão e Live Tuning",
+      "category": "Feature 002",
+      "detail": "T012, T035 e T038: visão térmica, áudio por arquitetura, pedal progressivo; T034 Live Cell Tracing.",
+      "source": "progress.jsonl"
+    },
+    {
+      "ts": "2026-10-18T22:00:03Z",
+      "title": "Física, ECU e upgrades",
+      "category": "Feature 002",
+      "detail": "T020 estratégia VVT, T024 catálogo de upgrades, T009 blend de etanol, T041 canais cam_* e ethanol_pct.",
+      "source": "progress.jsonl"
+    },
+    {
+      "ts": "2026-10-18T22:11:29Z",
+      "title": "Oficina e carreira na UI",
+      "category": "Feature 002",
+      "detail": "T047 Stage Builder e T055 testes da página Oficina (Carreira).",
+      "source": "progress.jsonl"
+    },
+    {
+      "ts": "2026-10-18T23:09:52Z",
+      "title": "Cobertura medida",
+      "category": "Qualidade",
+      "detail": "backend/coverage.json: 95,71 % global; todos os 12 pacotes acima de 85 %. Horário convertido do fuso local (+01:00) para UTC.",
+      "source": "backend/coverage.json"
+    },
+    {
+      "ts": "2026-10-18T23:16:27Z",
+      "title": "Build da 002",
+      "category": "Feature 002",
+      "detail": "T060 e T061: tsc, eslint, 571 vitest e build sem chunk > 500 kB. Registro: depois do build, um agente externo editou DynoCockpitPage.tsx e DynoChart.tsx e introduziu 2 erros TS.",
+      "source": "progress.jsonl T060"
+    },
+    {
+      "ts": "2026-10-18T23:30:40Z",
+      "title": "Documentação visual da 002",
+      "category": "Feature 002",
+      "detail": "T062: /reversa-docs gera a primeira versão deste mini-site em _reversa_docs/.",
+      "source": "_reversa_docs/.state.json"
+    },
+    {
+      "ts": "2026-10-18T23:32:08Z",
+      "title": "Adendo da 002",
+      "category": "Sincronização",
+      "detail": "Adendo vigente da 002: 62 de 62 ações, 2128 testes no backend, 571 no frontend; registra os 2 erros TS abertos.",
+      "source": "_reversa_sdd/addenda/002-evolucao-comercial.md"
+    },
+    {
+      "ts": "2026-10-18T23:36:16Z",
+      "title": "Requirements e plano da 003",
+      "category": "Feature 003",
+      "detail": "Modo autônomo: 18 RF em 4 frentes (Rust, áudio, QA, E2E), 8 decisões, 30 ações em 9 trilhas; premissas Q1 (Docker) e Q2 (tolerância 1e-9).",
+      "source": "_reversa_forward/003-rust-audio-qa-total/requirements.md"
+    },
+    {
+      "ts": "2026-10-18T23:36:46Z",
+      "title": "Crate simremap_rs",
+      "category": "Feature 003",
+      "detail": "T001: maturin como dev dependency e crate PyO3 ABI3 com submódulos tables, cycle e damage. T002 corrige os 2 erros TS da DynoCockpitPage.",
+      "source": "progress.jsonl T001, T002"
+    },
+    {
+      "ts": "2026-10-18T23:37:38Z",
+      "title": "Seletor SIMREMAP_NATIVE",
+      "category": "Feature 003",
+      "detail": "T003: simremap/core/native.py com os modos auto, off e on, e o benchmark de referência do tick Python.",
+      "source": "progress.jsonl T003"
+    },
+    {
+      "ts": "2026-10-18T23:57:25Z",
+      "title": "Nova síntese de áudio",
+      "category": "Feature 003",
+      "detail": "T007, T013 a T015: pulsos, WaveShaper, passa-baixa 180→1400 Hz, ressonadores, turbo por ruído, pops graves e 4 arquétipos sem estridência.",
+      "source": "progress.jsonl T013"
+    },
+    {
+      "ts": "2026-10-19T00:04:19Z",
+      "title": "make type limpo",
+      "category": "Qualidade",
+      "detail": "T016: __init__.py nos testes e configuração do mypy; mypy --strict src tests sem erros em 440 arquivos.",
+      "source": "progress.jsonl T016"
+    },
+    {
+      "ts": "2026-10-19T00:07:39Z",
+      "title": "ECU nativa",
+      "category": "Feature 003",
+      "detail": "T004, T008, T009, T017: interpolação e estratégias em tables.rs; ecu/native_tables.py avalia as tabelas em lote.",
+      "source": "progress.jsonl T017"
+    },
+    {
+      "ts": "2026-10-19T00:08:15Z",
+      "title": "Dano nativo",
+      "category": "Feature 003",
+      "detail": "T006, T012, T019: integral de knock e dano dos 6 modos em damage.rs; dano por tick 48,0 → 7,5 µs.",
+      "source": "progress.jsonl T019"
+    },
+    {
+      "ts": "2026-10-19T00:33:14Z",
+      "title": "Física nativa e benchmark",
+      "category": "Feature 003",
+      "detail": "T005, T010, T011, T018, T025, T026: CycleKernel e GasKernel, física 2,8× mais rápida, Dockerfile com estágio Rust e make native.",
+      "source": "progress.jsonl T018, T025"
+    },
+    {
+      "ts": "2026-10-19T00:40:00Z",
+      "title": "QA das telas e 8 specs E2E",
+      "category": "Feature 003",
+      "detail": "T023 e T024: 9 correções de QA no frontend e 8 specs Playwright novos (carreira, Stage Builder, defeitos, Live Tuning, áudio, motor nativo, ECU, bancada).",
+      "source": "progress.jsonl T024"
+    },
+    {
+      "ts": "2026-10-19T01:03:09Z",
+      "title": "QA de fluxos, cenários e carreira",
+      "category": "Feature 003",
+      "detail": "T020 a T022: tests/qa; os 7 cenários aprovados com acerto real e as 7 ordens da carreira pagas.",
+      "source": "progress.jsonl T021, T022"
+    },
+    {
+      "ts": "2026-10-19T01:24:59Z",
+      "title": "FX3: surge e oscilação",
+      "category": "Qualidade",
+      "detail": "T033: linha de surge com recuo em baixa rotação (Python e Rust); surge do hatch 17,2 → 1,4 %.",
+      "source": "progress.jsonl T033"
+    },
+    {
+      "ts": "2026-10-19T01:38:04Z",
+      "title": "FX1: calibração ativa e overrun",
+      "category": "Qualidade",
+      "detail": "T031: active_calibration_id, seeds ≤ 2^53−1, native_enabled em /version, 409 SESSION_CLOSED e arrefecimento do multi_pull sem overrun.",
+      "source": "progress.jsonl T031"
+    },
+    {
+      "ts": "2026-10-19T01:55:08Z",
+      "title": "FX2: ECU",
+      "category": "Qualidade",
+      "detail": "T032: dTPS por mediana de 3 amostras, diff do 1.º aplicar e PID de boost do hatch (±12,3 → ±0,44 N·m).",
+      "source": "progress.jsonl T032"
+    },
+    {
+      "ts": "2026-10-19T01:55:29Z",
+      "title": "Build de produção da 003",
+      "category": "Feature 003",
+      "detail": "T028: npm run build sem erros e frontend/dist atualizado.",
+      "source": "progress.jsonl T028"
+    },
+    {
+      "ts": "2026-10-19T02:11:18+00:00",
+      "title": "Documentação visual da 003",
+      "category": "Feature 003",
+      "detail": "T029: /reversa-docs regenera este mini-site com a feature 003.",
+      "source": "_reversa_docs/"
+    }
+  ],
+  "pace": {
+    "hours": [
+      "18/10 01h",
+      "18/10 02h",
+      "18/10 03h",
+      "18/10 04h",
+      "18/10 05h",
+      "18/10 06h",
+      "18/10 07h",
+      "18/10 09h",
+      "18/10 21h",
+      "18/10 22h",
+      "18/10 23h",
+      "19/10 00h",
+      "19/10 01h"
+    ],
+    "series": {
+      "001": [
+        100,
+        193,
+        39,
+        25,
+        27,
+        49,
+        10,
+        9,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "002": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        32,
+        25,
+        5,
+        0,
+        0
+      ],
+      "003": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        7,
+        16,
+        7
+      ]
+    }
+  }
+}

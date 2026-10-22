@@ -1,0 +1,155 @@
+{
+  "curve_id": "stock-e27",
+  "vehicle_id": "hatch-20t-gdi",
+  "calibration_ref": "stock",
+  "fuel_id": "e27",
+  "conditions": {
+    "correction": "sae_j1349",
+    "ambient_temp_c": 25.0,
+    "ambient_pressure_kpa": 99.0,
+    "dyno_type": "inertial_roller",
+    "gear": 4
+  },
+  "quantities": ["torque_crank_nm", "power_wheel_kw", "lambda_value", "egt_c"],
+  "points": [
+    {
+      "rpm": 2000.0,
+      "torque_crank_nm": 350.0,
+      "power_wheel_kw": 62.31,
+      "lambda_value": 0.95,
+      "egt_c": 720.0
+    },
+    {
+      "rpm": 2250.0,
+      "torque_crank_nm": 350.0,
+      "power_wheel_kw": 70.1,
+      "lambda_value": 0.95,
+      "egt_c": 740.0
+    },
+    {
+      "rpm": 2500.0,
+      "torque_crank_nm": 350.0,
+      "power_wheel_kw": 77.89,
+      "lambda_value": 0.95,
+      "egt_c": 760.0
+    },
+    {
+      "rpm": 2750.0,
+      "torque_crank_nm": 350.0,
+      "power_wheel_kw": 85.67,
+      "lambda_value": 0.95,
+      "egt_c": 780.0
+    },
+    {
+      "rpm": 3000.0,
+      "torque_crank_nm": 350.0,
+      "power_wheel_kw": 93.46,
+      "lambda_value": 0.95,
+      "egt_c": 800.0
+    },
+    {
+      "rpm": 3250.0,
+      "torque_crank_nm": 350.0,
+      "power_wheel_kw": 101.25,
+      "lambda_value": 0.94,
+      "egt_c": 820.0
+    },
+    {
+      "rpm": 3500.0,
+      "torque_crank_nm": 350.0,
+      "power_wheel_kw": 109.04,
+      "lambda_value": 0.93,
+      "egt_c": 840.0
+    },
+    {
+      "rpm": 3750.0,
+      "torque_crank_nm": 350.0,
+      "power_wheel_kw": 116.83,
+      "lambda_value": 0.915,
+      "egt_c": 855.0
+    },
+    {
+      "rpm": 4000.0,
+      "torque_crank_nm": 350.0,
+      "power_wheel_kw": 124.62,
+      "lambda_value": 0.9,
+      "egt_c": 870.0
+    },
+    {
+      "rpm": 4250.0,
+      "torque_crank_nm": 350.0,
+      "power_wheel_kw": 132.41,
+      "lambda_value": 0.89,
+      "egt_c": 880.0
+    },
+    {
+      "rpm": 4500.0,
+      "torque_crank_nm": 350.0,
+      "power_wheel_kw": 140.19,
+      "lambda_value": 0.88,
+      "egt_c": 890.0
+    },
+    {
+      "rpm": 4750.0,
+      "torque_crank_nm": 347.5,
+      "power_wheel_kw": 146.93,
+      "lambda_value": 0.865,
+      "egt_c": 897.5
+    },
+    {
+      "rpm": 5000.0,
+      "torque_crank_nm": 345.0,
+      "power_wheel_kw": 153.55,
+      "lambda_value": 0.85,
+      "egt_c": 905.0
+    },
+    {
+      "rpm": 5250.0,
+      "torque_crank_nm": 338.0,
+      "power_wheel_kw": 157.95,
+      "lambda_value": 0.84,
+      "egt_c": 910.0
+    },
+    {
+      "rpm": 5500.0,
+      "torque_crank_nm": 331.0,
+      "power_wheel_kw": 162.05,
+      "lambda_value": 0.83,
+      "egt_c": 915.0
+    },
+    {
+      "rpm": 5750.0,
+      "torque_crank_nm": 319.1,
+      "power_wheel_kw": 163.32,
+      "lambda_value": 0.825,
+      "egt_c": 917.5
+    },
+    {
+      "rpm": 6000.0,
+      "torque_crank_nm": 307.3,
+      "power_wheel_kw": 164.12,
+      "lambda_value": 0.82,
+      "egt_c": 920.0
+    },
+    {
+      "rpm": 6250.0,
+      "torque_crank_nm": 291.6,
+      "power_wheel_kw": 162.22,
+      "lambda_value": 0.82,
+      "egt_c": 922.5
+    },
+    {
+      "rpm": 6500.0,
+      "torque_crank_nm": 276.0,
+      "power_wheel_kw": 159.69,
+      "lambda_value": 0.82,
+      "egt_c": 925.0
+    }
+  ],
+  "source": "Reference Benchmark Baseline v1 (estimativa interna)",
+  "license": "internal-estimate",
+  "confidence": "estimated",
+  "quantity_confidence": {},
+  "tolerance_pct": 5.0,
+  "benchmark_id": "reference-benchmark-baseline-v1"
+}

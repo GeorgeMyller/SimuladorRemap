@@ -1,0 +1,1232 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-19T02:11:18+00:00",
+  "treemap_loc_by_folder": [
+    {
+      "folder": "backend/api",
+      "layer": "backend",
+      "loc": 1135,
+      "modules": 9,
+      "tests_loc": 966,
+      "test_files": 6
+    },
+    {
+      "folder": "backend/career",
+      "layer": "backend",
+      "loc": 487,
+      "modules": 6,
+      "tests_loc": 198,
+      "test_files": 3
+    },
+    {
+      "folder": "backend/catalog",
+      "layer": "backend",
+      "loc": 4222,
+      "modules": 21,
+      "tests_loc": 2440,
+      "test_files": 19
+    },
+    {
+      "folder": "backend/core",
+      "layer": "backend",
+      "loc": 2503,
+      "modules": 18,
+      "tests_loc": 1612,
+      "test_files": 13
+    },
+    {
+      "folder": "backend/damage",
+      "layer": "backend",
+      "loc": 4645,
+      "modules": 25,
+      "tests_loc": 2565,
+      "test_files": 13
+    },
+    {
+      "folder": "backend/db",
+      "layer": "backend",
+      "loc": 1952,
+      "modules": 25,
+      "tests_loc": 721,
+      "test_files": 7
+    },
+    {
+      "folder": "backend/dyno",
+      "layer": "backend",
+      "loc": 5213,
+      "modules": 19,
+      "tests_loc": 2928,
+      "test_files": 20
+    },
+    {
+      "folder": "backend/ecu",
+      "layer": "backend",
+      "loc": 5047,
+      "modules": 31,
+      "tests_loc": 3786,
+      "test_files": 19
+    },
+    {
+      "folder": "backend/physics",
+      "layer": "backend",
+      "loc": 4069,
+      "modules": 23,
+      "tests_loc": 3353,
+      "test_files": 23
+    },
+    {
+      "folder": "backend/profiles",
+      "layer": "backend",
+      "loc": 4911,
+      "modules": 26,
+      "tests_loc": 2734,
+      "test_files": 15
+    },
+    {
+      "folder": "backend/scenarios",
+      "layer": "backend",
+      "loc": 5130,
+      "modules": 18,
+      "tests_loc": 2929,
+      "test_files": 18
+    },
+    {
+      "folder": "backend/telemetry",
+      "layer": "backend",
+      "loc": 3480,
+      "modules": 16,
+      "tests_loc": 2321,
+      "test_files": 18
+    },
+    {
+      "folder": "frontend/app",
+      "layer": "frontend",
+      "loc": 763,
+      "modules": 10,
+      "tests_loc": 589,
+      "test_files": 6
+    },
+    {
+      "folder": "frontend/career",
+      "layer": "frontend",
+      "loc": 437,
+      "modules": 6,
+      "tests_loc": 167,
+      "test_files": 1
+    },
+    {
+      "folder": "frontend/dyno-cockpit",
+      "layer": "frontend",
+      "loc": 8090,
+      "modules": 53,
+      "tests_loc": 2815,
+      "test_files": 20
+    },
+    {
+      "folder": "frontend/ecu-tuning",
+      "layer": "frontend",
+      "loc": 6735,
+      "modules": 43,
+      "tests_loc": 2587,
+      "test_files": 20
+    },
+    {
+      "folder": "frontend/lib",
+      "layer": "frontend",
+      "loc": 872,
+      "modules": 11,
+      "tests_loc": 422,
+      "test_files": 3
+    },
+    {
+      "folder": "frontend/pixel-cars",
+      "layer": "frontend",
+      "loc": 430,
+      "modules": 2,
+      "tests_loc": 43,
+      "test_files": 1
+    },
+    {
+      "folder": "frontend/scenarios",
+      "layer": "frontend",
+      "loc": 2925,
+      "modules": 20,
+      "tests_loc": 922,
+      "test_files": 9
+    },
+    {
+      "folder": "frontend/workshop",
+      "layer": "frontend",
+      "loc": 361,
+      "modules": 5,
+      "tests_loc": 125,
+      "test_files": 1
+    },
+    {
+      "folder": "native/cycle",
+      "layer": "native",
+      "loc": 1781,
+      "modules": 5,
+      "tests_loc": 0,
+      "test_files": 0
+    },
+    {
+      "folder": "native/damage",
+      "layer": "native",
+      "loc": 414,
+      "modules": 1,
+      "tests_loc": 0,
+      "test_files": 0
+    },
+    {
+      "folder": "native/tables",
+      "layer": "native",
+      "loc": 628,
+      "modules": 2,
+      "tests_loc": 0,
+      "test_files": 0
+    }
+  ],
+  "top_complexity": [
+    {
+      "id": "frontend/src/features/ecu-tuning/workspaceStore.ts",
+      "complexity": 238,
+      "loc": 889,
+      "folder": "frontend/ecu-tuning"
+    },
+    {
+      "id": "backend/src/simremap/scenarios/attempts.py",
+      "complexity": 192,
+      "loc": 992,
+      "folder": "backend/scenarios"
+    },
+    {
+      "id": "backend/src/simremap/physics/engine.py",
+      "complexity": 177,
+      "loc": 1298,
+      "folder": "backend/physics"
+    },
+    {
+      "id": "backend/src/simremap/catalog/loader.py",
+      "complexity": 143,
+      "loc": 472,
+      "folder": "backend/catalog"
+    },
+    {
+      "id": "frontend/src/features/dyno-cockpit/useCockpit.ts",
+      "complexity": 140,
+      "loc": 594,
+      "folder": "frontend/dyno-cockpit"
+    },
+    {
+      "id": "backend/src/simremap/damage/model.py",
+      "complexity": 137,
+      "loc": 1018,
+      "folder": "backend/damage"
+    },
+    {
+      "id": "backend/src/simremap/dyno/runner.py",
+      "complexity": 136,
+      "loc": 801,
+      "folder": "backend/dyno"
+    },
+    {
+      "id": "frontend/src/features/dyno-cockpit/DynoCockpitPage.tsx",
+      "complexity": 130,
+      "loc": 541,
+      "folder": "frontend/dyno-cockpit"
+    },
+    {
+      "id": "backend/src/simremap/dyno/runs.py",
+      "complexity": 111,
+      "loc": 644,
+      "folder": "backend/dyno"
+    },
+    {
+      "id": "backend/src/simremap/profiles/hooks/oem_stage.py",
+      "complexity": 106,
+      "loc": 584,
+      "folder": "backend/profiles"
+    },
+    {
+      "id": "frontend/src/features/ecu-tuning/EcuWorkspace.tsx",
+      "complexity": 105,
+      "loc": 474,
+      "folder": "frontend/ecu-tuning"
+    },
+    {
+      "id": "backend/src/simremap/profiles/adapter.py",
+      "complexity": 104,
+      "loc": 520,
+      "folder": "backend/profiles"
+    },
+    {
+      "id": "backend/src/simremap/catalog/tools/gen_data.py",
+      "complexity": 102,
+      "loc": 1604,
+      "folder": "backend/catalog"
+    },
+    {
+      "id": "backend/src/simremap/dyno/session.py",
+      "complexity": 101,
+      "loc": 760,
+      "folder": "backend/dyno"
+    },
+    {
+      "id": "backend/src/simremap/profiles/service.py",
+      "complexity": 99,
+      "loc": 562,
+      "folder": "backend/profiles"
+    },
+    {
+      "id": "frontend/src/features/ecu-tuning/TableGrid.tsx",
+      "complexity": 99,
+      "loc": 344,
+      "folder": "frontend/ecu-tuning"
+    },
+    {
+      "id": "backend/src/simremap/ecu/runtime.py",
+      "complexity": 97,
+      "loc": 562,
+      "folder": "backend/ecu"
+    },
+    {
+      "id": "backend/src/simremap/scenarios/evaluator.py",
+      "complexity": 95,
+      "loc": 419,
+      "folder": "backend/scenarios"
+    },
+    {
+      "id": "frontend/src/features/dyno-cockpit/DynoChart.tsx",
+      "complexity": 89,
+      "loc": 423,
+      "folder": "frontend/dyno-cockpit"
+    },
+    {
+      "id": "frontend/src/features/ecu-tuning/TableEditorCore.tsx",
+      "complexity": 89,
+      "loc": 265,
+      "folder": "frontend/ecu-tuning"
+    }
+  ],
+  "loc_histogram": {
+    "bins": [
+      0,
+      50,
+      100,
+      200,
+      500,
+      1000,
+      5000
+    ],
+    "counts": [
+      81,
+      104,
+      109,
+      85,
+      16,
+      3
+    ]
+  },
+  "dependency_sankey": {
+    "links": [
+      {
+        "source": "usa: api",
+        "target": "provê: catalog",
+        "value": 1,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: api",
+        "target": "provê: core",
+        "value": 6,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: api",
+        "target": "provê: db",
+        "value": 2,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: career",
+        "target": "provê: core",
+        "value": 5,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: career",
+        "target": "provê: db",
+        "value": 2,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: career",
+        "target": "provê: dyno",
+        "value": 1,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: career",
+        "target": "provê: scenarios",
+        "value": 1,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: catalog",
+        "target": "provê: core",
+        "value": 6,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: catalog",
+        "target": "provê: ecu",
+        "value": 1,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: catalog",
+        "target": "provê: physics",
+        "value": 1,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: core",
+        "target": "provê: catalog",
+        "value": 1,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: core",
+        "target": "provê: db",
+        "value": 1,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: core",
+        "target": "provê: physics",
+        "value": 1,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: damage",
+        "target": "provê: catalog",
+        "value": 4,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: damage",
+        "target": "provê: core",
+        "value": 8,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: damage",
+        "target": "provê: db",
+        "value": 1,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: damage",
+        "target": "provê: dyno",
+        "value": 3,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: damage",
+        "target": "provê: ecu",
+        "value": 1,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: damage",
+        "target": "provê: physics",
+        "value": 5,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: damage",
+        "target": "provê: telemetry",
+        "value": 1,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: damage",
+        "target": "provê: rs.damage",
+        "value": 1,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: db",
+        "target": "provê: career",
+        "value": 1,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: db",
+        "target": "provê: catalog",
+        "value": 1,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: db",
+        "target": "provê: core",
+        "value": 3,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: db",
+        "target": "provê: damage",
+        "value": 1,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: db",
+        "target": "provê: dyno",
+        "value": 1,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: db",
+        "target": "provê: scenarios",
+        "value": 1,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: dyno",
+        "target": "provê: catalog",
+        "value": 6,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: dyno",
+        "target": "provê: core",
+        "value": 8,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: dyno",
+        "target": "provê: damage",
+        "value": 9,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: dyno",
+        "target": "provê: db",
+        "value": 1,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: dyno",
+        "target": "provê: ecu",
+        "value": 5,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: dyno",
+        "target": "provê: physics",
+        "value": 5,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: dyno",
+        "target": "provê: profiles",
+        "value": 2,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: ecu",
+        "target": "provê: api",
+        "value": 1,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: ecu",
+        "target": "provê: catalog",
+        "value": 2,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: ecu",
+        "target": "provê: core",
+        "value": 8,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: ecu",
+        "target": "provê: db",
+        "value": 1,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: ecu",
+        "target": "provê: physics",
+        "value": 2,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: ecu",
+        "target": "provê: profiles",
+        "value": 1,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: ecu",
+        "target": "provê: rs.tables",
+        "value": 2,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: physics",
+        "target": "provê: catalog",
+        "value": 13,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: physics",
+        "target": "provê: core",
+        "value": 3,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: physics",
+        "target": "provê: dyno",
+        "value": 2,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: physics",
+        "target": "provê: rs.cycle",
+        "value": 2,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: profiles",
+        "target": "provê: api",
+        "value": 1,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: profiles",
+        "target": "provê: catalog",
+        "value": 8,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: profiles",
+        "target": "provê: core",
+        "value": 8,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: profiles",
+        "target": "provê: db",
+        "value": 2,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: profiles",
+        "target": "provê: ecu",
+        "value": 17,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: profiles",
+        "target": "provê: physics",
+        "value": 2,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: scenarios",
+        "target": "provê: api",
+        "value": 1,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: scenarios",
+        "target": "provê: catalog",
+        "value": 3,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: scenarios",
+        "target": "provê: core",
+        "value": 12,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: scenarios",
+        "target": "provê: db",
+        "value": 5,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: scenarios",
+        "target": "provê: dyno",
+        "value": 7,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: scenarios",
+        "target": "provê: ecu",
+        "value": 2,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: scenarios",
+        "target": "provê: physics",
+        "value": 2,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: scenarios",
+        "target": "provê: telemetry",
+        "value": 5,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: telemetry",
+        "target": "provê: api",
+        "value": 1,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: telemetry",
+        "target": "provê: catalog",
+        "value": 2,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: telemetry",
+        "target": "provê: core",
+        "value": 9,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: telemetry",
+        "target": "provê: db",
+        "value": 1,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: telemetry",
+        "target": "provê: dyno",
+        "value": 3,
+        "layer": "backend"
+      },
+      {
+        "source": "usa: app",
+        "target": "provê: career",
+        "value": 1,
+        "layer": "frontend"
+      },
+      {
+        "source": "usa: app",
+        "target": "provê: dyno-cockpit",
+        "value": 1,
+        "layer": "frontend"
+      },
+      {
+        "source": "usa: app",
+        "target": "provê: ecu-tuning",
+        "value": 1,
+        "layer": "frontend"
+      },
+      {
+        "source": "usa: app",
+        "target": "provê: lib",
+        "value": 3,
+        "layer": "frontend"
+      },
+      {
+        "source": "usa: app",
+        "target": "provê: pixel-cars",
+        "value": 1,
+        "layer": "frontend"
+      },
+      {
+        "source": "usa: app",
+        "target": "provê: scenarios",
+        "value": 2,
+        "layer": "frontend"
+      },
+      {
+        "source": "usa: app",
+        "target": "provê: workshop",
+        "value": 3,
+        "layer": "frontend"
+      },
+      {
+        "source": "usa: career",
+        "target": "provê: app",
+        "value": 2,
+        "layer": "frontend"
+      },
+      {
+        "source": "usa: career",
+        "target": "provê: lib",
+        "value": 2,
+        "layer": "frontend"
+      },
+      {
+        "source": "usa: career",
+        "target": "provê: scenarios",
+        "value": 1,
+        "layer": "frontend"
+      },
+      {
+        "source": "usa: dyno-cockpit",
+        "target": "provê: app",
+        "value": 1,
+        "layer": "frontend"
+      },
+      {
+        "source": "usa: dyno-cockpit",
+        "target": "provê: ecu-tuning",
+        "value": 4,
+        "layer": "frontend"
+      },
+      {
+        "source": "usa: dyno-cockpit",
+        "target": "provê: lib",
+        "value": 23,
+        "layer": "frontend"
+      },
+      {
+        "source": "usa: dyno-cockpit",
+        "target": "provê: pixel-cars",
+        "value": 1,
+        "layer": "frontend"
+      },
+      {
+        "source": "usa: dyno-cockpit",
+        "target": "provê: scenarios",
+        "value": 1,
+        "layer": "frontend"
+      },
+      {
+        "source": "usa: ecu-tuning",
+        "target": "provê: app",
+        "value": 1,
+        "layer": "frontend"
+      },
+      {
+        "source": "usa: ecu-tuning",
+        "target": "provê: dyno-cockpit",
+        "value": 4,
+        "layer": "frontend"
+      },
+      {
+        "source": "usa: ecu-tuning",
+        "target": "provê: lib",
+        "value": 12,
+        "layer": "frontend"
+      },
+      {
+        "source": "usa: scenarios",
+        "target": "provê: app",
+        "value": 2,
+        "layer": "frontend"
+      },
+      {
+        "source": "usa: scenarios",
+        "target": "provê: lib",
+        "value": 4,
+        "layer": "frontend"
+      },
+      {
+        "source": "usa: workshop",
+        "target": "provê: lib",
+        "value": 3,
+        "layer": "frontend"
+      },
+      {
+        "source": "usa: rs.lib",
+        "target": "provê: rs.cycle",
+        "value": 1,
+        "layer": "native"
+      },
+      {
+        "source": "usa: rs.lib",
+        "target": "provê: rs.damage",
+        "value": 1,
+        "layer": "native"
+      },
+      {
+        "source": "usa: rs.lib",
+        "target": "provê: rs.tables",
+        "value": 1,
+        "layer": "native"
+      }
+    ]
+  },
+  "language_distribution": [
+    {
+      "language": "python",
+      "type": "code",
+      "modules": 238,
+      "loc": 42796
+    },
+    {
+      "language": "python",
+      "type": "test",
+      "modules": 220,
+      "loc": 32246
+    },
+    {
+      "language": "rust",
+      "type": "code",
+      "modules": 9,
+      "loc": 2843
+    },
+    {
+      "language": "typescript",
+      "type": "code",
+      "modules": 151,
+      "loc": 20627
+    },
+    {
+      "language": "typescript",
+      "type": "test",
+      "modules": 85,
+      "loc": 10352
+    }
+  ],
+  "coverage": {
+    "source": "make cov (scripts/coverage_per_package.py), mínimo COV_MIN = 85 %",
+    "min": 85,
+    "global_coverage_json": 95.71,
+    "packages": [
+      {
+        "package": "core",
+        "pct": 96.02
+      },
+      {
+        "package": "physics",
+        "pct": 97.4
+      },
+      {
+        "package": "damage",
+        "pct": 95.44
+      },
+      {
+        "package": "catalog",
+        "pct": 96.48
+      },
+      {
+        "package": "dyno",
+        "pct": 95.34
+      },
+      {
+        "package": "ecu",
+        "pct": 99.1
+      },
+      {
+        "package": "profiles",
+        "pct": 97.65
+      },
+      {
+        "package": "telemetry",
+        "pct": 94.38
+      },
+      {
+        "package": "scenarios",
+        "pct": 90.8
+      },
+      {
+        "package": "career",
+        "pct": 92.7
+      },
+      {
+        "package": "api",
+        "pct": 92.81
+      },
+      {
+        "package": "db",
+        "pct": 98.63
+      }
+    ]
+  },
+  "tests": {
+    "backend": {
+      "passed_002": 2128,
+      "skipped_002": 35,
+      "note": "Na 003: -m accuracy 9/9 com nativo ligado e desligado; -m e2e 49 aprovados; tests/native, tests/qa e tests/bench novos"
+    },
+    "frontend": {
+      "passed": 627,
+      "runner": "vitest"
+    },
+    "e2e": {
+      "playwright_specs": 14,
+      "new_specs_003": 8,
+      "passed_003": "24+ aprovados (live-tuning e native-engine 4/4)",
+      "result_001": "7/7 (3 jornadas, axe 0 violações A/AA, cockpit 60 FPS)"
+    },
+    "mypy": {
+      "command": "mypy --strict src tests",
+      "errors": 0,
+      "files": 440
+    },
+    "history": [
+      {
+        "label": "Fecho da 001",
+        "backend": 2035,
+        "frontend": 450
+      },
+      {
+        "label": "Fecho da 002",
+        "backend": 2128,
+        "frontend": 571
+      },
+      {
+        "label": "Fecho da 003",
+        "backend": null,
+        "frontend": 627,
+        "note": "contagem total do pytest não registrada na 003"
+      }
+    ],
+    "declared_backend": {
+      "api": 74,
+      "bench": 2,
+      "career": 10,
+      "catalog": 204,
+      "contract": 47,
+      "core": 104,
+      "damage": 160,
+      "db": 33,
+      "dyno": 139,
+      "e2e": 8,
+      "ecu": 203,
+      "integration": 26,
+      "native": 26,
+      "physics": 139,
+      "profiles": 119,
+      "qa": 19,
+      "scenarios": 109,
+      "telemetry": 94
+    },
+    "declared_frontend": {
+      "app": 45,
+      "career": 10,
+      "dyno-cockpit": 192,
+      "e2e": 19,
+      "ecu-tuning": 205,
+      "lib": 30,
+      "pixel-cars": 4,
+      "scenarios": 52,
+      "workshop": 9
+    }
+  },
+  "accuracy": {
+    "limit_pct": 5,
+    "benchmark": "Reference Benchmark Baseline v1",
+    "metric": "desvio máximo de torque por ponto de RPM",
+    "vehicles": [
+      {
+        "vehicle": "Hatch 2.0 turbo GDI (hatch-20t-gdi)",
+        "pct": 3.4
+      },
+      {
+        "vehicle": "Coupé 3.0 I6 turbo (coupe-30t-i6)",
+        "pct": 1.4
+      },
+      {
+        "vehicle": "Clássico 2.0 turbo swap (classic-20t-swap)",
+        "pct": 2.3
+      },
+      {
+        "vehicle": "V8 supercharged (muscle-v8-sc)",
+        "pct": 3.5
+      }
+    ]
+  },
+  "chunks": {
+    "limit_kb": 500,
+    "before": [
+      {
+        "chunk": "Table3DSurface",
+        "kb": 530.3
+      },
+      {
+        "chunk": "index (entrada)",
+        "kb": 346.6
+      },
+      {
+        "chunk": "DynoCockpitPage",
+        "kb": 158.6
+      },
+      {
+        "chunk": "EcuWorkspacePage",
+        "kb": 141.1
+      },
+      {
+        "chunk": "ScenariosPage",
+        "kb": 38.4
+      }
+    ],
+    "after": [
+      {
+        "chunk": "vendor-three",
+        "kb": 352.3
+      },
+      {
+        "chunk": "vendor-react",
+        "kb": 180.4
+      },
+      {
+        "chunk": "vendor-three-core",
+        "kb": 176.9
+      },
+      {
+        "chunk": "DynoCockpitPage",
+        "kb": 128.2
+      },
+      {
+        "chunk": "vendor-zod",
+        "kb": 94.4
+      },
+      {
+        "chunk": "useWorkspaceStore",
+        "kb": 86.1
+      },
+      {
+        "chunk": "EcuWorkspacePage",
+        "kb": 74.0
+      },
+      {
+        "chunk": "HomePage",
+        "kb": 67.6
+      },
+      {
+        "chunk": "vendor-uplot",
+        "kb": 51.0
+      },
+      {
+        "chunk": "ScenariosPage",
+        "kb": 38.5
+      },
+      {
+        "chunk": "WorkshopPage",
+        "kb": 15.9
+      },
+      {
+        "chunk": "index (entrada)",
+        "kb": 9.5
+      }
+    ]
+  },
+  "physics_loop": {
+    "hz": 1000,
+    "tick_us_python": 179,
+    "tick_us_native": 107,
+    "p99_us_python": 490,
+    "p99_us_native": 345,
+    "note": "hatch, hardware de desenvolvimento (Apple Silicon); sem medição no hardware de referência de 4 núcleos"
+  },
+  "native": {
+    "source": "backend/tests/bench/test_bench_native_tick.py e legacy-impact.md da 003",
+    "speedup_physics": 2.8,
+    "subsystems_us": [
+      {
+        "name": "Física (hatch)",
+        "python": 104.8,
+        "native": 38.0
+      },
+      {
+        "name": "ECU",
+        "python": 27.5,
+        "native": 19.8
+      },
+      {
+        "name": "Dano",
+        "python": 48.0,
+        "native": 7.5
+      }
+    ],
+    "tick_by_vehicle_us": [
+      {
+        "vehicle": "Hatch 2.0 turbo GDI",
+        "python": 179,
+        "native": 107
+      },
+      {
+        "vehicle": "Coupé 3.0 I6 turbo",
+        "python": 159,
+        "native": 93
+      },
+      {
+        "vehicle": "Clássico 2.0 turbo swap",
+        "python": 158,
+        "native": 97
+      },
+      {
+        "vehicle": "V8 supercharged",
+        "python": 192,
+        "native": 106
+      }
+    ],
+    "overrun": {
+      "sweep_pull_windows": 0,
+      "vehicles": 4,
+      "multi_pull_cooling_before_pct": [
+        3.9,
+        11.5
+      ],
+      "multi_pull_cooling_after_pct": 0
+    },
+    "rust_loc": 2843
+  },
+  "qa_physics": {
+    "surge_full_load_pct": [
+      {
+        "vehicle": "Hatch 2.0 turbo GDI",
+        "before": 17.2,
+        "after": 1.4
+      },
+      {
+        "vehicle": "Coupé 3.0 I6 turbo",
+        "before": 10.6,
+        "after": 0.6
+      },
+      {
+        "vehicle": "Clássico 2.0 turbo swap",
+        "before": 18.8,
+        "after": 0.1
+      }
+    ],
+    "surge_limit_pct": 2,
+    "hatch_torque_oscillation_nm": {
+      "before": 12.3,
+      "after": 0.44,
+      "freq_hz": 7.5,
+      "limit": 5
+    },
+    "hatch_stock_whp": {
+      "before": 216.3,
+      "after": 214.7
+    }
+  },
+  "audio": {
+    "band_hz": [
+      1000,
+      4000
+    ],
+    "limit_pct": 5,
+    "max_pct": 2.2,
+    "chain": [
+      "pulsos de combustão",
+      "WaveShaper",
+      "lowpass 180→1400 Hz",
+      "ressonadores 90–140 e 280–450 Hz",
+      "sub-bass",
+      "corte de presença 1–4 kHz"
+    ]
+  },
+  "qa": {
+    "scenarios_approved": 7,
+    "scenarios_total": 7,
+    "career_orders_paid": 7,
+    "career_orders_total": 7
+  }
+}

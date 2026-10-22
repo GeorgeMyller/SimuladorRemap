@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Métricas | SimuladorRemap</title>
+<meta name="reversa-category" content="diagram">
+<meta name="reversa-producer-agent" content="reversa-docs-analyst">
+<meta name="reversa-template" content="metricas">
+<meta name="reversa-generated-at" content="2026-10-19T02:11:18+00:00">
+
+<link rel="stylesheet" href="assets/css/site.css">
+<script src="assets/vendor/highcharts.js"></script>
+<script src="assets/vendor/highcharts-accessibility.js"></script>
+<script src="assets/vendor/highcharts-exporting.js"></script>
+<script src="assets/vendor/highcharts-treemap.js"></script>
+<script src="assets/vendor/highcharts-sankey.js"></script>
+</head>
+<body data-style="sober" data-page-id="metricas" data-base="">
+<a class="skip" href="#main">Pular para o conteúdo</a>
+<header class="rv-header">
+  <a class="rv-brand" href="index.html"><span class="seal-slot"><svg class="seal-mini" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Selo do projeto SimuladorRemap" data-pattern="noise-strata" data-seed="40d6644e"><circle cx="32.0" cy="32.0" r="32.0" fill="#f5f3ee"/><path d="M47.2,55.7 L22.9,58.7 L5.5,41.5 L8.0,17.2 L28.6,4.0 L51.8,11.9 L60.0,34.9 Z" fill="#4f6b5d" fill-opacity="0.10" stroke="#4f6b5d" stroke-width="3.2" stroke-linejoin="round"/><path d="M22.9,48.4 L13.5,35.1 L18.0,19.5 L33.1,13.3 L47.3,21.2 L50.0,37.2 L39.2,49.4 Z" fill="#a06b4a" fill-opacity="0.20" stroke="#a06b4a" stroke-width="3.2" stroke-linejoin="round"/><path d="M41.2,33.7 L36.4,40.3 L28.3,40.6 L23.0,34.5 L24.4,26.5 L31.6,22.6 L39.1,25.8 Z" fill="#4f6b5d" fill-opacity="0.15" stroke="#4f6b5d" stroke-width="3.2" stroke-linejoin="round"/><line x1="32.0" y1="32.0" x2="60.2" y2="32.0" stroke="#1e2937" stroke-opacity="0.25" stroke-width="2.24"/><line x1="32.0" y1="32.0" x2="49.6" y2="54.0" stroke="#1e2937" stroke-opacity="0.25" stroke-width="2.24"/><line x1="32.0" y1="32.0" x2="25.7" y2="59.5" stroke="#1e2937" stroke-opacity="0.25" stroke-width="2.24"/><line x1="32.0" y1="32.0" x2="6.6" y2="44.2" stroke="#1e2937" stroke-opacity="0.25" stroke-width="2.24"/><line x1="32.0" y1="32.0" x2="6.6" y2="19.8" stroke="#1e2937" stroke-opacity="0.25" stroke-width="2.24"/><line x1="32.0" y1="32.0" x2="25.7" y2="4.5" stroke="#1e2937" stroke-opacity="0.25" stroke-width="2.24"/><line x1="32.0" y1="32.0" x2="49.6" y2="10.0" stroke="#1e2937" stroke-opacity="0.25" stroke-width="2.24"/><circle cx="32.0" cy="32.0" r="5.1" fill="#1e2937"/><circle cx="32.0" cy="32.0" r="2.2" fill="#a06b4a"/></svg></span><span>SimuladorRemap <small>docs</small></span></a>
+  <nav class="reversa-doc-nav" aria-label="Navegação do mini-site"><a href="index.html" data-page-id="index">Visão geral</a><a href="arquitetura.html" data-page-id="arquitetura">Arquitetura 3D</a><a href="modulos.html" data-page-id="modulos">Módulos</a><a href="metricas.html" data-page-id="metricas">Métricas</a><a href="timeline.html" data-page-id="timeline">Timeline</a><a href="glossario.html" data-page-id="glossario">Glossário</a><a href="deck.html" data-page-id="deck">Deck</a><a href="features/index.html" data-page-id="features">Features</a></nav>
+</header>
+<main id="main" class="rv-main">
+
+<h1>Métricas</h1>
+<p class="lead">Tamanho do código, qualidade e desempenho no fecho da feature 003. Contagens de linhas vêm da leitura estática do código
+(linhas não vazias, sem comentários). Testes, benchmarks do tick, QA de física e áudio vêm dos relatórios de verificação das features.</p>
+<h2>Motor nativo (feature 003)</h2>
+<div class="grid g4" id="kpis-native">
+  <div class="card kpi"><div class="v">2,8×</div><div class="l">física mais rápida</div><div class="s">hatch: 104,8 → 38,0 µs por tick</div></div>
+  <div class="card kpi"><div class="v">179 → 107 µs</div><div class="l">tick médio do hatch</div><div class="s">P99 490 → 345 µs; orçamento 1000 µs</div></div>
+  <div class="card kpi"><div class="v">−28 %</div><div class="l">ECU por tick</div><div class="s">27,5 → 19,8 µs</div></div>
+  <div class="card kpi"><div class="v">−84 %</div><div class="l">dano por tick</div><div class="s">48,0 → 7,5 µs</div></div>
+  <div class="card kpi"><div class="v">0</div><div class="l">janelas com overrun no sweep_pull</div><div class="s">nos 4 veículos</div></div>
+  <div class="card kpi"><div class="v">3,9–11,5 % → 0 %</div><div class="l">overrun no arrefecimento do multi_pull</div><div class="s">orçamento de parede declarado (FX1)</div></div>
+  <div class="card kpi"><div class="v">9/9</div><div class="l">-m accuracy</div><div class="s">com nativo ligado e desligado</div></div>
+  <div class="card kpi"><div class="v">2.843</div><div class="l">LOC de Rust</div><div class="s">crate simremap_rs, 9 arquivos</div></div>
+</div>
+<h2>QA de física, áudio e fluxos</h2>
+<div class="grid g4" id="kpis-qa">
+  <div class="card kpi"><div class="v">17,2 → 1,4 %</div><div class="l">surge a plena carga no hatch</div><div class="s">coupé 10,6 → 0,6; clássico 18,8 → 0,1</div></div>
+  <div class="card kpi"><div class="v">±12,3 → ±0,44</div><div class="l">oscilação de torque do hatch (N·m)</div><div class="s">ciclo-limite PID de 7,5 Hz eliminado</div></div>
+  <div class="card kpi"><div class="v">2,2 %</div><div class="l">maior energia de áudio em 1–4 kHz</div><div class="s">limite 5 % nos 4 arquétipos</div></div>
+  <div class="card kpi"><div class="v">7/7 · 7/7</div><div class="l">cenários aprovados · ordens pagas</div><div class="s">com acerto real (tests/qa)</div></div>
+</div>
+<h2>Código e testes</h2>
+<div class="grid g4" id="kpis">
+  <div class="card kpi"><div class="v">42.796</div><div class="l">LOC de código no backend</div><div class="s">238 arquivos Python</div></div>
+  <div class="card kpi"><div class="v">20.627</div><div class="l">LOC de código no frontend</div><div class="s">151 arquivos TypeScript</div></div>
+  <div class="card kpi"><div class="v">627</div><div class="l">testes do frontend aprovados</div><div class="s">vitest (571 na 002)</div></div>
+  <div class="card kpi"><div class="v">24+</div><div class="l">testes Playwright aprovados</div><div class="s">14 specs; live-tuning e native-engine 4/4</div></div>
+  <div class="card kpi"><div class="v">49</div><div class="l">testes -m e2e do backend</div><div class="s">aprovados na 003</div></div>
+  <div class="card kpi"><div class="v">0 erros</div><div class="l">mypy --strict src tests</div><div class="s">440 arquivos; make type limpo</div></div>
+  <div class="card kpi"><div class="v">42.598</div><div class="l">LOC de testes</div><div class="s">backend e frontend, inclui e2e</div></div>
+  <div class="card kpi"><div class="v">95,71 %</div><div class="l">cobertura global do backend</div><div class="s">medição da 002; mínimo por pacote 85 %</div></div>
+</div>
+
+<div class="grid g2" style="margin-top:16px">
+  <div class="chart-card"><div id="c-native-tick" class="chart"></div></div>
+  <div class="chart-card"><div id="c-native-sub" class="chart"></div></div>
+  <div class="chart-card"><div id="c-surge" class="chart"></div></div>
+  <div class="chart-card"><div id="c-p99" class="chart"></div></div>
+  <div class="chart-card"><div id="c-treemap" class="chart"></div></div>
+  <div class="chart-card"><div id="c-coverage" class="chart"></div></div>
+  <div class="chart-card"><div id="c-accuracy" class="chart"></div></div>
+  <div class="chart-card"><div id="c-chunks" class="chart" style="min-height:420px"></div></div>
+  <div class="chart-card"><div id="c-tests" class="chart"></div></div>
+  <div class="chart-card"><div id="c-history" class="chart"></div></div>
+  <div class="chart-card"><div id="c-hist" class="chart"></div></div>
+  <div class="chart-card"><div id="c-complex" class="chart" style="min-height:520px"></div></div>
+</div>
+<div class="chart-card" style="margin-top:16px"><div id="c-sankey" style="min-height:760px"></div></div>
+<h2>Tabela por pacote</h2>
+<div class="table-wrap"><table id="t-pkg"><thead><tr><th>Pacote</th><th class="num">Arquivos</th><th class="num">LOC código</th><th class="num">LOC testes</th><th class="num">Cobertura</th></tr></thead><tbody></tbody></table></div>
+<p class="muted">Cobertura existe só para pacotes do backend. "Testes declarados" contam funções <code>def test_</code> e chamadas <code>it(</code>/<code>test(</code>; o número executado é maior por causa da parametrização.</p>
+
+</main>
+<footer class="rv-footer">Gerado por reversa-docs-analyst em 2026-10-19T02:11:18+00:00 · Time Reversa Docs · funciona offline via file://</footer>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/nav.js"></script>
+<script src="assets/js/sidebar.js"></script>
+
+<script>
+(function () {
+  "use strict";
+  if (typeof Highcharts === "undefined") { document.getElementById("c-treemap").outerHTML = '<div class="reversa-error-panel">Highcharts não encontrado em assets/vendor/.</div>'; return; }
+  var M = (window.RV_DATA && window.RV_DATA.metrics) || {};
+  var S = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#6250d6", "#e34948"];
+  var INK = "#1e2937", INK2 = "#4a5463", GRID = "#e6e2d9";
+  Highcharts.setOptions({
+    lang: { decimalPoint: ",", thousandsSep: ".", contextButtonTitle: "Exportar", downloadPNG: "Baixar PNG", downloadSVG: "Baixar SVG", viewFullscreen: "Tela cheia", exitFullscreen: "Sair da tela cheia", printChart: "Imprimir" },
+    colors: S,
+    chart: { backgroundColor: "#fcfcfb", style: { fontFamily: "system-ui, -apple-system, Segoe UI, Roboto, sans-serif" }, spacing: [14, 14, 14, 14] },
+    title: { align: "left", style: { fontSize: "15px", fontWeight: "600", color: INK } },
+    subtitle: { align: "left", style: { color: INK2, fontSize: "12.5px" } },
+    xAxis: { lineColor: GRID, tickColor: GRID, labels: { style: { color: INK2 } } },
+    yAxis: { gridLineColor: GRID, labels: { style: { color: INK2 } }, title: { style: { color: INK2 } } },
+    legend: { itemStyle: { color: INK2, fontWeight: "500" } },
+    tooltip: { backgroundColor: "#1e2937", borderWidth: 0, style: { color: "#f5f3ee" } },
+    plotOptions: { series: { animation: { duration: 500 } }, bar: { borderRadius: 4, borderWidth: 0, pointPadding: 0.08, groupPadding: 0.1 }, column: { borderRadius: 4, borderWidth: 0 } },
+    credits: { enabled: false },
+    exporting: { buttons: { contextButton: { menuItems: ["viewFullscreen", "downloadPNG", "downloadSVG"] } } }
+  });
+  var N = M.native || {}, Q = M.qa_physics || {}, PL = M.physics_loop || {};
+  var tv = N.tick_by_vehicle_us || [];
+  Highcharts.chart("c-native-tick", {
+    chart: { type: "bar" }, title: { text: "Tick médio por veículo: Python × Rust" }, subtitle: { text: "Microssegundos por tick a 1000 Hz (orçamento de 1000 µs); benchmark da 003" },
+    xAxis: { categories: tv.map(function (d) { return d.vehicle; }) }, yAxis: { min: 0, title: { text: "µs por tick" } },
+    series: [{ name: "Python (referência)", color: "#3d4a5c", data: tv.map(function (d) { return d.python; }) }, { name: "Rust (simremap_rs)", color: "#8a5a2b", data: tv.map(function (d) { return d.native; }) }],
+    plotOptions: { bar: { dataLabels: { enabled: true, format: "{y} µs", style: { textOutline: "none", color: INK, fontWeight: "400" } } } },
+    tooltip: { shared: true, valueSuffix: " µs" }
+  });
+  var sb = N.subsystems_us || [];
+  Highcharts.chart("c-native-sub", {
+    chart: { type: "column" }, title: { text: "Custo por subsistema no tick" }, subtitle: { text: "Física 2,8× mais rápida; ECU −28 %; dano −84 %" },
+    xAxis: { categories: sb.map(function (d) { return d.name; }) }, yAxis: { min: 0, title: { text: "µs por tick" } },
+    series: [{ name: "Python", color: "#3d4a5c", data: sb.map(function (d) { return d.python; }) }, { name: "Rust", color: "#8a5a2b", data: sb.map(function (d) { return d.native; }) }],
+    plotOptions: { column: { dataLabels: { enabled: true, format: "{y:.1f}", style: { textOutline: "none", color: INK, fontWeight: "400" } } } },
+    tooltip: { shared: true, valueSuffix: " µs", valueDecimals: 1 }
+  });
+  var sg = Q.surge_full_load_pct || [];
+  Highcharts.chart("c-surge", {
+    chart: { type: "column" }, title: { text: "Surge do compressor a plena carga (série)" }, subtitle: { text: "Fração do tempo em surge antes e depois da correção FX3 (linha de surge com recuo em baixa rotação)" },
+    xAxis: { categories: sg.map(function (d) { return d.vehicle; }) }, yAxis: { min: 0, title: { text: "% do tempo" }, plotLines: [{ value: Q.surge_limit_pct || 2, color: "#c62f2e", width: 2, dashStyle: "Dash", zIndex: 5, label: { text: "vigilância W323: 2 %", style: { color: "#c62f2e" } } }] },
+    series: [{ name: "Antes", color: S[1], data: sg.map(function (d) { return d.before; }) }, { name: "Depois", color: S[2], data: sg.map(function (d) { return d.after; }) }],
+    plotOptions: { column: { dataLabels: { enabled: true, format: "{y:.1f} %", style: { textOutline: "none", color: INK, fontWeight: "400" } } } },
+    tooltip: { shared: true, valueSuffix: " %" }
+  });
+  Highcharts.chart("c-p99", {
+    chart: { type: "column" }, title: { text: "Latência do tick do hatch: média e P99" }, subtitle: { text: "Microssegundos; sem worker.overrun no sweep_pull dos 4 veículos" },
+    xAxis: { categories: ["Tick médio", "P99"] }, yAxis: { min: 0, title: { text: "µs" }, plotLines: [{ value: 1000, color: "#c62f2e", width: 2, dashStyle: "Dash", zIndex: 5, label: { text: "orçamento 1000 µs", style: { color: "#c62f2e" } } }], max: 1050 },
+    series: [{ name: "Python", color: "#3d4a5c", data: [PL.tick_us_python, PL.p99_us_python] }, { name: "Rust", color: "#8a5a2b", data: [PL.tick_us_native, PL.p99_us_native] }],
+    plotOptions: { column: { dataLabels: { enabled: true, format: "{y} µs", style: { textOutline: "none", color: INK, fontWeight: "400" } } } },
+    tooltip: { shared: true, valueSuffix: " µs" }
+  });
+  var tm = M.treemap_loc_by_folder || [];
+  Highcharts.chart("c-treemap", {
+    title: { text: "Linhas de código por pacote" }, subtitle: { text: "Área proporcional à LOC; agrupado por camada" },
+    series: [{ type: "treemap", layoutAlgorithm: "squarified", alternateStartingDirection: true, borderColor: "#fcfcfb", borderWidth: 2,
+      levels: [{ level: 1, dataLabels: { enabled: true, align: "left", verticalAlign: "top", style: { fontSize: "13px", fontWeight: "700", textOutline: "none", color: "#fff" } }, borderWidth: 4 },
+               { level: 2, dataLabels: { enabled: true, style: { fontSize: "11px", fontWeight: "500", textOutline: "none", color: "#fff" } } }],
+      data: [{ id: "backend", name: "backend", color: "#3d4a5c" }, { id: "frontend", name: "frontend", color: "#2a78d6" }, { id: "native", name: "native (Rust)", color: "#8a5a2b" }].concat(
+        tm.map(function (d) { return { name: d.folder.split("/")[1], parent: d.layer, value: d.loc, modules: d.modules }; })) }],
+    tooltip: { pointFormat: "<b>{point.name}</b>: {point.value} LOC<br>{point.modules} arquivos" }
+  });
+  var cov = (M.coverage && M.coverage.packages) || [];
+  cov = cov.slice().sort(function (a, b) { return b.pct - a.pct; });
+  Highcharts.chart("c-coverage", {
+    chart: { type: "bar" }, title: { text: "Cobertura de testes por pacote do backend" }, subtitle: { text: "Portão make cov exige no mínimo 85 % por pacote" },
+    xAxis: { categories: cov.map(function (d) { return d.package; }) },
+    yAxis: { min: 80, max: 100, title: { text: "%" }, plotLines: [{ value: 85, color: "#c62f2e", width: 2, dashStyle: "Dash", zIndex: 5, label: { text: "mínimo 85 %", style: { color: "#c62f2e" } } }] },
+    legend: { enabled: false },
+    series: [{ name: "Cobertura", color: S[0], data: cov.map(function (d) { return d.pct; }), dataLabels: { enabled: true, format: "{y:.2f} %", style: { textOutline: "none", color: INK, fontWeight: "500" } } }],
+    tooltip: { valueSuffix: " %", valueDecimals: 2 }
+  });
+  var acc = (M.accuracy && M.accuracy.vehicles) || [];
+  Highcharts.chart("c-accuracy", {
+    chart: { type: "bar" }, title: { text: "Precisão da física contra o benchmark" }, subtitle: { text: "Desvio máximo de torque por ponto de RPM, Reference Benchmark Baseline v1" },
+    xAxis: { categories: acc.map(function (d) { return d.vehicle; }) },
+    yAxis: { min: 0, max: 6, title: { text: "desvio (%)" }, plotLines: [{ value: 5, color: "#c62f2e", width: 2, dashStyle: "Dash", zIndex: 5, label: { text: "limite 5 %", style: { color: "#c62f2e" } } }] },
+    legend: { enabled: false },
+    series: [{ name: "Desvio", color: S[2], data: acc.map(function (d) { return d.pct; }), dataLabels: { enabled: true, format: "{y:.1f} %", style: { textOutline: "none", color: INK } } }],
+    tooltip: { valueSuffix: " %" }
+  });
+  var ch = M.chunks || { before: [], after: [] };
+  var names = []; ch.after.concat(ch.before).forEach(function (d) { if (names.indexOf(d.chunk) < 0) names.push(d.chunk); });
+  function byName(list) { var o = {}; list.forEach(function (d) { o[d.chunk] = d.kb; }); return names.map(function (n) { return o[n] === undefined ? null : o[n]; }); }
+  Highcharts.chart("c-chunks", {
+    chart: { type: "bar" }, title: { text: "Chunks JavaScript do build" }, subtitle: { text: "Fecho da 001 e depois do code-splitting da 002 (medição da 002); limite de 500 kB" },
+    xAxis: { categories: names, labels: { style: { fontSize: "10.5px" } } },
+    yAxis: { min: 0, title: { text: "kB" }, plotLines: [{ value: 500, color: "#c62f2e", width: 2, dashStyle: "Dash", zIndex: 5, label: { text: "limite 500 kB", style: { color: "#c62f2e" } } }] },
+    series: [{ name: "Antes (001)", color: S[1], data: byName(ch.before) }, { name: "Depois (002)", color: S[0], data: byName(ch.after) }],
+    plotOptions: { bar: { dataLabels: { enabled: true, format: "{y:.0f}", style: { textOutline: "none", color: INK, fontWeight: "400", fontSize: "10.5px" } } } },
+    tooltip: { shared: true, valueSuffix: " kB", valueDecimals: 1 }
+  });
+  var db = (M.tests && M.tests.declared_backend) || {}, df = (M.tests && M.tests.declared_frontend) || {};
+  var tcat = Object.keys(db).map(function (k) { return "backend/" + k; }).concat(Object.keys(df).map(function (k) { return "frontend/" + k; }));
+  Highcharts.chart("c-tests", {
+    chart: { type: "column" }, title: { text: "Testes declarados por pasta" }, subtitle: { text: "Contados no código atual; parametrização aumenta o total executado. frontend/e2e = Playwright" },
+    xAxis: { categories: tcat, labels: { rotation: -45, style: { fontSize: "10.5px" } } }, yAxis: { title: { text: "testes declarados" } },
+    legend: { enabled: false },
+    series: [{ name: "Testes", data: tcat.map(function (c) { var p = c.split("/"); var nw = ["native", "qa", "bench", "e2e"].indexOf(p[1]) >= 0; return { y: (p[0] === "backend" ? db : df)[p[1]], color: nw ? "#6250d6" : (p[0] === "backend" ? "#3d4a5c" : S[0]) }; }) }]
+  });
+  var hist = (M.tests && M.tests.history) || [];
+  Highcharts.chart("c-history", {
+    chart: { type: "column" }, title: { text: "Testes aprovados por fecho de feature" }, subtitle: { text: "Backend (pytest) e frontend (vitest). Na 003 o total do pytest não foi registrado" },
+    xAxis: { categories: hist.map(function (h) { return h.label; }) }, yAxis: { title: { text: "testes aprovados" } },
+    series: [{ name: "Backend", color: "#3d4a5c", data: hist.map(function (h) { return h.backend; }) }, { name: "Frontend", color: S[0], data: hist.map(function (h) { return h.frontend; }) }],
+    plotOptions: { column: { dataLabels: { enabled: true, style: { textOutline: "none", color: INK } } } }
+  });
+  var lh = M.loc_histogram || { bins: [], counts: [] };
+  Highcharts.chart("c-hist", {
+    chart: { type: "column" }, title: { text: "Distribuição do tamanho dos arquivos de código" }, subtitle: { text: "Número de arquivos por faixa de LOC" },
+    xAxis: { categories: lh.counts.map(function (_, i) { return lh.bins[i] + " a " + (lh.bins[i + 1] - 1); }), title: { text: "LOC" } },
+    yAxis: { title: { text: "arquivos" } }, legend: { enabled: false },
+    series: [{ name: "Arquivos", color: S[0], data: lh.counts, dataLabels: { enabled: true, style: { textOutline: "none", color: INK } } }],
+    plotOptions: { column: { pointPadding: 0, groupPadding: 0.02 } }
+  });
+  var tc = M.top_complexity || [];
+  Highcharts.chart("c-complex", {
+    chart: { type: "bar" }, title: { text: "Top 20 arquivos por complexidade aproximada" }, subtitle: { text: "Contagem de ramificações (if, for, while, case, operadores lógicos)" },
+    xAxis: { categories: tc.map(function (d) { return d.id.replace("backend/src/simremap/", "").replace("frontend/src/features/", "fe/").replace("backend/rust/simremap_rs/src/", "rs/"); }), labels: { style: { fontSize: "10.5px" } } },
+    yAxis: { title: { text: "complexidade" } }, legend: { enabled: false },
+    series: [{ name: "Complexidade", data: tc.map(function (d) { return { y: d.complexity, loc: d.loc, color: d.folder.indexOf("frontend") === 0 ? S[0] : (d.folder.indexOf("native") === 0 ? "#8a5a2b" : "#3d4a5c") }; }) }],
+    tooltip: { pointFormat: "complexidade {point.y}<br>{point.loc} LOC" }
+  });
+  var lk = (M.dependency_sankey && M.dependency_sankey.links) || [];
+  Highcharts.chart("c-sankey", {
+    title: { text: "Fluxo de dependências entre pacotes" }, subtitle: { text: "Esquerda: pacote que importa. Direita: pacote importado. Largura = arquivos que importam" },
+    series: [{ type: "sankey", name: "Dependências", keys: ["from", "to", "weight"], nodePadding: 6, curveFactor: 0.4,
+      data: lk.map(function (l) { return [l.source, l.target, l.value]; }),
+      nodes: Array.from(new Set(lk.map(function (l) { return l.source; }).concat(lk.map(function (l) { return l.target; })))).map(function (id) {
+        var isFe = lk.some(function (l) { return (l.source === id || l.target === id) && l.layer === "frontend"; });
+        var n = id.split(": ")[1];
+        var isNew = n === "career" || n === "workshop";
+        var isRs = n.indexOf("rs.") === 0;
+        return { id: id, color: isRs ? "#8a5a2b" : (isNew ? S[1] : (isFe ? S[0] : "#3d4a5c")) };
+      }),
+      dataLabels: { style: { textOutline: "none", color: INK, fontWeight: "500" } } }],
+    tooltip: { pointFormat: "{point.fromNode.name} → {point.toNode.name}: {point.weight} arquivos", nodeFormat: "{point.name}: {point.sum} arquivos" }
+  });
+  var covMap = {}; ((M.coverage && M.coverage.packages) || []).forEach(function (c) { covMap["backend/" + c.package] = c.pct; });
+  var tb = document.querySelector("#t-pkg tbody");
+  tm.forEach(function (d) {
+    var tr = document.createElement("tr");
+    tr.innerHTML = "<td class=mono>" + d.folder + "</td><td class=num>" + d.modules + "</td><td class=num>" + d.loc.toLocaleString("pt-BR") +
+      "</td><td class=num>" + d.tests_loc.toLocaleString("pt-BR") + "</td><td class=num>" + (covMap[d.folder] ? covMap[d.folder].toFixed(2).replace(".", ",") + " %" : "n/d") + "</td>";
+    tb.appendChild(tr);
+  });
+})();
+</script>
+
+</body>
+</html>

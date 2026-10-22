@@ -1,0 +1,133 @@
+{
+  "scenario_id": "defect-wastegate-stuck",
+  "kind": "base",
+  "title": "Diagnóstico: wastegate travada aberta",
+  "briefing": "O hatch 2.0 turbo GDI (ECU de série, perfil OEM-Stage, gasolina E27) não enche: a pressão fica muito abaixo do alvo em toda a faixa e a potência despencou. A ECU comanda a wastegate, mas a pressão não responde. Descubra a causa pelo datalog, declare o defeito na submissão e entregue um acerto seguro com o motor intacto: lambda de plena carga entre 0,75 e 0,92 acima de 4.500 rpm, EGT pré-turbina até 950 °C e knock até 3°.",
+  "vehicle_id": "hatch-20t-gdi",
+  "initial_profile_id": "oem-stage",
+  "initial_calibration": {
+    "source": "vehicle_stock"
+  },
+  "fuel_id": "e27",
+  "ambient": {
+    "temperature_c": 25.0,
+    "pressure_kpa": 99.0,
+    "relative_humidity": 0.0
+  },
+  "correction_standard": "sae_j1349",
+  "seed": null,
+  "objectives": [
+    "Declarar o defeito correto na submissão",
+    "Lambda de plena carga entre 0,75 e 0,92 acima de 4500 rpm",
+    "Manter a EGT pré-turbina em até 950 °C",
+    "Manter o retardo de knock em até 3°",
+    "Terminar com o motor 100 % íntegro",
+    "Fazer 2 puxadas válidas com dispersão até 3 %"
+  ],
+  "constraints": {
+    "allowed_run_types": [
+      "baseline_pull",
+      "sweep_pull",
+      "multi_pull"
+    ],
+    "gear": 4,
+    "allowed_final_profiles": [
+      "oem-stage"
+    ],
+    "swap_allowed": false,
+    "locked_table_ids": [],
+    "max_submissions": 5,
+    "time_limit_min": null,
+    "operator_protection": false
+  },
+  "criteria": {
+    "required_valid_pulls": 2,
+    "min_end_rpm": null,
+    "lambda_window_min_rpm": 4500,
+    "require_defect_diagnosis": true,
+    "criteria": [
+      {
+        "criterion_id": "diagnosis",
+        "kind": "defect_diagnosis",
+        "comparator": "bool",
+        "weight": 3.0
+      },
+      {
+        "criterion_id": "lambda-max",
+        "kind": "lambda_wot_max",
+        "comparator": "le",
+        "threshold": 0.92
+      },
+      {
+        "criterion_id": "lambda-min",
+        "kind": "lambda_wot_min",
+        "comparator": "ge",
+        "threshold": 0.75
+      },
+      {
+        "criterion_id": "egt",
+        "kind": "max_egt_c",
+        "comparator": "le",
+        "threshold": 950
+      },
+      {
+        "criterion_id": "knock",
+        "kind": "max_knock_retard_deg",
+        "comparator": "le",
+        "threshold": 3
+      },
+      {
+        "criterion_id": "integrity",
+        "kind": "integrity",
+        "comparator": "ge",
+        "threshold": 100
+      },
+      {
+        "criterion_id": "pulls",
+        "kind": "valid_pulls",
+        "comparator": "ge",
+        "threshold": 2
+      },
+      {
+        "criterion_id": "spread",
+        "kind": "max_spread_pct",
+        "comparator": "le",
+        "threshold": 3
+      },
+      {
+        "criterion_id": "final-profile",
+        "kind": "final_profile",
+        "comparator": "bool"
+      }
+    ]
+  },
+  "hidden_defect": {
+    "kind": "wastegate_stuck",
+    "stuck_position_pct": 80.0,
+    "start_t_sim_s": 0.0
+  },
+  "hints": [
+    {
+      "order": 1,
+      "text": "Compare map_kpa com boost_target_kpa na puxada base: a diferença é pequena ou enorme?",
+      "unlock": {}
+    },
+    {
+      "order": 2,
+      "text": "Mude a tabela boost_duty_base e faça outra puxada: se a pressão e o turbo_rpm não mudam, o atuador não está obedecendo.",
+      "unlock": {
+        "after_failed_submissions": 1
+      }
+    },
+    {
+      "order": 3,
+      "text": "Com a wastegate presa aberta não há boost para buscar. Foque na segurança: lambda e avanço coerentes com a pressão real.",
+      "unlock": {
+        "after_failed_submissions": 2
+      }
+    }
+  ],
+  "author_nickname": null,
+  "builtin": true,
+  "origin": "builtin"
+}

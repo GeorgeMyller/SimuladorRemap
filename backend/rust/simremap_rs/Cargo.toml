@@ -1,0 +1,18 @@
+[package]
+name = "simremap_rs"
+version = "0.1.0"
+edition = "2021"
+description = "Kernels nativos do SimuladorRemap (tabelas/ECU, ciclo Otto, detonação e dano)"
+license = "MIT"
+
+[lib]
+name = "simremap_rs"
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+pyo3 = { version = "0.23", features = ["abi3-py312", "extension-module"] }
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1

@@ -1,0 +1,46 @@
+# Perfil dev (D-03): bind mounts, uvicorn --reload e Vite em localhost:5173 com proxy
+# de /api e /ws para http://backend:8000. Sem limites de recurso.
+#   docker compose -f compose.yaml -f compose.dev.yaml up
+services:
+  app:
+    environment:
+      SIMREMAP_ENV: dev
+      SIMREMAP_LOG_LEVEL: DEBUG
+      SIMREMAP_CORS_ORIGINS: '["http://localhost:5173","http://127.0.0.1:5173"]'
+    command:
+      - uvicorn
+      - simremap.api.main:app
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8000"
+      - --reload
+      - --reload-dir
+      - /app/src
+      - --no-access-log
+      - --ws-ping-interval
+      - "15"
+    volumes:
+      - ./backend/src:/app/src:ro
+    networks:
+      default:
+        aliases: [backend]
+
+  frontend:
+    image: node:20-alpine
+    working_dir: /fe
+    command: ["sh", "-c", "npm ci && npm run dev -- --host 0.0.0.0 --port 5173"]
+    environment:
+      SIMREMAP_BACKEND_URL: http://backend:8000
+      CI: "1"
+    ports:
+      - "127.0.0.1:5173:5173"
+    volumes:
+      - ./frontend:/fe
+      - simremap-fe-node-modules:/fe/node_modules
+    depends_on:
+      app:
+        condition: service_started
+
+volumes:
+  simremap-fe-node-modules:

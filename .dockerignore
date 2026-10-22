@@ -1,0 +1,37 @@
+# Contexto mínimo do build (Dockerfile copia só frontend/ e backend/{pyproject.toml,uv.lock,alembic.ini,src}).
+**/.git
+**/.DS_Store
+**/__pycache__
+**/*.pyc
+**/node_modules
+**/.venv
+**/.mypy_cache
+**/.ruff_cache
+**/.pytest_cache
+**/.coverage
+**/coverage.json
+**/.bench
+**/.data
+**/.env
+**/.env.*
+backend/tests
+frontend/dist
+frontend/playwright-report
+frontend/test-results
+frontend/e2e
+.reversa
+.vlm-AIStack
+.claude
+.agents
+.gemini
+_reversa_sdd
+_reversa_docs
+_reversa_forward
+_reversa_bugs
+_reversa_refactor
+temp
+*.md
+!frontend/**/*.md
+
+# Artefatos de build da extensão Rust (feature 003)
+backend/rust/simremap_rs/target

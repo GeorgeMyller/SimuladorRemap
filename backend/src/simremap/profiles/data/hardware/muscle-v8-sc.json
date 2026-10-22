@@ -1,0 +1,14 @@
+{
+  "vehicle_id": "muscle-v8-sc",
+  "trigger_wheel": "36-1",
+  "tdc_offset_true_deg": 60.0,
+  "tdc_offset_nominal_deg": 60.0,
+  "phase_sensor_present": true,
+  "phase_edge_true_deg": 45.0,
+  "firing_order": [1, 5, 4, 8, 6, 3, 7, 2],
+  "map_sensor_kpa": [20.0, 300.0],
+  "iat_curve": "ntc_a",
+  "ect_curve": "ntc_a",
+  "wideband_true": [0.5, 1.5],
+  "swap_supported": true
+}

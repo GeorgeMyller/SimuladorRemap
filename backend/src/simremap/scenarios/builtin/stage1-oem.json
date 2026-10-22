@@ -1,0 +1,57 @@
+{
+  "scenario_id": "stage1-oem",
+  "kind": "base",
+  "title": "Stage 1 na ECU de série",
+  "briefing": "Hatch 2.0 turbo GDI com a ECU de série (perfil OEM-Stage) e gasolina comum E27. Ganhe pelo menos 40 whp sobre a puxada base automática sem passar de 3° de retardo de knock, com EGT pré-turbina até 950 °C, lambda de plena carga entre 0,75 e 0,90 e o motor intacto. Prove a repetibilidade com 2 puxadas válidas com dispersão até 3 %.",
+  "vehicle_id": "hatch-20t-gdi",
+  "initial_profile_id": "oem-stage",
+  "initial_calibration": {"source": "vehicle_stock"},
+  "fuel_id": "e27",
+  "ambient": {"temperature_c": 25.0, "pressure_kpa": 99.0, "relative_humidity": 0.0},
+  "correction_standard": "sae_j1349",
+  "seed": null,
+  "objectives": [
+    "Ganhar pelo menos +40 whp sobre a puxada base",
+    "Manter o retardo de knock em até 3°",
+    "Manter a EGT pré-turbina em até 950 °C",
+    "Lambda de plena carga entre 0,75 e 0,90 acima de 3000 rpm",
+    "Terminar com o motor 100 % íntegro",
+    "Fazer 2 puxadas válidas com dispersão até 3 %"
+  ],
+  "constraints": {
+    "allowed_run_types": ["baseline_pull", "sweep_pull", "multi_pull"],
+    "gear": 4,
+    "allowed_final_profiles": ["oem-stage"],
+    "swap_allowed": false,
+    "locked_table_ids": [],
+    "max_submissions": 5,
+    "time_limit_min": null,
+    "operator_protection": false
+  },
+  "criteria": {
+    "required_valid_pulls": 2,
+    "min_end_rpm": null,
+    "lambda_window_min_rpm": 3000,
+    "require_defect_diagnosis": false,
+    "criteria": [
+      {"criterion_id": "delta-whp", "kind": "min_delta_whp", "comparator": "ge", "threshold": 40, "weight": 2.0},
+      {"criterion_id": "knock", "kind": "max_knock_retard_deg", "comparator": "le", "threshold": 3},
+      {"criterion_id": "egt", "kind": "max_egt_c", "comparator": "le", "threshold": 950},
+      {"criterion_id": "lambda-max", "kind": "lambda_wot_max", "comparator": "le", "threshold": 0.90},
+      {"criterion_id": "lambda-min", "kind": "lambda_wot_min", "comparator": "ge", "threshold": 0.75},
+      {"criterion_id": "integrity", "kind": "integrity", "comparator": "ge", "threshold": 100},
+      {"criterion_id": "pulls", "kind": "valid_pulls", "comparator": "ge", "threshold": 2},
+      {"criterion_id": "spread", "kind": "max_spread_pct", "comparator": "le", "threshold": 3},
+      {"criterion_id": "final-profile", "kind": "final_profile", "comparator": "bool"}
+    ]
+  },
+  "hidden_defect": null,
+  "hints": [
+    {"order": 1, "text": "Comece pelo alvo de pressão (boost_target) na faixa de plena carga: 20 a 30 kPa a mais costumam render os 40 whp.", "unlock": {}},
+    {"order": 2, "text": "Se o retardo de knock passar de 3°, tire 1 a 2° de avanço (ignition_base) nas células de carga alta acima de 4000 rpm.", "unlock": {"after_failed_submissions": 1}},
+    {"order": 3, "text": "Enriqueça o lambda alvo acima de 5000 rpm (0,80 a 0,82) para controlar a EGT pré-turbina.", "unlock": {"after_event": "egt_limit"}}
+  ],
+  "author_nickname": null,
+  "builtin": true,
+  "origin": "builtin"
+}

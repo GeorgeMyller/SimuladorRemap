@@ -1,0 +1,200 @@
+# Especificação Técnica: Tunar com IA via LAYA.ai
+
+> **Projeto**: SimuladorRemap  
+> **Recurso**: Assistente de Calibração Autônomo ("Tunar com IA")  
+> **Motor de Decisão**: LAYA.ai (Decision Model não-autorregressivo baseado em ModernBERT, 421M)  
+> **Ambiente de Treino e Execução**: Apple Silicon M4 (24 GB) / macOS local  
+
+---
+
+## 1. Visão Geral
+
+Este documento especifica a arquitetura e as etapas para implementar a funcionalidade **Tunar com IA** no SimuladorRemap.
+O objetivo é fornecer um ajuste assistido que corrige tabelas de Eficiência Volumétrica (VE) e Ponto de Ignição em milissegundos sem riscos de alucinação de texto.
+
+```mermaid
+flowchart TD
+    A["Frontend: Botão 'Tunar com IA'"] --> B["API Backend: POST /api/v1/tuning/ai-tune"]
+    B --> C["Snapshot da Calibração + Hardware do Veículo"]
+    C --> D["LAYA.ai (Motor de Decisão Local)"]
+    D --> E["Proposta de Correção (VE + Ignição)"]
+    E --> F["Simulação de Teste em Background (Dyno)"]
+    F -->|Sem Falhas| G["Retorno da Calibração + Curva Projetada"]
+    F -->|Detectou Detonação/EGT| D
+    G --> H["Frontend: Modal de Comparação e Aplicação"]
+```
+
+---
+
+## 2. Pilares da Solução
+
+### 2.1 Por que LAYA.ai?
+- **Não-autorregressivo**: avalia o estado e todas as perguntas simultaneamente em uma única passada (~35 ms).
+- **Zero Alucinação**: seleciona exclusivamente opções válidas e probabilidades calibradas (`choice`, `score`, `noul`).
+- **Leveza**: consome menos de 2 GB de VRAM no Apple M4.
+
+### 2.2 Gerador de Dados Sintéticos
+O próprio simulador (`simremap`) atua como gerador de dados rotulados:
+- Variações paramétricas de calibração em cada veículo do catálogo.
+- Avaliação física do resultado (potência líquida, margem de detonação e estabilidade térmica).
+- Rotulagem automática do ajuste ideal (ação que maximizou o torque sem gerar alertas `W-01` a `W-06`).
+
+---
+
+## 3. Especificação do Modelo de Decisão
+
+### 3.1 Estado de Entrada (`state`)
+O estado enviado ao LAYA resume o ponto de operação e a telemetria em formato textual/JSON compacto:
+
+```json
+{
+  "vehicle": "classic-20t-swap",
+  "fuel": "e100",
+  "engine": { "disp_l": 2.0, "turbo": true, "boost_kpa": 140.0 },
+  "operating_point": {
+    "rpm": 5500,
+    "map_kpa": 210.0,
+    "tps_pct": 100.0
+  },
+  "telemetry": {
+    "lambda_measured": 0.88,
+    "lambda_target": 0.82,
+    "current_ign_deg": 18.5,
+    "egt_c": 870.0,
+    "knock_detected": false,
+    "knock_retard_deg": 0.0
+  }
+}
+```
+
+### 3.2 Perguntas Tipadas (`questions`)
+O LAYA responde a perguntas discretas e contínuas sobre o estado:
+
+```python
+questions = {
+    "fuel_correction": {
+        "type": "choice",
+        "options": [
+            "enrich_heavy",   # +5% a +10%
+            "enrich_light",   # +1% a +3%
+            "hold",           # 0%
+            "lean_light",     # -1% a -3%
+            "lean_heavy"      # -5% a -10%
+        ]
+    },
+    "ign_correction": {
+        "type": "choice",
+        "options": [
+            "retard_critical", # -4° ou mais (detonação severa)
+            "retard_light",    # -1° a -2° (margem segura)
+            "hold",            # 0° (ponto MBT ideal)
+            "advance_light",   # +1° (buscar MBT)
+            "advance_heavy"    # +2° a +3°
+        ]
+    },
+    "safety_risk": {
+        "type": "noul"         # Probabilidade calibrada de risco de quebra mecânica
+    }
+}
+```
+
+---
+
+## 4. Pipeline de Treinamento no Apple M4
+
+### 4.1 Dependências Necessárias
+Instaladas no ambiente Python via `uv`:
+- `laya`: runtime oficial do modelo.
+- `torch`: suporte a aceleração Metal (`mps`).
+- `transformers` e `datasets`: carregamento e tokenização do ModernBERT.
+- `accelerate`: paralelismo e alocação de tensores.
+
+### 4.2 Script de Geração de Dados (`scripts/generate_synthetic_tuning_data.py`)
+1. Itera por rotações (1000 a 7500 rpm) e cargas (40 a 250 kPa).
+2. Introduz perturbações propositais em mapas base.
+3. Executa a física do motor (`simremap.physics` e `simremap.damage`).
+4. Determina qual correção aproximou a célula do ponto ideal de potência sem detonação.
+5. Exporta `dataset_train.jsonl` (mínimo de 2.000 amostras) e `dataset_val.jsonl` (500 amostras).
+
+### 4.3 Script de Treino (`scripts/train_laya_tuning.py`)
+```python
+import laya
+from datasets import load_dataset
+from transformers import Trainer, TrainingArguments
+
+# 1. Carregar dataset sintético
+data = load_dataset("json", data_files={"train": "data/dataset_train.jsonl", "val": "data/dataset_val.jsonl"})
+
+# 2. Carregar modelo base LAYA
+model = laya.load_for_training("convaiinnovations/laya")
+
+# 3. Argumentos otimizados para Apple Silicon (M4 / MPS)
+args = TrainingArguments(
+    output_dir="./models/laya_ecu_tuning",
+    per_device_train_batch_size=16,
+    num_train_epochs=3,
+    learning_rate=2e-5,
+    bf16=False,
+    fp16=False,  # MPS utiliza float32 nativo
+    logging_steps=20,
+    save_strategy="epoch",
+)
+
+trainer = Trainer(model=model, args=args, train_dataset=data["train"], eval_dataset=data["val"])
+trainer.train()
+model.save_pretrained("./models/laya_ecu_tuning_final")
+```
+
+---
+
+## 5. Integração com a API Backend
+
+### 5.1 Novo Serviço: `simremap.ai.service.AiTuningService`
+Localização: `backend/src/simremap/ai/service.py`
+- Carrega os pesos do modelo LAYA treinado (`./models/laya_ecu_tuning_final`) em memória no startup.
+- Processa o lote de células da calibração ativa.
+- Traduz as decisões discretas do LAYA em deltas numéricos aplicáveis à tabela:
+  - `enrich_light` $\rightarrow$ fator multiplicador `1.025`
+  - `advance_light` $\rightarrow$ soma `+1.0°`
+- Chama o validador interno de segurança antes de retornar.
+
+### 5.2 Novo Endpoint da API
+- **Método**: `POST`
+- **Rota**: `/api/v1/calibrations/{calibration_id}/ai-tune`
+- **Payload de Entrada**:
+  ```json
+  {
+    "target_table_ids": ["inj.ve", "ign.base"],
+    "aggressiveness": "safe", // "safe", "balanced", "race"
+    "max_ign_advance_step_deg": 2.0,
+    "max_fuel_step_pct": 10.0
+  }
+  ```
+- **Resposta**: Lista de células modificadas, resumo das decisões e estimativa de ganho de torque.
+
+---
+
+## 6. Integração com a Interface Frontend
+
+### 6.1 Barra de Ferramentas ([TableToolbar.tsx](file:///Volumes/SSD-EXTERNO/SimuladorRemap/frontend/src/features/ecu-tuning/TableToolbar.tsx))
+- Inclusão do botão **Tunar com IA** com ícone representativo.
+- Atalho global de teclado: `Alt + T` ou `Ctrl + Shift + A`.
+- Exibição de indicador de carregamento durante a execução (~100 ms).
+
+### 6.2 Modal de Confirmação com Diff
+- Exibe o mapa de calor com células que sofreram correção.
+- Exibe gráfico rápido antes vs depois da curva simulada.
+- Permite aplicar com um clique ou cancelar.
+- Suporte total ao atalho `Ctrl + Z` para desfazer a alteração.
+
+---
+
+## 7. Fases de Execução
+
+| Fase | Descrição | Esforço Estimado |
+|---|---|---|
+| **Fase 1: Sintetizador de Dados** | Criar script que simula pontos do dinamômetro e exporta JSONL | 1 a 2 dias |
+| **Fase 2: Treinamento LAYA** | Instalar dependências, rodar fine-tuning no M4 e validar precisão | 1 dia |
+| **Fase 3: Backend & API** | Criar serviço do LAYA, endpoint REST e testes de contrato | 1 a 2 dias |
+| **Fase 4: Frontend UI** | Adicionar botão na toolbar, modal de revisão e integração de estado | 1 dia |
+| **Fase 5: Teste & Validação** | Puxadas de teste, validação forense e ausência de detonação | 1 dia |

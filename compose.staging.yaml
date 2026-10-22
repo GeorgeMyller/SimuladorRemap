@@ -1,0 +1,31 @@
+# Perfil staging (D-03, D-09): mesma imagem e CMD de prod; difere só em variáveis e limites.
+# PostgreSQL 16 e Redis 7 ficam ativos por padrão; DATABASE_URL pode apontar para outro
+# PostgreSQL ou voltar ao SQLite (DATABASE_URL=sqlite+aiosqlite:////data/simremap.db).
+#   docker compose -f compose.yaml -f compose.staging.yaml up -d
+services:
+  app:
+    image: simremap:${SIMREMAP_VERSION:?defina SIMREMAP_VERSION (tag fixa)}
+    environment:
+      SIMREMAP_ENV: staging
+      DATABASE_URL: ${DATABASE_URL:-postgresql+asyncpg://simremap:${SIMREMAP_PG_PASSWORD:-simremap}@postgres:5432/simremap}
+      SIMREMAP_REDIS_URL: ${SIMREMAP_REDIS_URL:-redis://redis:6379/0}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    cpus: 3.0
+    mem_limit: 3g
+    pids_limit: 256
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+
+  postgres:
+    profiles: !reset []
+
+  redis:
+    profiles: !reset []

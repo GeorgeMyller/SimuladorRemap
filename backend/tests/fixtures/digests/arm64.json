@@ -1,0 +1,34 @@
+{
+  "arch": "arm64",
+  "normative": false,
+  "note": "Digests de referência do E2E de determinismo (T453; D-08). amd64 é normativo e tem de ser gerado em CI/x86-64 com a imagem de produção; arm64 é informativo.",
+  "config": {
+    "vehicle_id": "hatch-20t-gdi",
+    "profile_id": "oem-stage",
+    "fuel_id": "e27",
+    "seed": 42,
+    "sim_hz": 1000,
+    "request": {
+      "run_type": "sweep_pull",
+      "start_rpm": 2000,
+      "end_rpm": 6500,
+      "ramp_rate_rpm_s": 150.0
+    },
+    "evaluation_scenario": "stage1-oem"
+  },
+  "environment": {
+    "machine": "arm64",
+    "system": "Darwin",
+    "python": "3.12.10",
+    "numpy": "2.5.4"
+  },
+  "t_sim_s": 41.273,
+  "log_samples": 38272,
+  "digests": {
+    "physics_state_digest": "14a795ac113242e6135a9104a925b50a063824d3f58f945f0625d4fa5f905958",
+    "damage_digest": "69b5b68b8c0ce2e2d86a895694cc3000508050bed63a6eff0d4f46522e99ee54",
+    "curve_sha256": "a92e38af8ab76729968927bffbb6b2ec096fe32e9c1c9842a968ad80cba18f13",
+    "datalog_sha256": "097bc6f2c5c7681dd8d1661d79327f07322e95f9a3727d3b2b0f4bbed1c67215",
+    "evaluation_sha256": "0d640e17020dcd204577d6b4a33b679811ae8a34bb74ba333d81509b70931127"
+  }
+}

@@ -1,0 +1,547 @@
+{
+  "vehicle_id": "coupe-30t-i6",
+  "display_name": "Coupé 3.0 turbo 6 em linha",
+  "architecture_note": "Inspirado em arquitetura 3.0 turbo de 6 cilindros em linha",
+  "body": "coupe",
+  "data_version": 1,
+  "validation_status": "validated",
+  "validated_on": "2026-10-18",
+  "induction": "turbo",
+  "engine": {
+    "architecture": "inline",
+    "n_cyl": 6,
+    "v_angle_deg": null,
+    "bore_mm": 82.0,
+    "stroke_mm": 94.6,
+    "rod_length_mm": 144.4,
+    "compression_ratio": 10.2,
+    "displacement_cc": 2998.0,
+    "valvetrain": "dohc",
+    "valves_per_cyl": 4,
+    "firing_order": [1, 5, 3, 6, 2, 4],
+    "ivc_deg_abdc": 45.0,
+    "evo_deg_bbdc": 45.0,
+    "vvt": {
+      "intake_min_deg": 0.0,
+      "intake_max_deg": 70.0,
+      "exhaust_min_deg": 0.0,
+      "exhaust_max_deg": 55.0,
+      "actuator_tau_s": 0.15,
+      "k_vvt": 0.06,
+      "g_vvt": {
+        "x_name": "rpm",
+        "x_values": [800.0, 1000.0, 1250.0, 1500.0, 1750.0, 2000.0, 2500.0, 3000.0, 3500.0, 4000.0, 4500.0, 5000.0, 5500.0, 6000.0, 6500.0, 7200.0],
+        "y_name": "cam_deg",
+        "y_values": [0.0, 14.0, 28.0, 42.0, 56.0, 70.0],
+        "z_values": [
+          [-0.28, -0.221, -0.149, -0.079, -0.011, 0.055, 0.179, 0.295, 0.402, 0.5, 0.589, 0.67, 0.742, 0.805, 0.859, 0.92],
+          [0.28, 0.324, 0.378, 0.429, 0.478, 0.525, 0.612, 0.69, 0.759, 0.82, 0.872, 0.915, 0.949, 0.975, 0.991, 1.0],
+          [0.68, 0.709, 0.744, 0.776, 0.807, 0.835, 0.884, 0.925, 0.957, 0.98, 0.994, 1.0, 0.997, 0.985, 0.964, 0.92],
+          [0.92, 0.934, 0.95, 0.964, 0.975, 0.985, 0.997, 1.0, 0.994, 0.98, 0.957, 0.925, 0.884, 0.835, 0.776, 0.68],
+          [1.0, 0.999, 0.996, 0.991, 0.984, 0.975, 0.949, 0.915, 0.872, 0.82, 0.759, 0.69, 0.612, 0.525, 0.429, 0.28],
+          [0.92, 0.904, 0.883, 0.859, 0.833, 0.805, 0.742, 0.67, 0.589, 0.5, 0.402, 0.295, 0.179, 0.055, -0.079, -0.28]
+        ]
+      }
+    },
+    "injection_type": "gdi",
+    "throttle_diameter_mm": 68.0,
+    "throttle_location": "post_compressor",
+    "intake_manifold_volume_l": 4.0,
+    "boost_volume_l": 3.0,
+    "exhaust_manifold_volume_l": 1.2,
+    "intercooler": {
+      "kind": "air_to_water",
+      "effectiveness": 0.8,
+      "k_dp_kpa_per_kgps2": 100.0
+    },
+    "recip_mass_g": 610.0,
+    "true_ve": {
+      "x_name": "rpm",
+      "x_values": [800.0, 1000.0, 1250.0, 1500.0, 1750.0, 2000.0, 2500.0, 3000.0, 3500.0, 4000.0, 4500.0, 5000.0, 5500.0, 6000.0, 6500.0, 7200.0],
+      "y_name": "map_kpa",
+      "y_values": [20.0, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0, 100.0, 120.0, 140.0, 160.0, 180.0, 200.0, 230.0, 260.0],
+      "z_values": [
+        [0.6258, 0.6426, 0.6622, 0.6804, 0.6971, 0.7124, 0.7385, 0.7589, 0.7734, 0.7821, 0.785, 0.7821, 0.7734, 0.7589, 0.7385, 0.7003],
+        [0.6521, 0.6696, 0.69, 0.709, 0.7264, 0.7423, 0.7696, 0.7908, 0.8059, 0.815, 0.818, 0.815, 0.8059, 0.7908, 0.7696, 0.7297],
+        [0.6744, 0.6924, 0.7136, 0.7332, 0.7512, 0.7676, 0.7958, 0.8178, 0.8334, 0.8428, 0.846, 0.8428, 0.8334, 0.8178, 0.7958, 0.7546],
+        [0.6932, 0.7118, 0.7335, 0.7537, 0.7722, 0.7891, 0.8181, 0.8406, 0.8567, 0.8664, 0.8696, 0.8664, 0.8567, 0.8406, 0.8181, 0.7757],
+        [0.7092, 0.7282, 0.7504, 0.771, 0.79, 0.8073, 0.8369, 0.86, 0.8765, 0.8863, 0.8896, 0.8863, 0.8765, 0.86, 0.8369, 0.7936],
+        [0.7227, 0.7421, 0.7647, 0.7857, 0.805, 0.8226, 0.8529, 0.8764, 0.8931, 0.9032, 0.9066, 0.9032, 0.8931, 0.8764, 0.8529, 0.8087],
+        [0.7341, 0.7538, 0.7768, 0.7981, 0.8177, 0.8357, 0.8663, 0.8902, 0.9073, 0.9175, 0.9209, 0.9175, 0.9073, 0.8902, 0.8663, 0.8215],
+        [0.7438, 0.7637, 0.7871, 0.8087, 0.8285, 0.8467, 0.8778, 0.902, 0.9192, 0.9296, 0.9331, 0.9296, 0.9192, 0.902, 0.8778, 0.8323],
+        [0.752, 0.7721, 0.7957, 0.8176, 0.8376, 0.856, 0.8874, 0.9119, 0.9294, 0.9398, 0.9433, 0.9398, 0.9294, 0.9119, 0.8874, 0.8415],
+        [0.7648, 0.7853, 0.8093, 0.8315, 0.8519, 0.8706, 0.9025, 0.9274, 0.9452, 0.9558, 0.9594, 0.9558, 0.9452, 0.9274, 0.9025, 0.8558],
+        [0.774, 0.7947, 0.819, 0.8415, 0.8621, 0.881, 0.9134, 0.9385, 0.9565, 0.9673, 0.9709, 0.9673, 0.9565, 0.9385, 0.9134, 0.8661],
+        [0.7806, 0.8015, 0.8259, 0.8486, 0.8695, 0.8885, 0.9211, 0.9465, 0.9646, 0.9755, 0.9792, 0.9755, 0.9646, 0.9465, 0.9211, 0.8734],
+        [0.7853, 0.8063, 0.8309, 0.8537, 0.8747, 0.8939, 0.9267, 0.9522, 0.9705, 0.9814, 0.9851, 0.9814, 0.9705, 0.9522, 0.9267, 0.8787],
+        [0.7887, 0.8098, 0.8345, 0.8574, 0.8785, 0.8977, 0.9307, 0.9563, 0.9746, 0.9856, 0.9893, 0.9856, 0.9746, 0.9563, 0.9307, 0.8825],
+        [0.792, 0.8132, 0.838, 0.861, 0.8822, 0.9015, 0.9346, 0.9604, 0.9788, 0.9898, 0.9935, 0.9898, 0.9788, 0.9604, 0.9346, 0.8862],
+        [0.794, 0.8153, 0.8402, 0.8633, 0.8845, 0.9038, 0.937, 0.9629, 0.9813, 0.9924, 0.9961, 0.9924, 0.9813, 0.9629, 0.937, 0.8885]
+      ]
+    },
+    "mbt_reference": {
+      "x_name": "rpm",
+      "x_values": [800.0, 1000.0, 1250.0, 1500.0, 1750.0, 2000.0, 2500.0, 3000.0, 3500.0, 4000.0, 4500.0, 5000.0, 5500.0, 6000.0, 6500.0, 7200.0],
+      "y_name": "map_kpa",
+      "y_values": [20.0, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0, 100.0, 120.0, 140.0, 160.0, 180.0, 200.0, 230.0, 260.0],
+      "z_values": [
+        [39.5, 39.7, 40.0, 40.3, 40.6, 40.9, 41.5, 42.1, 42.7, 43.3, 43.9, 44.5, 45.1, 45.7, 47.0, 47.1],
+        [38.7, 39.0, 39.2, 39.5, 39.9, 40.1, 40.8, 41.4, 42.0, 42.5, 43.1, 43.8, 44.4, 45.0, 46.2, 47.0],
+        [38.0, 38.2, 38.5, 38.8, 39.1, 39.4, 40.0, 40.6, 41.2, 41.8, 42.4, 43.0, 43.6, 44.2, 45.4, 47.0],
+        [37.2, 37.5, 37.8, 38.0, 38.4, 38.6, 39.2, 39.9, 40.5, 41.0, 41.6, 42.2, 42.9, 43.5, 44.6, 46.7],
+        [36.5, 36.7, 37.0, 37.3, 37.6, 37.9, 38.5, 39.1, 39.7, 40.3, 40.9, 41.5, 42.1, 42.7, 43.8, 45.9],
+        [35.7, 36.0, 36.2, 36.5, 36.9, 37.1, 37.8, 38.4, 39.0, 39.5, 40.1, 40.8, 41.4, 42.0, 43.0, 45.1],
+        [35.0, 35.2, 35.5, 35.8, 36.1, 36.4, 37.0, 37.6, 38.2, 38.8, 39.4, 40.0, 40.6, 41.2, 42.2, 44.3],
+        [34.2, 34.5, 34.8, 35.0, 35.4, 35.6, 36.2, 36.9, 37.5, 38.0, 38.6, 39.2, 39.9, 40.5, 41.4, 43.5],
+        [33.5, 33.7, 34.0, 34.3, 34.6, 34.9, 35.5, 36.1, 36.7, 37.3, 37.9, 38.5, 39.1, 39.7, 40.6, 42.7],
+        [32.0, 32.2, 32.5, 32.8, 33.1, 33.4, 34.0, 34.6, 35.2, 35.8, 36.4, 37.0, 37.6, 38.2, 39.0, 41.1],
+        [30.5, 30.7, 31.0, 31.3, 31.6, 31.9, 32.5, 33.1, 33.7, 34.3, 34.9, 35.5, 36.1, 36.7, 37.4, 39.5],
+        [29.0, 29.2, 29.5, 29.8, 30.1, 30.4, 31.0, 31.6, 32.2, 32.8, 33.4, 34.0, 34.6, 35.2, 35.8, 37.9],
+        [27.5, 27.7, 28.0, 28.3, 28.6, 28.9, 29.5, 30.1, 30.7, 31.3, 31.9, 32.5, 33.1, 33.7, 34.3, 36.3],
+        [26.0, 26.2, 26.5, 26.8, 27.1, 27.4, 28.0, 28.6, 29.2, 29.8, 30.4, 31.0, 31.6, 32.2, 32.8, 34.7],
+        [23.7, 23.9, 24.2, 24.6, 24.9, 25.1, 25.8, 26.4, 26.9, 27.6, 28.1, 28.8, 29.4, 29.9, 30.6, 32.3],
+        [21.5, 21.7, 22.0, 22.3, 22.6, 22.9, 23.5, 24.1, 24.7, 25.3, 25.9, 26.5, 27.1, 27.7, 28.3, 29.9]
+      ]
+    },
+    "wiebe_duration_ref_deg": 55.0,
+    "wiebe_rpm_ref": 3000.0,
+    "friction": {
+      "c_bar": 0.25,
+      "a": 0.005,
+      "b_bar_s_m": 0.07,
+      "q_bar_s2_m2": 0.0009
+    },
+    "crank_trigger": "60-2",
+    "cam_sync": "1x"
+  },
+  "turbo": {
+    "housing": "twin_scroll",
+    "compressor_ar": null,
+    "turbine_ar": null,
+    "rotor_inertia_kg_m2": 3.5e-05,
+    "bearing_friction_k": 5.5e-07,
+    "turbine_area_eff_cm2": 4.5,
+    "turbine_efficiency": {
+      "x_name": "pressure_ratio",
+      "x_values": [1.0, 1.5, 2.0, 3.0],
+      "values": [0.62, 0.72, 0.75, 0.72]
+    },
+    "wastegate_kind": "internal",
+    "wastegate_area_max_cm2": 16.0,
+    "wastegate_spring_kpa": 60.0,
+    "wastegate_full_open_delta_kpa": 8.0,
+    "blow_off_valve": true,
+    "compressor": {
+      "pr_design": 3.25,
+      "n_design_rpm": 170000.0,
+      "n_max_rpm": 190000.0,
+      "m_choke_max_kg_s": 0.66,
+      "eta_max": 0.76,
+      "m_peak_kg_s": 0.22,
+      "m_range_kg_s": 0.35,
+      "k1": 0.5,
+      "k2": 0.4,
+      "n_peak_rpm": 136000.0,
+      "table": null
+    }
+  },
+  "supercharger": null,
+  "injectors": {
+    "count_per_cyl": 1,
+    "flow_cc_min": 1100.0,
+    "dp_ref_kpa": 10000.0,
+    "rail_pressure_min_kpa": 5000.0,
+    "rail_pressure_max_kpa": 20000.0,
+    "pressure_reference": "cylinder",
+    "dead_time_ms": {
+      "x_name": "battery_v",
+      "x_values": [8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0],
+      "y_name": "dp_kpa",
+      "y_values": [5000.0, 10000.0, 15000.0, 20000.0],
+      "z_values": [
+        [0.77, 0.645, 0.551, 0.477, 0.419, 0.372, 0.332, 0.3, 0.272],
+        [0.81, 0.679, 0.58, 0.503, 0.441, 0.391, 0.35, 0.316, 0.286],
+        [0.851, 0.713, 0.609, 0.528, 0.463, 0.411, 0.367, 0.331, 0.301],
+        [0.891, 0.747, 0.638, 0.553, 0.485, 0.43, 0.385, 0.347, 0.315]
+      ]
+    },
+    "min_pulse_ms": 0.3,
+    "max_duty_pct": 85.0
+  },
+  "stock_fuel_id": "e27",
+  "allowed_fuel_ids": ["e27", "podium", "e0"],
+  "drive_layout": "rwd",
+  "gear_ratios": [5.0, 3.2, 2.14, 1.72, 1.31, 1.0, 0.82, 0.64],
+  "final_drive_ratio": 3.15,
+  "tire_radius_m": 0.333,
+  "drivetrain_efficiency": 0.85,
+  "drivetrain_fixed_loss_kw": 0.0,
+  "driveline_inertia_kg_m2": 3.2,
+  "mechanical_limits": {
+    "rod_torque_limit_nm": 1000.0,
+    "max_rod_load_kn": 95.0,
+    "max_cylinder_pressure_bar": 160.0,
+    "egt_max_c": 980.0,
+    "max_rpm": 7200.0,
+    "rev_limit_rpm": 7000.0,
+    "valve_float_rpm": 7600.0,
+    "turbo_max_rpm": 180000.0,
+    "max_piston_temp_c": 360.0
+  },
+  "rated": {
+    "peak_power_whp": 340.0,
+    "peak_power_rpm": 6000.0,
+    "peak_torque_nm": 500.0,
+    "peak_torque_rpm_from": 2000.0,
+    "peak_torque_rpm_to": 5000.0,
+    "power_ceiling_whp": 750.0,
+    "power_range_whp": null
+  },
+  "stock_profile_id": "oem-stage",
+  "stock_calibration_id": "stock-coupe-30t-i6-oem-stage",
+  "factory_calibrations": [
+    {
+      "profile_id": "oem-stage",
+      "calibration_id": "stock-coupe-30t-i6-oem-stage",
+      "file": "calibrations/oem-stage.json",
+      "sha256": "d46b9770588129393cb61bd76e1c6f4f017a224f34427d0768c8462c4c020ba5"
+    }
+  ],
+  "reference_command_schedule": {
+    "vehicle_id": "coupe-30t-i6",
+    "fuel_id": "e27",
+    "points": [
+      {
+        "rpm": 1500.0,
+        "throttle_pct": 100.0,
+        "ignition_advance_deg": 5.0,
+        "lambda_target": 0.98,
+        "map_target_kpa": 185.0,
+        "wastegate_duty_pct": 36.0,
+        "vvt_intake_deg": 51.4,
+        "vvt_exhaust_deg": 13.4,
+        "injection_end_deg_btdc": 300.0
+      },
+      {
+        "rpm": 1750.0,
+        "throttle_pct": 100.0,
+        "ignition_advance_deg": 5.5,
+        "lambda_target": 0.965,
+        "map_target_kpa": 194.0,
+        "wastegate_duty_pct": 42.1,
+        "vvt_intake_deg": 49.8,
+        "vvt_exhaust_deg": 14.3,
+        "injection_end_deg_btdc": 300.0
+      },
+      {
+        "rpm": 2000.0,
+        "throttle_pct": 100.0,
+        "ignition_advance_deg": 6.1,
+        "lambda_target": 0.95,
+        "map_target_kpa": 203.7,
+        "wastegate_duty_pct": 48.7,
+        "vvt_intake_deg": 48.1,
+        "vvt_exhaust_deg": 15.1,
+        "injection_end_deg_btdc": 300.0
+      },
+      {
+        "rpm": 2250.0,
+        "throttle_pct": 100.0,
+        "ignition_advance_deg": 7.3,
+        "lambda_target": 0.938,
+        "map_target_kpa": 203.1,
+        "wastegate_duty_pct": 48.3,
+        "vvt_intake_deg": 46.5,
+        "vvt_exhaust_deg": 16.0,
+        "injection_end_deg_btdc": 300.0
+      },
+      {
+        "rpm": 2500.0,
+        "throttle_pct": 100.0,
+        "ignition_advance_deg": 8.4,
+        "lambda_target": 0.925,
+        "map_target_kpa": 203.1,
+        "wastegate_duty_pct": 48.3,
+        "vvt_intake_deg": 44.8,
+        "vvt_exhaust_deg": 16.8,
+        "injection_end_deg_btdc": 300.0
+      },
+      {
+        "rpm": 2750.0,
+        "throttle_pct": 100.0,
+        "ignition_advance_deg": 9.0,
+        "lambda_target": 0.912,
+        "map_target_kpa": 203.6,
+        "wastegate_duty_pct": 48.6,
+        "vvt_intake_deg": 43.2,
+        "vvt_exhaust_deg": 17.7,
+        "injection_end_deg_btdc": 300.0
+      },
+      {
+        "rpm": 3000.0,
+        "throttle_pct": 100.0,
+        "ignition_advance_deg": 9.5,
+        "lambda_target": 0.9,
+        "map_target_kpa": 204.9,
+        "wastegate_duty_pct": 49.5,
+        "vvt_intake_deg": 41.6,
+        "vvt_exhaust_deg": 18.6,
+        "injection_end_deg_btdc": 300.0
+      },
+      {
+        "rpm": 3250.0,
+        "throttle_pct": 100.0,
+        "ignition_advance_deg": 10.0,
+        "lambda_target": 0.89,
+        "map_target_kpa": 206.6,
+        "wastegate_duty_pct": 50.6,
+        "vvt_intake_deg": 39.9,
+        "vvt_exhaust_deg": 19.4,
+        "injection_end_deg_btdc": 300.0
+      },
+      {
+        "rpm": 3500.0,
+        "throttle_pct": 100.0,
+        "ignition_advance_deg": 10.8,
+        "lambda_target": 0.88,
+        "map_target_kpa": 208.8,
+        "wastegate_duty_pct": 52.1,
+        "vvt_intake_deg": 38.3,
+        "vvt_exhaust_deg": 20.3,
+        "injection_end_deg_btdc": 300.0
+      },
+      {
+        "rpm": 3750.0,
+        "throttle_pct": 100.0,
+        "ignition_advance_deg": 11.4,
+        "lambda_target": 0.87,
+        "map_target_kpa": 211.6,
+        "wastegate_duty_pct": 54.0,
+        "vvt_intake_deg": 36.6,
+        "vvt_exhaust_deg": 21.1,
+        "injection_end_deg_btdc": 300.0
+      },
+      {
+        "rpm": 4000.0,
+        "throttle_pct": 100.0,
+        "ignition_advance_deg": 12.2,
+        "lambda_target": 0.86,
+        "map_target_kpa": 215.0,
+        "wastegate_duty_pct": 56.3,
+        "vvt_intake_deg": 35.0,
+        "vvt_exhaust_deg": 22.0,
+        "injection_end_deg_btdc": 300.0
+      },
+      {
+        "rpm": 4250.0,
+        "throttle_pct": 100.0,
+        "ignition_advance_deg": 13.8,
+        "lambda_target": 0.85,
+        "map_target_kpa": 219.3,
+        "wastegate_duty_pct": 59.2,
+        "vvt_intake_deg": 33.4,
+        "vvt_exhaust_deg": 22.9,
+        "injection_end_deg_btdc": 300.0
+      },
+      {
+        "rpm": 4500.0,
+        "throttle_pct": 100.0,
+        "ignition_advance_deg": 14.8,
+        "lambda_target": 0.84,
+        "map_target_kpa": 223.6,
+        "wastegate_duty_pct": 62.1,
+        "vvt_intake_deg": 31.7,
+        "vvt_exhaust_deg": 23.7,
+        "injection_end_deg_btdc": 300.0
+      },
+      {
+        "rpm": 4750.0,
+        "throttle_pct": 100.0,
+        "ignition_advance_deg": 16.4,
+        "lambda_target": 0.83,
+        "map_target_kpa": 228.4,
+        "wastegate_duty_pct": 65.4,
+        "vvt_intake_deg": 30.1,
+        "vvt_exhaust_deg": 24.6,
+        "injection_end_deg_btdc": 300.0
+      },
+      {
+        "rpm": 5000.0,
+        "throttle_pct": 100.0,
+        "ignition_advance_deg": 17.2,
+        "lambda_target": 0.82,
+        "map_target_kpa": 233.1,
+        "wastegate_duty_pct": 68.6,
+        "vvt_intake_deg": 28.4,
+        "vvt_exhaust_deg": 25.4,
+        "injection_end_deg_btdc": 300.0
+      },
+      {
+        "rpm": 5250.0,
+        "throttle_pct": 100.0,
+        "ignition_advance_deg": 18.9,
+        "lambda_target": 0.81,
+        "map_target_kpa": 238.5,
+        "wastegate_duty_pct": 72.2,
+        "vvt_intake_deg": 26.8,
+        "vvt_exhaust_deg": 26.3,
+        "injection_end_deg_btdc": 300.0
+      },
+      {
+        "rpm": 5500.0,
+        "throttle_pct": 100.0,
+        "ignition_advance_deg": 21.0,
+        "lambda_target": 0.8,
+        "map_target_kpa": 243.4,
+        "wastegate_duty_pct": 75.5,
+        "vvt_intake_deg": 25.2,
+        "vvt_exhaust_deg": 27.2,
+        "injection_end_deg_btdc": 300.0
+      },
+      {
+        "rpm": 5750.0,
+        "throttle_pct": 100.0,
+        "ignition_advance_deg": 23.4,
+        "lambda_target": 0.8,
+        "map_target_kpa": 245.5,
+        "wastegate_duty_pct": 77.0,
+        "vvt_intake_deg": 23.5,
+        "vvt_exhaust_deg": 28.0,
+        "injection_end_deg_btdc": 300.0
+      },
+      {
+        "rpm": 6000.0,
+        "throttle_pct": 100.0,
+        "ignition_advance_deg": 25.7,
+        "lambda_target": 0.8,
+        "map_target_kpa": 244.9,
+        "wastegate_duty_pct": 76.5,
+        "vvt_intake_deg": 21.9,
+        "vvt_exhaust_deg": 28.9,
+        "injection_end_deg_btdc": 300.0
+      },
+      {
+        "rpm": 6250.0,
+        "throttle_pct": 100.0,
+        "ignition_advance_deg": 27.1,
+        "lambda_target": 0.8,
+        "map_target_kpa": 241.2,
+        "wastegate_duty_pct": 74.0,
+        "vvt_intake_deg": 20.2,
+        "vvt_exhaust_deg": 29.7,
+        "injection_end_deg_btdc": 300.0
+      },
+      {
+        "rpm": 6500.0,
+        "throttle_pct": 100.0,
+        "ignition_advance_deg": 27.7,
+        "lambda_target": 0.8,
+        "map_target_kpa": 235.9,
+        "wastegate_duty_pct": 70.5,
+        "vvt_intake_deg": 18.6,
+        "vvt_exhaust_deg": 30.6,
+        "injection_end_deg_btdc": 300.0
+      },
+      {
+        "rpm": 6750.0,
+        "throttle_pct": 100.0,
+        "ignition_advance_deg": 29.2,
+        "lambda_target": 0.8,
+        "map_target_kpa": 231.5,
+        "wastegate_duty_pct": 67.5,
+        "vvt_intake_deg": 17.0,
+        "vvt_exhaust_deg": 31.5,
+        "injection_end_deg_btdc": 300.0
+      },
+      {
+        "rpm": 7000.0,
+        "throttle_pct": 100.0,
+        "ignition_advance_deg": 30.4,
+        "lambda_target": 0.8,
+        "map_target_kpa": 229.3,
+        "wastegate_duty_pct": 66.0,
+        "vvt_intake_deg": 15.3,
+        "vvt_exhaust_deg": 32.3,
+        "injection_end_deg_btdc": 300.0
+      }
+    ]
+  },
+  "reference_curve_ids": ["stock-e27"],
+  "provenance": {
+    "/engine/architecture": {
+      "kind": "prd",
+      "note": "PRD seção 7, item 2: 6 em linha"
+    },
+    "/engine/bore_mm": {
+      "kind": "public_spec",
+      "note": "diâmetro e curso",
+      "source": "ficha técnica pública da arquitetura de inspiração"
+    },
+    "/engine/compression_ratio": {
+      "kind": "prd",
+      "note": "PRD seção 7, item 2: variante 10,2:1 (OQ-01)"
+    },
+    "/engine/displacement_cc": {
+      "kind": "prd",
+      "note": "PRD seção 7, item 2: 2998 cc"
+    },
+    "/engine/friction": {
+      "kind": "literature",
+      "note": "coeficientes padrão de Chen-Flynn",
+      "source": "Heywood, J. B. Internal Combustion Engine Fundamentals (1988), cap. 13"
+    },
+    "/engine/friction/b_bar_s_m": {
+      "kind": "estimate",
+      "note": "afinado na física headless contra o Reference Benchmark Baseline v1 (desvio < 5 % em torque, potência, lambda e EGT; T267, T403-T405)"
+    },
+    "/engine/n_cyl": {
+      "kind": "prd",
+      "note": "PRD seção 7, item 2: 6 cilindros"
+    },
+    "/engine/stroke_mm": {
+      "kind": "public_spec",
+      "note": "diâmetro e curso",
+      "source": "ficha técnica pública da arquitetura de inspiração"
+    },
+    "/engine/true_ve": {
+      "kind": "estimate",
+      "note": "afinado na física headless contra o Reference Benchmark Baseline v1 (desvio < 5 % em torque, potência, lambda e EGT; T267, T403-T405)"
+    },
+    "/engine/wiebe_duration_ref_deg": {
+      "kind": "estimate",
+      "note": "afinado na física headless contra o Reference Benchmark Baseline v1 (desvio < 5 % em torque, potência, lambda e EGT; T267, T403-T405)"
+    },
+    "/induction": {
+      "kind": "prd",
+      "note": "PRD seção 7, item 2: turbo"
+    },
+    "/mechanical_limits/egt_max_c": {
+      "kind": "prd",
+      "note": "PRD seção 7, item 2: EGT 980 °C"
+    },
+    "/mechanical_limits/rod_torque_limit_nm": {
+      "kind": "estimate",
+      "note": "internos forjados (OQ-06)"
+    },
+    "/rated/peak_power_whp": {
+      "kind": "prd",
+      "note": "PRD seção 7, item 2: 340 whp de série"
+    },
+    "/rated/power_ceiling_whp": {
+      "kind": "prd",
+      "note": "PRD seção 7, item 2: internos forjados até 750 whp"
+    },
+    "/reference_command_schedule": {
+      "kind": "estimate",
+      "note": "afinado na física headless contra o Reference Benchmark Baseline v1 (desvio < 5 % em torque, potência, lambda e EGT; T267, T403-T405)"
+    },
+    "/turbo": {
+      "kind": "estimate",
+      "note": "afinado na física headless contra o Reference Benchmark Baseline v1 (desvio < 5 % em torque, potência, lambda e EGT; T267, T403-T405)"
+    },
+    "/turbo/housing": {
+      "kind": "prd",
+      "note": "PRD seção 7, item 2: um único turbo"
+    }
+  }
+}

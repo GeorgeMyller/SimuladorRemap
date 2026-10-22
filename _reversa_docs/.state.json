@@ -1,0 +1,154 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-10-18T23:17:26Z",
+  "completedAgents": [
+    "mapper",
+    "analyst",
+    "storyteller",
+    "publisher"
+  ],
+  "pendingAgents": [],
+  "pages": {
+    "arquitetura.html": {
+      "status": "created",
+      "agent": "reversa-docs-mapper",
+      "hash": "sha256:f2d9d24780cda5cac21ba93d54a61fe04016d85b7c36bd5c829300ba7cf20d13"
+    },
+    "modulos.html": {
+      "status": "created",
+      "agent": "reversa-docs-mapper",
+      "hash": "sha256:8e9f6e25e1f1cfd99d7f0e4e810054d76f842a0ee38ec5cd88adcc846673b56b"
+    },
+    "metricas.html": {
+      "status": "created",
+      "agent": "reversa-docs-analyst",
+      "hash": "sha256:5af11644a5da09792b82ec71542876a2e25b18db9c378072e527a14239b1a4ca"
+    },
+    "timeline.html": {
+      "status": "created",
+      "agent": "reversa-docs-analyst",
+      "hash": "sha256:bd637fa13a1e00fb9f519b7c42484dbae1ca22daddfbac42a70febe0c74df491"
+    },
+    "glossario.html": {
+      "status": "created",
+      "agent": "reversa-docs-storyteller",
+      "hash": "sha256:4a4e69634821093c4354f5b74695963b8f271137e233b6054bc81fdcc1fc7415"
+    },
+    "deck.html": {
+      "status": "created",
+      "agent": "reversa-docs-storyteller",
+      "hash": "sha256:f6c101d57c0323d9fc9aff63c11936e3a88f83d59254ee7794652917004bcf1a"
+    },
+    "features/index.html": {
+      "status": "created",
+      "agent": "reversa-docs-storyteller",
+      "hash": "sha256:cfec8b4e829dacebbd4c9f3f9bf7c2b6e8fec8af5562bd64f94949f5f8747d4f"
+    },
+    "features/001-simulador-remap.html": {
+      "status": "created",
+      "agent": "reversa-docs-storyteller",
+      "hash": "sha256:5e3fcf6a459f0be049cb582423c944cb7511ae7f6de821839c8c331e1a44b567"
+    },
+    "features/002-evolucao-comercial.html": {
+      "status": "created",
+      "agent": "reversa-docs-storyteller",
+      "hash": "sha256:4be7eebdcf674d367c0f6f0381a69ddd9076eff10a5b88423eb91fc1bd5c9ab5"
+    },
+    "index.html": {
+      "status": "created",
+      "agent": "reversa-docs-publisher",
+      "hash": "sha256:2b90aa3a4bc63dac7cebe873a2ffecc4a141bf9d59005a0bad381c2eed32e051"
+    },
+    "topologia.html": {
+      "status": "placeholder",
+      "agent": "reversa-docs-publisher",
+      "hash": "sha256:1999ea02a5fe768165c1ffa0116649fad896c361bfd4d162c3ff243f73626b09"
+    },
+    "features/003-rust-audio-qa-total.html": {
+      "status": "created",
+      "agent": "reversa-docs-storyteller",
+      "hash": "sha256:4415399f592f64708f7d8296a16090ea2e994fcd306aa6022c4217e699e9f51c"
+    }
+  },
+  "pagesGenerated": [
+    "arquitetura.html",
+    "deck.html",
+    "features/001-simulador-remap.html",
+    "features/002-evolucao-comercial.html",
+    "features/003-rust-audio-qa-total.html",
+    "features/index.html",
+    "glossario.html",
+    "index.html",
+    "metricas.html",
+    "modulos.html",
+    "timeline.html"
+  ],
+  "pagesOmitted": [
+    {
+      "page": "topologia.html",
+      "reason": "topology not detected (_reversa_sdd/architecture.md ausente)"
+    }
+  ],
+  "vendorMissing": [],
+  "cdnFallbackUsed": true,
+  "cdnFallbackDetails": [
+    {
+      "lib": "highcharts",
+      "primary": "https://code.highcharts.com/11.4.8/highcharts.js",
+      "used": "https://cdn.jsdelivr.net/npm/highcharts@11.4.8/highcharts.js"
+    },
+    {
+      "lib": "highcharts_accessibility",
+      "primary": "https://code.highcharts.com/11.4.8/modules/accessibility.js",
+      "used": "https://cdn.jsdelivr.net/npm/highcharts@11.4.8/modules/accessibility.js"
+    },
+    {
+      "lib": "highcharts_exporting",
+      "primary": "https://code.highcharts.com/11.4.8/modules/exporting.js",
+      "used": "https://cdn.jsdelivr.net/npm/highcharts@11.4.8/modules/exporting.js"
+    },
+    {
+      "lib": "highcharts_treemap",
+      "primary": "https://code.highcharts.com/11.4.8/modules/treemap.js",
+      "used": "https://cdn.jsdelivr.net/npm/highcharts@11.4.8/modules/treemap.js"
+    },
+    {
+      "lib": "highcharts_sankey",
+      "primary": "https://code.highcharts.com/11.4.8/modules/sankey.js",
+      "used": "https://cdn.jsdelivr.net/npm/highcharts@11.4.8/modules/sankey.js"
+    },
+    {
+      "lib": "highcharts_timeline",
+      "primary": "https://code.highcharts.com/11.4.8/modules/timeline.js",
+      "used": "https://cdn.jsdelivr.net/npm/highcharts@11.4.8/modules/timeline.js"
+    }
+  ],
+  "lastCheckpoint": "2026-10-19T02:14:10+00:00",
+  "pipelineDurationMs": 396115,
+  "auxiliaryHtmls": [],
+  "auxiliaryHtmlsDiscovered": 0,
+  "auxiliaryDiscoveryAborted": false,
+  "vendorFiles": [
+    "OrbitControls.js",
+    "d3.v7.min.js",
+    "highcharts-accessibility.js",
+    "highcharts-exporting.js",
+    "highcharts-sankey.js",
+    "highcharts-timeline.js",
+    "highcharts-treemap.js",
+    "highcharts.js",
+    "three.min.js"
+  ],
+  "smokeTestFailed": false,
+  "smokeTestErrors": [],
+  "smokeTestAssetsChecked": 45,
+  "brokenLinks": [],
+  "sourceNotes": [
+    "soul.md ausente: glossário derivado do glossário da 001, das specs e da 002",
+    "chronicle.md ausente: timeline derivada de progress.jsonl e datas dos artefatos",
+    "features: _reversa_forward/001, 002 e 003 (não há _reversa_sdd/*/requirements.md)",
+    "003: métricas de desempenho, áudio e QA vêm dos relatórios de verificação da feature; total do pytest da 003 não registrado",
+    "cobertura do backend: backend/coverage.json é da 002 (sem nova medição na 003)"
+  ],
+  "nextSuggested": "Fechar T027 (make check com nativo ligado e desligado); /reversa-sync para o adendo da 003 (T030); /reversa para gerar soul e chronicle"
+}

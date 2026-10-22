@@ -1,0 +1,140 @@
+{
+  "scenario_id": "defect-boost-leak",
+  "kind": "base",
+  "title": "Diagnóstico: vazamento no circuito de pressão",
+  "briefing": "O hatch 2.0 turbo GDI (ECU de série, perfil OEM-Stage, gasolina E27) perdeu potência e o turbo \"assobia\" diferente. O alvo de pressão ainda é atingido, mas a turbina gira mais rápido do que deveria e a wastegate trabalha mais fechada para compensar. Parte do ar comprimido escapa antes do coletor, a mistura fica um pouco mais rica e a EGT sobe. Diagnostique pelo datalog, declare o defeito e entregue um acerto com pelo menos 200 whp, knock até 3°, EGT pré-turbina até 950 °C e o motor intacto.",
+  "vehicle_id": "hatch-20t-gdi",
+  "initial_profile_id": "oem-stage",
+  "initial_calibration": {
+    "source": "vehicle_stock"
+  },
+  "fuel_id": "e27",
+  "ambient": {
+    "temperature_c": 25.0,
+    "pressure_kpa": 99.0,
+    "relative_humidity": 0.0
+  },
+  "correction_standard": "sae_j1349",
+  "seed": null,
+  "objectives": [
+    "Declarar o defeito correto na submissão",
+    "Entregar pelo menos 200 whp",
+    "Manter o retardo de knock em até 3°",
+    "Manter a EGT pré-turbina em até 950 °C",
+    "Lambda de plena carga entre 0,75 e 0,90 acima de 4000 rpm",
+    "Terminar com o motor 100 % íntegro",
+    "Fazer 2 puxadas válidas com dispersão até 3 %"
+  ],
+  "constraints": {
+    "allowed_run_types": [
+      "baseline_pull",
+      "sweep_pull",
+      "multi_pull"
+    ],
+    "gear": 4,
+    "allowed_final_profiles": [
+      "oem-stage"
+    ],
+    "swap_allowed": false,
+    "locked_table_ids": [],
+    "max_submissions": 5,
+    "time_limit_min": null,
+    "operator_protection": false
+  },
+  "criteria": {
+    "required_valid_pulls": 2,
+    "min_end_rpm": null,
+    "lambda_window_min_rpm": 4000,
+    "require_defect_diagnosis": true,
+    "criteria": [
+      {
+        "criterion_id": "diagnosis",
+        "kind": "defect_diagnosis",
+        "comparator": "bool",
+        "weight": 3.0
+      },
+      {
+        "criterion_id": "whp",
+        "kind": "min_whp",
+        "comparator": "ge",
+        "threshold": 200
+      },
+      {
+        "criterion_id": "knock",
+        "kind": "max_knock_retard_deg",
+        "comparator": "le",
+        "threshold": 3
+      },
+      {
+        "criterion_id": "egt",
+        "kind": "max_egt_c",
+        "comparator": "le",
+        "threshold": 950
+      },
+      {
+        "criterion_id": "lambda-max",
+        "kind": "lambda_wot_max",
+        "comparator": "le",
+        "threshold": 0.9
+      },
+      {
+        "criterion_id": "lambda-min",
+        "kind": "lambda_wot_min",
+        "comparator": "ge",
+        "threshold": 0.75
+      },
+      {
+        "criterion_id": "integrity",
+        "kind": "integrity",
+        "comparator": "ge",
+        "threshold": 100
+      },
+      {
+        "criterion_id": "pulls",
+        "kind": "valid_pulls",
+        "comparator": "ge",
+        "threshold": 2
+      },
+      {
+        "criterion_id": "spread",
+        "kind": "max_spread_pct",
+        "comparator": "le",
+        "threshold": 3
+      },
+      {
+        "criterion_id": "final-profile",
+        "kind": "final_profile",
+        "comparator": "bool"
+      }
+    ]
+  },
+  "hidden_defect": {
+    "kind": "boost_leak",
+    "leak_area_mm2": 150.0,
+    "start_t_sim_s": 0.0
+  },
+  "hints": [
+    {
+      "order": 1,
+      "text": "Na puxada base o map_kpa segue o boost_target_kpa. Olhe então o turbo_rpm e o wastegate_duty_pct: para a mesma pressão, quanto o turbo está trabalhando?",
+      "unlock": {}
+    },
+    {
+      "order": 2,
+      "text": "Turbina mais rápida e wastegate mais fechada para a mesma pressão significam que parte do ar comprimido não chega aos cilindros.",
+      "unlock": {
+        "after_failed_submissions": 1
+      }
+    },
+    {
+      "order": 3,
+      "text": "Não suba o boost para compensar: a turbina já está perto do limite. Ajuste o avanço (ignition_base) e o lambda alvo (lambda_target) para recuperar potência com segurança.",
+      "unlock": {
+        "after_failed_submissions": 2
+      }
+    }
+  ],
+  "author_nickname": null,
+  "builtin": true,
+  "origin": "builtin"
+}

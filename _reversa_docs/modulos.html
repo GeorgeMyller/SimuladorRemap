@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Módulos | SimuladorRemap</title>
+<meta name="reversa-category" content="diagram">
+<meta name="reversa-producer-agent" content="reversa-docs-mapper">
+<meta name="reversa-template" content="modulos">
+<meta name="reversa-generated-at" content="2026-10-19T02:09:26+00:00">
+
+<link rel="stylesheet" href="assets/css/site.css">
+<script src="assets/vendor/d3.v7.min.js"></script>
+</head>
+<body data-style="sober" data-page-id="modulos" data-base="">
+<a class="skip" href="#main">Pular para o conteúdo</a>
+<header class="rv-header">
+  <a class="rv-brand" href="index.html"><span class="seal-slot"><svg class="seal-mini" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Selo do projeto SimuladorRemap" data-pattern="noise-strata" data-seed="40d6644e"><circle cx="32.0" cy="32.0" r="32.0" fill="#f5f3ee"/><path d="M47.2,55.7 L22.9,58.7 L5.5,41.5 L8.0,17.2 L28.6,4.0 L51.8,11.9 L60.0,34.9 Z" fill="#4f6b5d" fill-opacity="0.10" stroke="#4f6b5d" stroke-width="3.2" stroke-linejoin="round"/><path d="M22.9,48.4 L13.5,35.1 L18.0,19.5 L33.1,13.3 L47.3,21.2 L50.0,37.2 L39.2,49.4 Z" fill="#a06b4a" fill-opacity="0.20" stroke="#a06b4a" stroke-width="3.2" stroke-linejoin="round"/><path d="M41.2,33.7 L36.4,40.3 L28.3,40.6 L23.0,34.5 L24.4,26.5 L31.6,22.6 L39.1,25.8 Z" fill="#4f6b5d" fill-opacity="0.15" stroke="#4f6b5d" stroke-width="3.2" stroke-linejoin="round"/><line x1="32.0" y1="32.0" x2="60.2" y2="32.0" stroke="#1e2937" stroke-opacity="0.25" stroke-width="2.24"/><line x1="32.0" y1="32.0" x2="49.6" y2="54.0" stroke="#1e2937" stroke-opacity="0.25" stroke-width="2.24"/><line x1="32.0" y1="32.0" x2="25.7" y2="59.5" stroke="#1e2937" stroke-opacity="0.25" stroke-width="2.24"/><line x1="32.0" y1="32.0" x2="6.6" y2="44.2" stroke="#1e2937" stroke-opacity="0.25" stroke-width="2.24"/><line x1="32.0" y1="32.0" x2="6.6" y2="19.8" stroke="#1e2937" stroke-opacity="0.25" stroke-width="2.24"/><line x1="32.0" y1="32.0" x2="25.7" y2="4.5" stroke="#1e2937" stroke-opacity="0.25" stroke-width="2.24"/><line x1="32.0" y1="32.0" x2="49.6" y2="10.0" stroke="#1e2937" stroke-opacity="0.25" stroke-width="2.24"/><circle cx="32.0" cy="32.0" r="5.1" fill="#1e2937"/><circle cx="32.0" cy="32.0" r="2.2" fill="#a06b4a"/></svg></span><span>SimuladorRemap <small>docs</small></span></a>
+  <nav class="reversa-doc-nav" aria-label="Navegação do mini-site"><a href="index.html" data-page-id="index">Visão geral</a><a href="arquitetura.html" data-page-id="arquitetura">Arquitetura 3D</a><a href="modulos.html" data-page-id="modulos">Módulos</a><a href="metricas.html" data-page-id="metricas">Métricas</a><a href="timeline.html" data-page-id="timeline">Timeline</a><a href="glossario.html" data-page-id="glossario">Glossário</a><a href="deck.html" data-page-id="deck">Deck</a><a href="features/index.html" data-page-id="features">Features</a></nav>
+</header>
+<main id="main" class="rv-main">
+
+<h1>Módulos e dependências</h1>
+<p class="lead">Grafo dirigido de importações entre pacotes (backend <code>simremap.*</code> e features do frontend). A espessura da aresta é o número
+de arquivos que importam o destino. Nós castanhos são o crate Rust da 003 (<code>native/*</code>), ligados a <code>ecu</code>, <code>physics</code> e <code>damage</code>.
+Nós laranja são componentes novos da 002, nós azul-violeta são sub-componentes da 003 e nós com anel vermelho estão num ciclo.</p>
+<div class="layout-side">
+  <div class="chart-card" style="height:640px;padding:0;position:relative"><svg id="graph" width="100%" height="100%" role="img" aria-label="Grafo de dependências entre pacotes"></svg></div>
+  <aside class="sidebar" aria-label="Filtros do grafo">
+    <strong>Filtros</strong>
+    <label>Camada <select data-param="lang"><option value="all">Backend e frontend</option><option value="backend">Backend (Python)</option><option value="frontend">Frontend (TypeScript)</option><option value="native">Backend e nativo (Python + Rust)</option></select></label>
+    <label>Tipo de nó <select data-param="kind"><option value="all">Pacotes e sub-componentes 002/003</option><option value="pkg">Só pacotes</option></select></label>
+    <label>Força de repulsão <span data-out="charge"></span><input type="range" min="-900" max="-100" step="50" value="-420" data-param="charge"></label>
+    <label>Distância mínima <span data-out="dist"></span><input type="range" min="40" max="220" step="10" value="110" data-param="dist"></label>
+    <div class="legend"><span><i style="background:#3d4a5c"></i>backend</span><span><i style="background:#2a78d6"></i>frontend</span><span><i style="background:#8a5a2b"></i>nativo (Rust)</span><span><i style="background:#eb6834"></i>novo na 002</span><span><i style="background:#6250d6"></i>novo na 003</span><span><i style="background:#fff;border:2px solid #c62f2e"></i>em ciclo</span></div>
+  </aside>
+</div>
+<div id="tip" class="tooltip" role="status"></div>
+<h2>Leitura do grafo</h2>
+<div class="grid g2">
+<div class="card"><h3>Ciclos de importação</h3><div id="cycles" class="muted"></div></div>
+<div class="card"><h3>Pares com dependência mútua</h3><div id="mutual" class="muted"></div></div>
+</div>
+<h2>Tabela de arestas</h2>
+<div class="table-wrap"><table id="edges"><thead><tr><th>Origem</th><th>Destino</th><th class="num">Arquivos</th></tr></thead><tbody></tbody></table></div>
+
+</main>
+<footer class="rv-footer">Gerado por reversa-docs-mapper em 2026-10-19T02:09:26+00:00 · Time Reversa Docs · funciona offline via file://</footer>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/nav.js"></script>
+<script src="assets/js/sidebar.js"></script>
+
+<script>
+(function () {
+  "use strict";
+  var svgEl = document.getElementById("graph");
+  if (typeof d3 === "undefined") { svgEl.outerHTML = '<div class="reversa-error-panel">Esta visualização requer D3 em assets/vendor/d3.v7.min.js.</div>'; return; }
+  var D = (window.RV_DATA && window.RV_DATA.deps) || { nodes: [], edges: [], cycles: [] };
+  var mods = (window.RV_DATA && window.RV_DATA.modules && window.RV_DATA.modules.modules) || [];
+  var loc = {}; mods.forEach(function (m) { if (m.type === "code") loc[m.folder] = (loc[m.folder] || 0) + m.loc; });
+  var inCycle = {}; (D.cycles || []).forEach(function (c) { c.forEach(function (n) { inCycle[n] = true; }); });
+  var newPk = {}; (D.new002Packages || []).forEach(function (p) { newPk[p] = true; });
+  var tip = document.getElementById("tip");
+
+  // Leitura textual
+  document.getElementById("cycles").innerHTML = (D.cycles || []).length ?
+    D.cycles.map(function (c) { return "<p><b>" + c.length + " pacotes</b> num componente fortemente conexo: " + c.map(function (x) { return "<code>" + x.split("/")[1] + "</code>"; }).join(" ") + "</p>"; }).join("") +
+    "<p>O ciclo é de pacote, não de arquivo: inclui importações tardias e de tipos. Os pares mútuos ao lado mostram onde o acoplamento é direto.</p>" : "Nenhum ciclo detectado.";
+  var key = {}; D.edges.forEach(function (e) { key[e.from + ">" + e.to] = e.weight; });
+  var mutual = D.edges.filter(function (e) { return e.from < e.to && key[e.to + ">" + e.from]; });
+  document.getElementById("mutual").innerHTML = mutual.length ? "<ul>" + mutual.map(function (e) { return "<li><code>" + e.from + "</code> ⇄ <code>" + e.to + "</code> (" + e.weight + " / " + key[e.to + ">" + e.from] + " arquivos)</li>"; }).join("") + "</ul>" : "Nenhum.";
+  var tb = document.querySelector("#edges tbody");
+  D.edges.slice().sort(function (a, b) { return b.weight - a.weight; }).forEach(function (e) {
+    var tr = document.createElement("tr"); tr.innerHTML = "<td class=mono>" + e.from + "</td><td class=mono>" + e.to + "</td><td class=num>" + e.weight + "</td>"; tb.appendChild(tr);
+  });
+
+  var svg = d3.select(svgEl), sim = null;
+  function draw() {
+    svg.selectAll("*").remove();
+    var lang = RV_PARAM("lang", "all"), kind = RV_PARAM("kind", "all");
+    var W = svgEl.clientWidth || 900, H = svgEl.clientHeight || 640;
+    var nodes = D.nodes.filter(function (n) { return n.id !== "backend/simremap" && n.id !== "frontend/root" && (lang === "all" || n.layer === lang || (lang === "native" && n.layer === "backend")); })
+      .map(function (n) { return { id: n.id, layer: n.layer, loc: loc[n.id] || 50, sub: false, isNew: !!newPk[n.id] }; });
+    var ids = {}; nodes.forEach(function (n) { ids[n.id] = true; });
+    var links = D.edges.filter(function (e) { return ids[e.from] && ids[e.to]; }).map(function (e) { return { source: e.from, target: e.to, w: e.weight, sub: false }; });
+    if (kind === "all") (D.subcomponents || []).forEach(function (s) {
+      if (!ids[s.parent]) return;
+      nodes.push({ id: s.id, layer: s.parent.split("/")[0], loc: 120, sub: true, isNew: true, feat: s.feature || "002", label: s.label });
+      links.push({ source: s.id, target: s.parent, w: 1, sub: true, feat: s.feature || "002" });
+    });
+    var r = d3.scaleSqrt().domain([0, d3.max(nodes, function (n) { return n.loc; })]).range([6, 30]);
+    var defs = svg.append("defs");
+    defs.append("marker").attr("id", "arr").attr("viewBox", "0 -5 10 10").attr("refX", 10).attr("refY", 0).attr("markerWidth", 6).attr("markerHeight", 6).attr("orient", "auto")
+      .append("path").attr("d", "M0,-4L10,0L0,4").attr("fill", "#7c8a99");
+    var g = svg.append("g");
+    var zoom = d3.zoom().scaleExtent([0.2, 3]).on("zoom", function (ev) { g.attr("transform", ev.transform); });
+    svg.call(zoom);
+    var link = g.append("g").selectAll("line").data(links).join("line")
+      .attr("stroke", function (d) { return d.sub ? (d.feat === "003" ? "#6250d6" : "#eb6834") : "#9aa5b1"; }).attr("stroke-dasharray", function (d) { return d.sub ? "4 3" : null; })
+      .attr("stroke-opacity", 0.75).attr("stroke-width", function (d) { return 1 + Math.sqrt(d.w); }).attr("marker-end", function (d) { return d.sub ? null : "url(#arr)"; });
+    var node = g.append("g").selectAll("g").data(nodes).join("g").style("cursor", "grab");
+    node.append("circle").attr("r", function (d) { return r(d.loc); })
+      .attr("fill", function (d) { return d.sub && d.feat === "003" ? "#6250d6" : (d.layer === "native" ? "#8a5a2b" : (d.isNew ? "#eb6834" : (d.layer === "frontend" ? "#2a78d6" : "#3d4a5c"))); })
+      .attr("stroke", function (d) { return inCycle[d.id] ? "#c62f2e" : "#fcfcfb"; }).attr("stroke-width", function (d) { return inCycle[d.id] ? 2.5 : 2; });
+    node.append("text").text(function (d) { return d.sub ? d.id.split(":")[1] : d.id.split("/")[1]; })
+      .attr("x", function (d) { return r(d.loc) + 4; }).attr("y", 4).attr("font-size", 12).attr("fill", "#1e2937").attr("paint-order", "stroke").attr("stroke", "#fcfcfb").attr("stroke-width", 3);
+    node.on("mousemove", function (ev, d) {
+      var outs = links.filter(function (l) { return (l.source.id || l.source) === d.id && !l.sub; }).length;
+      var ins = links.filter(function (l) { return (l.target.id || l.target) === d.id && !l.sub; }).length;
+      tip.innerHTML = "<b>" + (d.label || d.id) + "</b><br>" + (d.sub ? "sub-componente novo da " + d.feat : "LOC de código: " + d.loc + "<br>importa " + outs + " pacotes · importado por " + ins) + (inCycle[d.id] ? "<br>participa de ciclo" : "");
+      tip.style.display = "block"; tip.style.left = (ev.clientX + 14) + "px"; tip.style.top = (ev.clientY + 14) + "px";
+      link.attr("stroke-opacity", function (l) { return (l.source.id === d.id || l.target.id === d.id) ? 1 : 0.12; });
+    }).on("mouseleave", function () { tip.style.display = "none"; link.attr("stroke-opacity", 0.75); });
+    node.call(d3.drag().on("start", function (ev, d) { if (!ev.active) sim.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; })
+      .on("drag", function (ev, d) { d.fx = ev.x; d.fy = ev.y; }).on("end", function (ev, d) { if (!ev.active) sim.alphaTarget(0); d.fx = null; d.fy = null; }));
+    if (sim) sim.stop();
+    sim = d3.forceSimulation(nodes)
+      .force("link", d3.forceLink(links).id(function (d) { return d.id; }).distance(function (l) { return l.sub ? 40 : RV_PARAM("dist", 110); }))
+      .force("charge", d3.forceManyBody().strength(RV_PARAM("charge", -420)))
+      .force("x", d3.forceX(function (d) { return lang === "all" ? (d.layer === "frontend" ? W * 0.22 : (d.layer === "native" ? W * 0.85 : W * 0.58)) : (lang === "native" ? (d.layer === "native" ? W * 0.78 : W * 0.4) : W / 2); }).strength(0.08))
+      .force("y", d3.forceY(H / 2).strength(0.06))
+      .force("collide", d3.forceCollide(function (d) { return r(d.loc) + 6; }))
+      .on("tick", ticked);
+    function ticked() {
+        link.each(function (d) {
+          var dx = d.target.x - d.source.x, dy = d.target.y - d.source.y, len = Math.sqrt(dx * dx + dy * dy) || 1, rr = r(d.target.loc) + 3;
+          d3.select(this).attr("x1", d.source.x).attr("y1", d.source.y).attr("x2", d.target.x - dx / len * rr).attr("y2", d.target.y - dy / len * rr);
+        });
+        node.attr("transform", function (d) { return "translate(" + d.x + "," + d.y + ")"; });
+    }
+    // Layout estável: pré-calcula a simulação e enquadra o grafo inteiro na área visível
+    sim.stop();
+    for (var t = 0; t < 400; t++) sim.tick();
+    ticked();
+    var x0 = d3.min(nodes, function (d) { return d.x - r(d.loc); }) - 20, x1 = d3.max(nodes, function (d) { return d.x + r(d.loc) + 90; }),
+        y0 = d3.min(nodes, function (d) { return d.y - r(d.loc); }) - 20, y1 = d3.max(nodes, function (d) { return d.y + r(d.loc); }) + 20;
+    var k = Math.min(1.6, Math.min(W / (x1 - x0), H / (y1 - y0)));
+    svg.call(zoom.transform, d3.zoomIdentity.translate((W - k * (x1 + x0)) / 2, (H - k * (y1 + y0)) / 2).scale(k));
+    sim.alphaDecay(0.05);
+  }
+  draw();
+  document.addEventListener("rv:param", draw);
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,73 @@
+{
+  "catalog_version": "1.1.0",
+  "files": [
+    {
+      "path": "fuels/e0.json",
+      "sha256": "03870aba04aaad6f0e73ec6834d0f327dece4930ae8efaed95b81518d7b2a7a0"
+    },
+    {
+      "path": "fuels/e100.json",
+      "sha256": "5a2dc86486a021346268270ecf3c1f90d38be59354d2bd5ec03c4b6f878d88c6"
+    },
+    {
+      "path": "fuels/e27.json",
+      "sha256": "4b6ac6da2bd5b4adefbab66c53bd579665e898befdf457bb8b0e146f28a833e8"
+    },
+    {
+      "path": "fuels/podium.json",
+      "sha256": "4924814718a98dbcd29ae1a9752119e392140b3ab4fe7b0c03815f33a48fe32a"
+    },
+    {
+      "path": "vehicles/classic-20t-swap/calibrations/ft-pro.json",
+      "sha256": "fd6030296f166a3c4005a406f738c6b114d8f31e3d4b555d3d37738b9e9dff45"
+    },
+    {
+      "path": "vehicles/classic-20t-swap/calibrations/oem-stage.json",
+      "sha256": "a7dfca841be6b368ea66baca673e0fc84a9f3d9f05ed735fb74418953897f9ca"
+    },
+    {
+      "path": "vehicles/classic-20t-swap/reference-curves/stock-e100.json",
+      "sha256": "d49541646eee195762c6b628fd47ac8c2361b2aac519c09dd2402bac0626b1ea"
+    },
+    {
+      "path": "vehicles/classic-20t-swap/vehicle.json",
+      "sha256": "bffd789a7a8580223365a70ccce3f12ef24091aa0596592e34ee12892a47c55d"
+    },
+    {
+      "path": "vehicles/coupe-30t-i6/calibrations/oem-stage.json",
+      "sha256": "d46b9770588129393cb61bd76e1c6f4f017a224f34427d0768c8462c4c020ba5"
+    },
+    {
+      "path": "vehicles/coupe-30t-i6/reference-curves/stock-e27.json",
+      "sha256": "0f0af53769813bdaa15102e574733e813488b4e5db2781a9bb9f25a787838e6b"
+    },
+    {
+      "path": "vehicles/coupe-30t-i6/vehicle.json",
+      "sha256": "dc3539b2625b4ef0456e098a149823dd72774151ee8ebe8021801df5ab7bdd33"
+    },
+    {
+      "path": "vehicles/hatch-20t-gdi/calibrations/oem-stage.json",
+      "sha256": "9b2a1a6b0297ff11298c2d0bafd6edbc22a972fc05348a8636eaf7c8ea9a6bde"
+    },
+    {
+      "path": "vehicles/hatch-20t-gdi/reference-curves/stock-e27.json",
+      "sha256": "5a4d57caabc493713a1c4bcc09b0ad82baf7af68567a2293e57e4dbbe330f53b"
+    },
+    {
+      "path": "vehicles/hatch-20t-gdi/vehicle.json",
+      "sha256": "80c97a653cd62d26bfd7ef0a896978478bcc6a4ce4d6838eb39d82a82089716d"
+    },
+    {
+      "path": "vehicles/muscle-v8-sc/calibrations/oem-stage.json",
+      "sha256": "bca68d61be8cc8a475dea6bb4d2e8ca1704b687d8076b49ba2335ed84876d3bc"
+    },
+    {
+      "path": "vehicles/muscle-v8-sc/reference-curves/stock-e27.json",
+      "sha256": "dd04a6c96f07c9902749c159adb04233b1dcb1fcd4314f3a2b9cc5bf40eb0cb1"
+    },
+    {
+      "path": "vehicles/muscle-v8-sc/vehicle.json",
+      "sha256": "aaafe78a3ab42b6445bb01ed33363add1c6d60e0df256b5e86afcfbc89f2b192"
+    }
+  ]
+}

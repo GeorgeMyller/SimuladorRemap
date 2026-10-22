@@ -1,0 +1,71 @@
+{
+  "fuel_id": "e100",
+  "display_name": "Etanol hidratado E100",
+  "afr_stoich": 9.0,
+  "lhv_mj_kg": 26.8,
+  "ron": 109.0,
+  "mon": 90.0,
+  "knock_on": 106.0,
+  "h_fg_kj_kg": 920.0,
+  "density_kg_m3": 789.0,
+  "ethanol_mass_fraction": 1.0,
+  "laminar_bm_m_s": 0.465,
+  "laminar_bphi_m_s": -1.0,
+  "laminar_phi_m": 1.1,
+  "preignition_surface_temp_c": 830.0,
+  "provenance": {
+    "/afr_stoich": {
+      "kind": "literature",
+      "note": "Apêndice A.5 da spec vehicle-catalog",
+      "source": "Heywood, J. B. Internal Combustion Engine Fundamentals (1988)"
+    },
+    "/density_kg_m3": {
+      "kind": "literature",
+      "note": "Apêndice A.5 da spec vehicle-catalog",
+      "source": "Heywood, J. B. Internal Combustion Engine Fundamentals (1988)"
+    },
+    "/ethanol_mass_fraction": {
+      "kind": "literature",
+      "note": "fração mássica de etanol",
+      "source": "especificação brasileira de combustíveis"
+    },
+    "/h_fg_kj_kg": {
+      "kind": "literature",
+      "note": "Apêndice A.5 da spec vehicle-catalog",
+      "source": "Heywood, J. B. Internal Combustion Engine Fundamentals (1988)"
+    },
+    "/knock_on": {
+      "kind": "estimate",
+      "note": "estimativa a validar"
+    },
+    "/laminar_bm_m_s": {
+      "kind": "estimate",
+      "note": "interpolação linear pela fração mássica de etanol"
+    },
+    "/laminar_bphi_m_s": {
+      "kind": "estimate",
+      "note": "interpolação linear pela fração mássica de etanol"
+    },
+    "/laminar_phi_m": {
+      "kind": "estimate",
+      "note": "interpolação linear pela fração mássica de etanol"
+    },
+    "/lhv_mj_kg": {
+      "kind": "literature",
+      "note": "Apêndice A.5 da spec vehicle-catalog",
+      "source": "Heywood, J. B. Internal Combustion Engine Fundamentals (1988)"
+    },
+    "/mon": {
+      "kind": "estimate",
+      "note": "estimativa a validar"
+    },
+    "/preignition_surface_temp_c": {
+      "kind": "estimate",
+      "note": "estimativa a validar"
+    },
+    "/ron": {
+      "kind": "estimate",
+      "note": "estimativa a validar"
+    }
+  }
+}

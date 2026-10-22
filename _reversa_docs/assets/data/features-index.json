@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-19T02:13:52+00:00",
+  "note": "Greenfield: as specs ficam em _reversa_sdd/sdd/*.md e as features em _reversa_forward/<id>/requirements.md",
+  "features": [
+    {
+      "id": "001-simulador-remap",
+      "href": "features/001-simulador-remap.html",
+      "title": "Simulador Completo de Remap em Dinamômetro"
+    },
+    {
+      "id": "002-evolucao-comercial",
+      "href": "features/002-evolucao-comercial.html",
+      "title": "Evolução Comercial"
+    },
+    {
+      "id": "003-rust-audio-qa-total",
+      "href": "features/003-rust-audio-qa-total.html",
+      "title": "Motor Nativo em Rust, Acústica Realista, QA Total e E2E"
+    }
+  ],
+  "specs": [
+    {
+      "id": "platform-foundation",
+      "title": "Fundação da plataforma",
+      "rf": 24,
+      "summary": "Monorepo, FastAPI com lifespan, config SIMREMAP_, erros RFC 7807, Alembic, worker do laço, Docker e portões de qualidade.",
+      "package": "core, api, db",
+      "path": "_reversa_sdd/sdd/platform-foundation.md"
+    },
+    {
+      "id": "engine-physics-core",
+      "title": "Física do motor",
+      "rf": 26,
+      "summary": "Modelo termodinâmico 0D/1D do ciclo Otto (aspirado, turbo, supercharged), passo fixo determinístico de 100 a 1000 Hz.",
+      "package": "physics",
+      "path": "_reversa_sdd/sdd/engine-physics-core.md"
+    },
+    {
+      "id": "vehicle-catalog",
+      "title": "Catálogo de veículos",
+      "rf": 29,
+      "summary": "Fonte única dos 4 veículos: geometria, sobrealimentação, bicos, combustíveis, limites e calibração de fábrica.",
+      "package": "catalog",
+      "path": "_reversa_sdd/sdd/vehicle-catalog.md"
+    },
+    {
+      "id": "dyno-bench",
+      "title": "Dinamômetro",
+      "rf": 26,
+      "summary": "Rolo inercial, absorvedor de Foucault, sessões e as 4 puxadas, com correção SAE J1349 ou DIN 70020.",
+      "package": "dyno",
+      "path": "_reversa_sdd/sdd/dyno-bench.md"
+    },
+    {
+      "id": "knock-and-failure-model",
+      "title": "Knock e falhas",
+      "rf": 32,
+      "summary": "Livengood-Wu e Douaud-Eyzat, pré-ignição, dano por componente, 6 modos de falha e laudo forense.",
+      "package": "damage",
+      "path": "_reversa_sdd/sdd/knock-and-failure-model.md"
+    },
+    {
+      "id": "ecu-core",
+      "title": "Núcleo da ECU",
+      "rf": 33,
+      "summary": "Tabelas 2D/3D, calibração versionada, estratégias e arbitragem determinística, em até 0,1 ms por tick.",
+      "package": "ecu",
+      "path": "_reversa_sdd/sdd/ecu-core.md"
+    },
+    {
+      "id": "ecu-profiles",
+      "title": "Perfis de ECU",
+      "rf": 31,
+      "summary": "OEM-Stage, FT-Pro, M1-Race e HT-Elite; BaseSetup standalone; swap OEM para standalone com assistente.",
+      "package": "profiles",
+      "path": "_reversa_sdd/sdd/ecu-profiles.md"
+    },
+    {
+      "id": "telemetry-datalogger",
+      "title": "Telemetria e datalogger",
+      "rf": 25,
+      "summary": "WebSocket com envelope seq, decimação para 30 a 60 FPS, DataLog com SHA-256, export e import.",
+      "package": "telemetry",
+      "path": "_reversa_sdd/sdd/telemetry-datalogger.md"
+    },
+    {
+      "id": "training-scenarios",
+      "title": "Cenários de treino",
+      "rf": 27,
+      "summary": "Perfis locais, cenários com defeitos ocultos, tentativas, avaliação objetiva e pacotes assinados.",
+      "package": "scenarios",
+      "path": "_reversa_sdd/sdd/training-scenarios.md"
+    },
+    {
+      "id": "dyno-cockpit-ui",
+      "title": "Bancada (UI)",
+      "rf": 22,
+      "summary": "Curvas, gauges, espectrograma, carro no rolo, som do motor, datalogger e laudo no navegador.",
+      "package": "frontend dyno-cockpit",
+      "path": "_reversa_sdd/sdd/dyno-cockpit-ui.md"
+    },
+    {
+      "id": "ecu-tuning-ui",
+      "title": "Software de ECU (UI)",
+      "rf": 22,
+      "summary": "Editor de tabelas 2D/3D até 32×32, estratégias, assistente de swap, histórico com diff.",
+      "package": "frontend ecu-tuning",
+      "path": "_reversa_sdd/sdd/ecu-tuning-ui.md"
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "headline": {"failure": "Falha do motor", "near_miss": "Quase falha do motor"},
+  "outcome_beginner": {
+    "failure": "O motor quebrou e ficou bloqueado para proteger o resto das peças.",
+    "near_miss": "O motor não quebrou, mas chegou muito perto do limite."
+  },
+  "component": {
+    "piston": "pistão do cilindro $cylinder",
+    "rod": "biela do cilindro $cylinder",
+    "valves": "válvulas do cilindro $cylinder",
+    "head_gasket": "junta do cabeçote",
+    "bearings": "bronzinas",
+    "turbine": "turbina",
+    "none": "motor"
+  },
+  "mode": {
+    "knock_damage": "Dano por knock",
+    "pre_ignition": "Pré-ignição",
+    "egt_overtemp": "EGT excessiva",
+    "rod_failure": "Quebra de biela",
+    "piston_failure": "Furo de pistão",
+    "turbo_meltdown": "Derretimento da turbina",
+    "none": "Knock severo"
+  },
+  "mechanism": {
+    "knock_erosion": "erosão da coroa por knock",
+    "ring_land_crack": "trinca na zona dos anéis",
+    "head_gasket_breach": "rompimento da junta",
+    "piston_thermal_melt": "fusão térmica do pistão",
+    "valve_piston_contact": "contato válvula-pistão",
+    "exhaust_valve_burn": "queima da válvula de escape",
+    "rod_overload": "sobrecarga da biela",
+    "rod_instant_bend": "empeno instantâneo da biela",
+    "bearing_spin": "giro da bronzina",
+    "hot_spot_preignition": "pré-ignição por ponto quente",
+    "lspi": "pré-ignição em baixa rotação (LSPI)",
+    "turbine_creep": "fluência térmica da turbina",
+    "turbo_overspeed_burst": "explosão por sobre-rotação da turbina",
+    "none": "knock severo"
+  },
+  "cause_beginner": {
+    "knock": "A mistura explodiu antes da hora (knock) porque o boost e o avanço ficaram altos demais.",
+    "thermal": "O escape ficou quente demais por tempo demais e o metal amoleceu.",
+    "rod": "O motor fez mais força do que a biela aguenta.",
+    "preignition": "A mistura pegou fogo sozinha antes da faísca por causa de um ponto muito quente.",
+    "overrev": "O motor ou a turbina giraram mais rápido do que as peças aguentam."
+  },
+  "cause_intermediate": {
+    "knock": "A autoignição da zona não queimada passou de I_LW 1 antes do fim da combustão; o retardo da ECU não bastou.",
+    "thermal": "Temperatura acima do limite do material durante tempo suficiente para consumir a vida de fluência (Larson-Miller).",
+    "rod": "A razão de carga da biela passou de 1 por torque ou força de pico.",
+    "preignition": "O ponto quente ou a carga em baixa rotação provocou pré-ignição com pressão acima do limite.",
+    "overrev": "A rotação passou do limite de flutuação das válvulas ou da turbina."
+  },
+  "action_beginner": {
+    "R-KNOCK-01": "Tire de 2 a 4 graus de avanço nos cilindros $cylinders.",
+    "R-KNOCK-02": "Tire de 2 a 3 graus do avanço base.",
+    "R-LAMBDA-01": "Ajuste o lambda para 0,78–0,82 em alta carga.",
+    "R-BOOST-01": "Baixe o boost em 20 a 40 kPa.",
+    "R-ROD-01": "Limite o torque a $value_max N·m.",
+    "R-EGT-01": "Deixe a mistura mais rica (lambda 0,78–0,82) e reduza o avanço.",
+    "R-PI-01": "Esfrie o ar de admissão e tire de 3 a 5 graus de avanço.",
+    "R-LSPI-01": "Baixe o boost abaixo de 3000 rpm.",
+    "R-REV-01": "Baixe o limitador de rotação para $value_max rpm."
+  },
+  "none_txt": "nenhum"
+}

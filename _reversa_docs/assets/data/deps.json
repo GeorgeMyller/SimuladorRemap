@@ -1,0 +1,664 @@
+{
+ "schemaVersion": 1,
+ "generatedAt": "2026-10-19T02:07:48+00:00",
+ "granularity": "package",
+ "nodes": [
+  {
+   "id": "backend/api",
+   "layer": "backend"
+  },
+  {
+   "id": "backend/career",
+   "layer": "backend"
+  },
+  {
+   "id": "backend/catalog",
+   "layer": "backend"
+  },
+  {
+   "id": "backend/core",
+   "layer": "backend"
+  },
+  {
+   "id": "backend/damage",
+   "layer": "backend"
+  },
+  {
+   "id": "backend/db",
+   "layer": "backend"
+  },
+  {
+   "id": "backend/dyno",
+   "layer": "backend"
+  },
+  {
+   "id": "backend/ecu",
+   "layer": "backend"
+  },
+  {
+   "id": "backend/physics",
+   "layer": "backend"
+  },
+  {
+   "id": "backend/profiles",
+   "layer": "backend"
+  },
+  {
+   "id": "backend/scenarios",
+   "layer": "backend"
+  },
+  {
+   "id": "backend/simremap",
+   "layer": "backend"
+  },
+  {
+   "id": "backend/telemetry",
+   "layer": "backend"
+  },
+  {
+   "id": "frontend/app",
+   "layer": "frontend"
+  },
+  {
+   "id": "frontend/career",
+   "layer": "frontend"
+  },
+  {
+   "id": "frontend/dyno-cockpit",
+   "layer": "frontend"
+  },
+  {
+   "id": "frontend/ecu-tuning",
+   "layer": "frontend"
+  },
+  {
+   "id": "frontend/lib",
+   "layer": "frontend"
+  },
+  {
+   "id": "frontend/pixel-cars",
+   "layer": "frontend"
+  },
+  {
+   "id": "frontend/root",
+   "layer": "frontend"
+  },
+  {
+   "id": "frontend/scenarios",
+   "layer": "frontend"
+  },
+  {
+   "id": "frontend/workshop",
+   "layer": "frontend"
+  },
+  {
+   "id": "native/cycle",
+   "layer": "native"
+  },
+  {
+   "id": "native/damage",
+   "layer": "native"
+  },
+  {
+   "id": "native/lib",
+   "layer": "native"
+  },
+  {
+   "id": "native/tables",
+   "layer": "native"
+  }
+ ],
+ "edges": [
+  {
+   "from": "backend/api",
+   "to": "backend/catalog",
+   "weight": 1
+  },
+  {
+   "from": "backend/api",
+   "to": "backend/core",
+   "weight": 6
+  },
+  {
+   "from": "backend/api",
+   "to": "backend/db",
+   "weight": 2
+  },
+  {
+   "from": "backend/career",
+   "to": "backend/core",
+   "weight": 5
+  },
+  {
+   "from": "backend/career",
+   "to": "backend/db",
+   "weight": 2
+  },
+  {
+   "from": "backend/career",
+   "to": "backend/dyno",
+   "weight": 1
+  },
+  {
+   "from": "backend/career",
+   "to": "backend/scenarios",
+   "weight": 1
+  },
+  {
+   "from": "backend/catalog",
+   "to": "backend/core",
+   "weight": 6
+  },
+  {
+   "from": "backend/catalog",
+   "to": "backend/ecu",
+   "weight": 1
+  },
+  {
+   "from": "backend/catalog",
+   "to": "backend/physics",
+   "weight": 1
+  },
+  {
+   "from": "backend/core",
+   "to": "backend/catalog",
+   "weight": 1
+  },
+  {
+   "from": "backend/core",
+   "to": "backend/db",
+   "weight": 1
+  },
+  {
+   "from": "backend/core",
+   "to": "backend/physics",
+   "weight": 1
+  },
+  {
+   "from": "backend/damage",
+   "to": "backend/catalog",
+   "weight": 4
+  },
+  {
+   "from": "backend/damage",
+   "to": "backend/core",
+   "weight": 8
+  },
+  {
+   "from": "backend/damage",
+   "to": "backend/db",
+   "weight": 1
+  },
+  {
+   "from": "backend/damage",
+   "to": "backend/dyno",
+   "weight": 3
+  },
+  {
+   "from": "backend/damage",
+   "to": "backend/ecu",
+   "weight": 1
+  },
+  {
+   "from": "backend/damage",
+   "to": "backend/physics",
+   "weight": 5
+  },
+  {
+   "from": "backend/damage",
+   "to": "backend/telemetry",
+   "weight": 1
+  },
+  {
+   "from": "backend/damage",
+   "to": "native/damage",
+   "weight": 1
+  },
+  {
+   "from": "backend/db",
+   "to": "backend/career",
+   "weight": 1
+  },
+  {
+   "from": "backend/db",
+   "to": "backend/catalog",
+   "weight": 1
+  },
+  {
+   "from": "backend/db",
+   "to": "backend/core",
+   "weight": 3
+  },
+  {
+   "from": "backend/db",
+   "to": "backend/damage",
+   "weight": 1
+  },
+  {
+   "from": "backend/db",
+   "to": "backend/dyno",
+   "weight": 1
+  },
+  {
+   "from": "backend/db",
+   "to": "backend/scenarios",
+   "weight": 1
+  },
+  {
+   "from": "backend/dyno",
+   "to": "backend/catalog",
+   "weight": 6
+  },
+  {
+   "from": "backend/dyno",
+   "to": "backend/core",
+   "weight": 8
+  },
+  {
+   "from": "backend/dyno",
+   "to": "backend/damage",
+   "weight": 9
+  },
+  {
+   "from": "backend/dyno",
+   "to": "backend/db",
+   "weight": 1
+  },
+  {
+   "from": "backend/dyno",
+   "to": "backend/ecu",
+   "weight": 5
+  },
+  {
+   "from": "backend/dyno",
+   "to": "backend/physics",
+   "weight": 5
+  },
+  {
+   "from": "backend/dyno",
+   "to": "backend/profiles",
+   "weight": 2
+  },
+  {
+   "from": "backend/ecu",
+   "to": "backend/api",
+   "weight": 1
+  },
+  {
+   "from": "backend/ecu",
+   "to": "backend/catalog",
+   "weight": 2
+  },
+  {
+   "from": "backend/ecu",
+   "to": "backend/core",
+   "weight": 8
+  },
+  {
+   "from": "backend/ecu",
+   "to": "backend/db",
+   "weight": 1
+  },
+  {
+   "from": "backend/ecu",
+   "to": "backend/physics",
+   "weight": 2
+  },
+  {
+   "from": "backend/ecu",
+   "to": "backend/profiles",
+   "weight": 1
+  },
+  {
+   "from": "backend/ecu",
+   "to": "native/tables",
+   "weight": 2
+  },
+  {
+   "from": "backend/physics",
+   "to": "backend/catalog",
+   "weight": 13
+  },
+  {
+   "from": "backend/physics",
+   "to": "backend/core",
+   "weight": 3
+  },
+  {
+   "from": "backend/physics",
+   "to": "backend/dyno",
+   "weight": 2
+  },
+  {
+   "from": "backend/physics",
+   "to": "native/cycle",
+   "weight": 2
+  },
+  {
+   "from": "backend/profiles",
+   "to": "backend/api",
+   "weight": 1
+  },
+  {
+   "from": "backend/profiles",
+   "to": "backend/catalog",
+   "weight": 8
+  },
+  {
+   "from": "backend/profiles",
+   "to": "backend/core",
+   "weight": 8
+  },
+  {
+   "from": "backend/profiles",
+   "to": "backend/db",
+   "weight": 2
+  },
+  {
+   "from": "backend/profiles",
+   "to": "backend/ecu",
+   "weight": 17
+  },
+  {
+   "from": "backend/profiles",
+   "to": "backend/physics",
+   "weight": 2
+  },
+  {
+   "from": "backend/scenarios",
+   "to": "backend/api",
+   "weight": 1
+  },
+  {
+   "from": "backend/scenarios",
+   "to": "backend/catalog",
+   "weight": 3
+  },
+  {
+   "from": "backend/scenarios",
+   "to": "backend/core",
+   "weight": 12
+  },
+  {
+   "from": "backend/scenarios",
+   "to": "backend/db",
+   "weight": 5
+  },
+  {
+   "from": "backend/scenarios",
+   "to": "backend/dyno",
+   "weight": 7
+  },
+  {
+   "from": "backend/scenarios",
+   "to": "backend/ecu",
+   "weight": 2
+  },
+  {
+   "from": "backend/scenarios",
+   "to": "backend/physics",
+   "weight": 2
+  },
+  {
+   "from": "backend/scenarios",
+   "to": "backend/telemetry",
+   "weight": 5
+  },
+  {
+   "from": "backend/telemetry",
+   "to": "backend/api",
+   "weight": 1
+  },
+  {
+   "from": "backend/telemetry",
+   "to": "backend/catalog",
+   "weight": 2
+  },
+  {
+   "from": "backend/telemetry",
+   "to": "backend/core",
+   "weight": 9
+  },
+  {
+   "from": "backend/telemetry",
+   "to": "backend/db",
+   "weight": 1
+  },
+  {
+   "from": "backend/telemetry",
+   "to": "backend/dyno",
+   "weight": 3
+  },
+  {
+   "from": "frontend/app",
+   "to": "frontend/career",
+   "weight": 1
+  },
+  {
+   "from": "frontend/app",
+   "to": "frontend/dyno-cockpit",
+   "weight": 1
+  },
+  {
+   "from": "frontend/app",
+   "to": "frontend/ecu-tuning",
+   "weight": 1
+  },
+  {
+   "from": "frontend/app",
+   "to": "frontend/lib",
+   "weight": 3
+  },
+  {
+   "from": "frontend/app",
+   "to": "frontend/pixel-cars",
+   "weight": 1
+  },
+  {
+   "from": "frontend/app",
+   "to": "frontend/scenarios",
+   "weight": 2
+  },
+  {
+   "from": "frontend/app",
+   "to": "frontend/workshop",
+   "weight": 3
+  },
+  {
+   "from": "frontend/career",
+   "to": "frontend/app",
+   "weight": 2
+  },
+  {
+   "from": "frontend/career",
+   "to": "frontend/lib",
+   "weight": 2
+  },
+  {
+   "from": "frontend/career",
+   "to": "frontend/scenarios",
+   "weight": 1
+  },
+  {
+   "from": "frontend/dyno-cockpit",
+   "to": "frontend/app",
+   "weight": 1
+  },
+  {
+   "from": "frontend/dyno-cockpit",
+   "to": "frontend/ecu-tuning",
+   "weight": 4
+  },
+  {
+   "from": "frontend/dyno-cockpit",
+   "to": "frontend/lib",
+   "weight": 23
+  },
+  {
+   "from": "frontend/dyno-cockpit",
+   "to": "frontend/pixel-cars",
+   "weight": 1
+  },
+  {
+   "from": "frontend/dyno-cockpit",
+   "to": "frontend/scenarios",
+   "weight": 1
+  },
+  {
+   "from": "frontend/ecu-tuning",
+   "to": "frontend/app",
+   "weight": 1
+  },
+  {
+   "from": "frontend/ecu-tuning",
+   "to": "frontend/dyno-cockpit",
+   "weight": 4
+  },
+  {
+   "from": "frontend/ecu-tuning",
+   "to": "frontend/lib",
+   "weight": 12
+  },
+  {
+   "from": "frontend/root",
+   "to": "frontend/app",
+   "weight": 1
+  },
+  {
+   "from": "frontend/scenarios",
+   "to": "frontend/app",
+   "weight": 2
+  },
+  {
+   "from": "frontend/scenarios",
+   "to": "frontend/lib",
+   "weight": 4
+  },
+  {
+   "from": "frontend/workshop",
+   "to": "frontend/lib",
+   "weight": 3
+  },
+  {
+   "from": "native/lib",
+   "to": "native/cycle",
+   "weight": 1
+  },
+  {
+   "from": "native/lib",
+   "to": "native/damage",
+   "weight": 1
+  },
+  {
+   "from": "native/lib",
+   "to": "native/tables",
+   "weight": 1
+  }
+ ],
+ "cycles": [
+  [
+   "backend/api",
+   "backend/career",
+   "backend/catalog",
+   "backend/core",
+   "backend/damage",
+   "backend/db",
+   "backend/dyno",
+   "backend/ecu",
+   "backend/physics",
+   "backend/profiles",
+   "backend/scenarios",
+   "backend/telemetry"
+  ],
+  [
+   "frontend/app",
+   "frontend/career",
+   "frontend/dyno-cockpit",
+   "frontend/ecu-tuning",
+   "frontend/scenarios"
+  ]
+ ],
+ "subcomponents": [
+  {
+   "id": "backend/catalog:upgrades",
+   "parent": "backend/catalog",
+   "label": "catalog/upgrades.py: peças e apply_upgrades",
+   "feature": "002",
+   "new002": true
+  },
+  {
+   "id": "backend/physics:fuel_blend",
+   "parent": "backend/physics",
+   "label": "physics/fuel_blend.py: blend E27 a E100",
+   "feature": "002",
+   "new002": true
+  },
+  {
+   "id": "backend/ecu:vvt",
+   "parent": "backend/ecu",
+   "label": "ecu/strategies/vvt.py: estratégia VVT",
+   "feature": "002",
+   "new002": true
+  },
+  {
+   "id": "frontend/dyno-cockpit:live-tuning",
+   "parent": "frontend/dyno-cockpit",
+   "label": "dyno-cockpit/live-tuning: tela dividida",
+   "feature": "002",
+   "new002": true
+  },
+  {
+   "id": "frontend/ecu-tuning:quickTune",
+   "parent": "frontend/ecu-tuning",
+   "label": "ecu-tuning/ops/quickTune.ts: Q, H, V, B",
+   "feature": "002",
+   "new002": true
+  },
+  {
+   "id": "backend/core:native",
+   "parent": "backend/core",
+   "label": "core/native.py: seletor SIMREMAP_NATIVE=auto|off|on",
+   "feature": "003",
+   "new002": false
+  },
+  {
+   "id": "backend/physics:kernels",
+   "parent": "backend/physics",
+   "label": "physics/kernels.py: ponte CycleKernel e GasKernel",
+   "feature": "003",
+   "new002": false
+  },
+  {
+   "id": "backend/ecu:native_tables",
+   "parent": "backend/ecu",
+   "label": "ecu/native_tables.py: tabelas em lote no TableSet",
+   "feature": "003",
+   "new002": false
+  },
+  {
+   "id": "backend/damage:native_bridge",
+   "parent": "backend/damage",
+   "label": "damage/native_bridge.py: kernels de knock e dano",
+   "feature": "003",
+   "new002": false
+  },
+  {
+   "id": "frontend/dyno-cockpit:audio",
+   "parent": "frontend/dyno-cockpit",
+   "label": "dyno-cockpit/audio: síntese por pulsos (003)",
+   "feature": "003",
+   "new002": false
+  }
+ ],
+ "new002Packages": [
+  "backend/career",
+  "frontend/career",
+  "frontend/workshop"
+ ],
+ "new003Packages": [
+  "native/tables",
+  "native/cycle",
+  "native/damage",
+  "native/lib"
+ ]
+}

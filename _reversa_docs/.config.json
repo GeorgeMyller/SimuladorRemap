@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-18T23:20:46+00:00",
+  "reversa": {
+    "version": "1.3.4"
+  },
+  "projectName": "SimuladorRemap",
+  "interview": {
+    "readerProfile": "novo_dev",
+    "depth": "full",
+    "visualStyle": "sober",
+    "mode": "--auto"
+  },
+  "seed": {
+    "hash": "sha256:40d6644e4aeb294ce869ca40c95dcf5aed6a2dbb93e6e5ada1edbe8f2a6deff9",
+    "source": "project_name",
+    "explicitOverride": null
+  },
+  "knowledgeSources": {
+    "soul": false,
+    "chronicle": false,
+    "topology": false,
+    "sddSpecs": [
+      "dyno-bench",
+      "dyno-cockpit-ui",
+      "ecu-core",
+      "ecu-profiles",
+      "ecu-tuning-ui",
+      "engine-physics-core",
+      "knock-and-failure-model",
+      "platform-foundation",
+      "telemetry-datalogger",
+      "training-scenarios",
+      "vehicle-catalog"
+    ],
+    "sourceCode": true,
+    "extra": [
+      "_reversa_sdd/prd.md",
+      "_reversa_sdd/personas.md",
+      "_reversa_sdd/ideation.md",
+      "_reversa_sdd/addenda/001-simulador-remap.md",
+      "_reversa_forward/001-simulador-remap/",
+      "_reversa_forward/002-evolucao-comercial/",
+      "_reversa_sdd/addenda/002-evolucao-comercial.md",
+      "_reversa_forward/003-rust-audio-qa-total/",
+      "backend/rust/simremap_rs/"
+    ]
+  },
+  "pagesPlanned": [
+    "arquitetura.html",
+    "modulos.html",
+    "metricas.html",
+    "timeline.html",
+    "glossario.html",
+    "deck.html",
+    "features/index.html",
+    "features/001-simulador-remap.html",
+    "features/002-evolucao-comercial.html",
+    "features/003-rust-audio-qa-total.html",
+    "index.html"
+  ],
+  "pagesOmitted": [
+    {
+      "page": "topologia.html",
+      "reason": "topology not detected (_reversa_sdd/architecture.md ausente)"
+    }
+  ],
+  "lastRegeneration": {
+    "at": "2026-10-19T02:14:19+00:00",
+    "option": "Regenerar tudo",
+    "mode": "--auto",
+    "backup": ".backup-20261019-030734"
+  }
+}

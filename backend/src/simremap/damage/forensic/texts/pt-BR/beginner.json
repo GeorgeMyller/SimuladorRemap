@@ -1,0 +1,6 @@
+{
+  "title": "$headline: $component_label",
+  "summary": "$cause_beginner",
+  "explanation": "$outcome_beginner O que fazer agora:\n$actions_numbered\nDepois, restaure o motor e repita a puxada com calma.",
+  "questions": []
+}

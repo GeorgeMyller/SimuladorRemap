@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deck | SimuladorRemap</title>
+<meta name="reversa-category" content="diagram">
+<meta name="reversa-producer-agent" content="reversa-docs-storyteller">
+<meta name="reversa-template" content="deck">
+<meta name="reversa-generated-at" content="2026-10-19T02:13:52+00:00">
+
+<link rel="stylesheet" href="assets/css/site.css">
+
+</head>
+<body data-style="sober" data-page-id="deck" data-base="">
+<a class="skip" href="#main">Pular para o conteúdo</a>
+<header class="rv-header">
+  <a class="rv-brand" href="index.html"><span class="seal-slot"><svg class="seal-mini" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Selo do projeto SimuladorRemap" data-pattern="noise-strata" data-seed="40d6644e"><circle cx="32.0" cy="32.0" r="32.0" fill="#f5f3ee"/><path d="M47.2,55.7 L22.9,58.7 L5.5,41.5 L8.0,17.2 L28.6,4.0 L51.8,11.9 L60.0,34.9 Z" fill="#4f6b5d" fill-opacity="0.10" stroke="#4f6b5d" stroke-width="3.2" stroke-linejoin="round"/><path d="M22.9,48.4 L13.5,35.1 L18.0,19.5 L33.1,13.3 L47.3,21.2 L50.0,37.2 L39.2,49.4 Z" fill="#a06b4a" fill-opacity="0.20" stroke="#a06b4a" stroke-width="3.2" stroke-linejoin="round"/><path d="M41.2,33.7 L36.4,40.3 L28.3,40.6 L23.0,34.5 L24.4,26.5 L31.6,22.6 L39.1,25.8 Z" fill="#4f6b5d" fill-opacity="0.15" stroke="#4f6b5d" stroke-width="3.2" stroke-linejoin="round"/><line x1="32.0" y1="32.0" x2="60.2" y2="32.0" stroke="#1e2937" stroke-opacity="0.25" stroke-width="2.24"/><line x1="32.0" y1="32.0" x2="49.6" y2="54.0" stroke="#1e2937" stroke-opacity="0.25" stroke-width="2.24"/><line x1="32.0" y1="32.0" x2="25.7" y2="59.5" stroke="#1e2937" stroke-opacity="0.25" stroke-width="2.24"/><line x1="32.0" y1="32.0" x2="6.6" y2="44.2" stroke="#1e2937" stroke-opacity="0.25" stroke-width="2.24"/><line x1="32.0" y1="32.0" x2="6.6" y2="19.8" stroke="#1e2937" stroke-opacity="0.25" stroke-width="2.24"/><line x1="32.0" y1="32.0" x2="25.7" y2="4.5" stroke="#1e2937" stroke-opacity="0.25" stroke-width="2.24"/><line x1="32.0" y1="32.0" x2="49.6" y2="10.0" stroke="#1e2937" stroke-opacity="0.25" stroke-width="2.24"/><circle cx="32.0" cy="32.0" r="5.1" fill="#1e2937"/><circle cx="32.0" cy="32.0" r="2.2" fill="#a06b4a"/></svg></span><span>SimuladorRemap <small>docs</small></span></a>
+  <nav class="reversa-doc-nav" aria-label="Navegação do mini-site"><a href="index.html" data-page-id="index">Visão geral</a><a href="arquitetura.html" data-page-id="arquitetura">Arquitetura 3D</a><a href="modulos.html" data-page-id="modulos">Módulos</a><a href="metricas.html" data-page-id="metricas">Métricas</a><a href="timeline.html" data-page-id="timeline">Timeline</a><a href="glossario.html" data-page-id="glossario">Glossário</a><a href="deck.html" data-page-id="deck">Deck</a><a href="features/index.html" data-page-id="features">Features</a></nav>
+</header>
+<main id="main" class="rv-main">
+
+<style>
+#deck{background:var(--surface);border:1px solid var(--line);border-radius:14px;min-height:560px;padding:48px 64px;position:relative;text-align:center}
+#deck .slide h1{font-size:38px;margin-bottom:22px} #deck .slide-body{max-width:900px;margin:0 auto;font-size:18px;text-align:left}
+#deck .slide-body .flow{font-size:15px} #deck:fullscreen{display:flex;flex-direction:column;justify-content:center}
+.deck-bar{display:flex;gap:8px;align-items:center;justify-content:center;margin-top:12px}
+</style>
+<div id="deck" tabindex="0" aria-label="Apresentação do projeto"><section class="slide" data-i="0" aria-roledescription="slide" aria-label="1 de 10"><h1>SimuladorRemap</h1><div class="slide-body"><div id="deck-seal" style="width:200px;height:200px;margin:0 auto 20px"></div><p class="lead" style="margin:auto">Simulador e plataforma de treino de remap automotivo em dinamômetro, com física termodinâmica real.</p></div></section><section class="slide" data-i="1" aria-roledescription="slide" aria-label="2 de 10" hidden><h1>Propósito</h1><div class="slide-body"><p>Aprender calibração exige carro, dinamômetro e aceitar o risco de quebrar o motor. As ferramentas de ECU não simulam o motor e os jogos não oferecem ECU completa.</p><p><b>O SimuladorRemap</b> une as duas coisas: ECU OEM e standalone sobre um motor 0D/1D que ganha potência ou quebra de forma coerente.</p></div></section><section class="slide" data-i="2" aria-roledescription="slide" aria-label="3 de 10" hidden><h1>Para quem</h1><div class="slide-body"><div class='grid g3'><div class='card'><h3>Lucas</h3>Aluno de remap OEM. Stage 1, Stage 2 e pops &amp; bangs sem quebrar motor real.</div><div class='card'><h3>Rodrigo</h3>Preparador em transição para standalone. VE 3D, PID de boost, two-step.</div><div class='card'><h3>Prof. Marcos</h3>Instrutor com turmas de 20 a 50 alunos e um único dinamômetro.</div></div></div></section><section class="slide" data-i="3" aria-roledescription="slide" aria-label="4 de 10" hidden><h1>Arquitetura</h1><div class="slide-body"><p>Monólito modular: 12 pacotes Python (FastAPI), 7 features React e, desde a 003, kernels nativos em Rust (PyO3 ABI3) com fallback Python, num container por estação.</p><div class='flow' style='justify-content:center'><span>sensors</span><b>→</b><span>ecu</span><b>→</b><span>physics</span><b>→</b><span>damage</span><b>→</b><span>telemetry</span></div><p><a href='arquitetura.html'>Ver a arquitetura completa</a></p></div></section><section class="slide" data-i="4" aria-roledescription="slide" aria-label="5 de 10" hidden><h1>Módulos</h1><div class="slide-body"><p>89 arestas de importação entre pacotes, incluindo as pontes ecu → tables.rs, physics → cycle.rs e damage → damage.rs. <code>core</code> e <code>catalog</code> são os mais importados; <code>profiles</code> depende fortemente de <code>ecu</code>.</p><p><a href='modulos.html'>Ver o grafo de módulos</a></p></div></section><section class="slide" data-i="5" aria-roledescription="slide" aria-label="6 de 10" hidden><h1>Métricas</h1><div class="slide-body"><div class='grid g3'><div class='card kpi'><div class='v'>2,8×</div><div class='l'>física com Rust</div></div><div class='card kpi'><div class='v'>627</div><div class='l'>testes frontend</div></div><div class='card kpi'><div class='v'>9/9</div><div class='l'>accuracy, nativo ligado e desligado</div></div></div><p><a href='metricas.html'>Ver o dashboard</a></p></div></section><section class="slide" data-i="6" aria-roledescription="slide" aria-label="7 de 10" hidden><h1>Linha do tempo</h1><div class="slide-body"><ul><li>17/10 23:20 UTC: brief, ideation, personas e PRD</li><li>18/10 01:11 a 09:11: código da feature 001 (452 ações)</li><li>18/10 11:03: adendo da 001</li><li>18/10 21:25 a 23:30: feature 002 (62 ações) e documentação visual</li><li>18/10 23:36 a 19/10 01:55: feature 003 (Rust, áudio, QA, E2E)</li></ul><p><a href='timeline.html'>Ver a linha do tempo</a></p></div></section><section class="slide" data-i="7" aria-roledescription="slide" aria-label="8 de 10" hidden><h1>Decisões fundadoras</h1><div class="slide-body"><ul><li>Laço físico determinístico em processo dedicado, 1000 Hz</li><li>Tempo só por ticks; SHA-256 em física, dano, datalog e avaliação</li><li>Local-first e zero PII: só nickname</li><li>Nomes genéricos de ECU: OEM-Stage, FT-Pro, M1-Race, HT-Elite</li></ul></div></section><section class="slide" data-i="8" aria-roledescription="slide" aria-label="9 de 10" hidden><h1>Feature destaque: 003</h1><div class="slide-body"><p>Quatro frentes: motor nativo em Rust com fallback Python (física 2,8×, ECU −28 %, dano −84 %), acústica sem estridência em 1–4 kHz, QA total (make type limpo, 7 cenários e 7 ordens aprovados) e 8 specs E2E novos.</p><p><a href='features/003-rust-audio-qa-total.html'>Ver a feature 003</a> · <a href='features/002-evolucao-comercial.html'>Ver a 002</a> · <a href='features/001-simulador-remap.html'>Ver a 001</a></p></div></section><section class="slide" data-i="9" aria-roledescription="slide" aria-label="10 de 10" hidden><h1>Próximos passos</h1><div class="slide-body"><ol><li>Fechar T027: make check completo com o nativo ligado e desligado.</li><li>Fechar T030: adendo da 003 com /reversa-sync.</li><li>Medir o tick no hardware de referência de 4 núcleos.</li><li>Rodar T091 (smoke do container) com espaço no Docker.</li><li>Rodar /reversa para extrair soul e chronicle e enriquecer este site.</li></ol><p><a href='glossario.html'>Consultar o glossário</a></p></div></section></div>
+<div class="deck-bar"><button class="btn" id="prev" aria-label="Slide anterior">← Anterior</button><span id="pos" class="muted"></span>
+<button class="btn" id="next" aria-label="Próximo slide">Próximo →</button><button class="btn" id="fs">Tela cheia (F)</button></div>
+<p class="muted" style="text-align:center">Use as setas ← e → do teclado e a tecla F para tela cheia.</p>
+
+</main>
+<footer class="rv-footer">Gerado por reversa-docs-storyteller em 2026-10-19T02:13:52+00:00 · Time Reversa Docs · funciona offline via file://</footer>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/nav.js"></script>
+<script src="assets/js/sidebar.js"></script>
+
+<script>
+(function () {
+  var s = document.querySelectorAll(".slide"), i = 0, pos = document.getElementById("pos"), deck = document.getElementById("deck");
+  function go(n) { i = Math.max(0, Math.min(s.length - 1, n)); s.forEach(function (x, k) { x.hidden = k !== i; }); pos.textContent = (i + 1) + " / " + s.length; }
+  document.getElementById("prev").onclick = function () { go(i - 1); };
+  document.getElementById("next").onclick = function () { go(i + 1); };
+  document.getElementById("fs").onclick = function () { if (deck.requestFullscreen) deck.requestFullscreen(); };
+  document.addEventListener("keydown", function (e) {
+    if (e.target.tagName === "INPUT") return;
+    if (e.key === "ArrowRight") go(i + 1); else if (e.key === "ArrowLeft") go(i - 1);
+    else if (e.key === "f" || e.key === "F") { if (document.fullscreenElement) document.exitFullscreen(); else if (deck.requestFullscreen) deck.requestFullscreen(); }
+  });
+  var seal = document.getElementById("deck-seal");
+  if (seal && window.RV_DATA && window.RV_DATA.sealSvg) seal.innerHTML = window.RV_DATA.sealSvg;
+  go(0);
+})();
+</script>
+
+</body>
+</html>

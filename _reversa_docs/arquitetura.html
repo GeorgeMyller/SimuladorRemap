@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arquitetura 3D | SimuladorRemap</title>
+<meta name="reversa-category" content="diagram">
+<meta name="reversa-producer-agent" content="reversa-docs-mapper">
+<meta name="reversa-template" content="arquitetura">
+<meta name="reversa-generated-at" content="2026-10-19T02:09:26+00:00">
+
+<link rel="stylesheet" href="assets/css/site.css">
+<script src="assets/vendor/three.min.js"></script>
+<script src="assets/vendor/OrbitControls.js"></script>
+</head>
+<body data-style="sober" data-page-id="arquitetura" data-base="">
+<a class="skip" href="#main">Pular para o conteúdo</a>
+<header class="rv-header">
+  <a class="rv-brand" href="index.html"><span class="seal-slot"><svg class="seal-mini" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Selo do projeto SimuladorRemap" data-pattern="noise-strata" data-seed="40d6644e"><circle cx="32.0" cy="32.0" r="32.0" fill="#f5f3ee"/><path d="M47.2,55.7 L22.9,58.7 L5.5,41.5 L8.0,17.2 L28.6,4.0 L51.8,11.9 L60.0,34.9 Z" fill="#4f6b5d" fill-opacity="0.10" stroke="#4f6b5d" stroke-width="3.2" stroke-linejoin="round"/><path d="M22.9,48.4 L13.5,35.1 L18.0,19.5 L33.1,13.3 L47.3,21.2 L50.0,37.2 L39.2,49.4 Z" fill="#a06b4a" fill-opacity="0.20" stroke="#a06b4a" stroke-width="3.2" stroke-linejoin="round"/><path d="M41.2,33.7 L36.4,40.3 L28.3,40.6 L23.0,34.5 L24.4,26.5 L31.6,22.6 L39.1,25.8 Z" fill="#4f6b5d" fill-opacity="0.15" stroke="#4f6b5d" stroke-width="3.2" stroke-linejoin="round"/><line x1="32.0" y1="32.0" x2="60.2" y2="32.0" stroke="#1e2937" stroke-opacity="0.25" stroke-width="2.24"/><line x1="32.0" y1="32.0" x2="49.6" y2="54.0" stroke="#1e2937" stroke-opacity="0.25" stroke-width="2.24"/><line x1="32.0" y1="32.0" x2="25.7" y2="59.5" stroke="#1e2937" stroke-opacity="0.25" stroke-width="2.24"/><line x1="32.0" y1="32.0" x2="6.6" y2="44.2" stroke="#1e2937" stroke-opacity="0.25" stroke-width="2.24"/><line x1="32.0" y1="32.0" x2="6.6" y2="19.8" stroke="#1e2937" stroke-opacity="0.25" stroke-width="2.24"/><line x1="32.0" y1="32.0" x2="25.7" y2="4.5" stroke="#1e2937" stroke-opacity="0.25" stroke-width="2.24"/><line x1="32.0" y1="32.0" x2="49.6" y2="10.0" stroke="#1e2937" stroke-opacity="0.25" stroke-width="2.24"/><circle cx="32.0" cy="32.0" r="5.1" fill="#1e2937"/><circle cx="32.0" cy="32.0" r="2.2" fill="#a06b4a"/></svg></span><span>SimuladorRemap <small>docs</small></span></a>
+  <nav class="reversa-doc-nav" aria-label="Navegação do mini-site"><a href="index.html" data-page-id="index">Visão geral</a><a href="arquitetura.html" data-page-id="arquitetura">Arquitetura 3D</a><a href="modulos.html" data-page-id="modulos">Módulos</a><a href="metricas.html" data-page-id="metricas">Métricas</a><a href="timeline.html" data-page-id="timeline">Timeline</a><a href="glossario.html" data-page-id="glossario">Glossário</a><a href="deck.html" data-page-id="deck">Deck</a><a href="features/index.html" data-page-id="features">Features</a></nav>
+</header>
+<main id="main" class="rv-main">
+
+<h1>Arquitetura</h1>
+<p class="lead">Monólito modular: 12 pacotes de domínio em <code>backend/src/simremap</code>, 7 features em <code>frontend/src/features</code> e,
+desde a feature 003, uma camada nativa opcional em Rust (<code>backend/rust/simremap_rs</code>). Tudo é servido por um único container local-first.
+Selos laranja marcam o que a 002 adicionou; selos azuis marcam a 003.</p>
+
+<h2>Laço de simulação (ordem do contrato, a cada tick)</h2>
+<div class="flow"><span>sensors</span><b>→</b><span>ecu <small>⇄ tables.rs</small></span><b>→</b><span>physics <small>⇄ cycle.rs</small></span><b>→</b><span>damage <small>⇄ damage.rs</small></span><b>→</b><span>telemetry</span>
+<span class="muted" style="background:none;border:0">worker em processo dedicado, 1000 Hz; uma travessia FFI por subsistema por tick (D-03), nunca por célula</span></div>
+
+<h2>Camada nativa com fallback Python</h2>
+<div class="grid g2">
+<div class="card"><h3>Seletor <code>simremap/core/native.py</code></h3>
+<p>Lido uma vez por processo. A variável <code>SIMREMAP_NATIVE</code> decide o caminho:</p>
+<ul><li><b>auto</b> (padrão): usa <code>simremap_rs</code> se importar; senão, fica o Python de referência.</li>
+<li><b>off</b>: nunca usa a extensão.</li>
+<li><b>on</b>: exige a extensão; sem ela, levanta <code>NativeUnavailableError</code>.</li></ul>
+<p class="muted">O Python continua a ser a referência. Testes em <code>backend/tests/native/</code> comparam Python × Rust com seed (tolerância relativa 1e-9; na prática, paridade bit a bit).
+<code>/api/v1/version</code> publica <code>native_enabled</code> e <code>native_version</code>.</p></div>
+<div class="card"><h3>Build e distribuição</h3>
+<ul><li>Crate <code>simremap_rs</code> com PyO3 0.23 (<code>abi3-py312</code>), LTO fat e <code>codegen-units = 1</code>.</li>
+<li><code>make native</code> roda <code>maturin develop --release</code>; maturin é dependência de desenvolvimento.</li>
+<li>Dockerfile com estágio Rust opcional que compila o wheel ABI3; se falhar, a imagem segue válida com o fallback.</li>
+<li><code>target/</code> fica fora do contexto Docker (<code>.dockerignore</code>).</li></ul></div>
+</div>
+<div class="table-wrap"><table><thead><tr><th>Pacote Python</th><th>Ponte</th><th>Kernel</th><th>O que vai para o nativo</th></tr></thead><tbody>
+<tr><td class=mono>ecu</td><td class=mono>ecu/native_tables.py, ecu/runtime.py</td><td class=mono>simremap_rs.tables.TableSet</td><td>Grupos early e after_ign avaliados numa chamada por tick; estratégias seguem chamando table.at()</td></tr><tr><td class=mono>physics</td><td class=mono>physics/kernels.py, physics/engine.py, physics/cycle_solver.py</td><td class=mono>simremap_rs.cycle.CycleKernel e GasKernel</td><td>Ciclo fechado e bloco de gás (VE, borboleta, compressor/turbina, eixo do turbo, intercooler, pressões)</td></tr><tr><td class=mono>physics</td><td class=mono>physics/fastmodel.py</td><td class=mono>(Python puro)</td><td>fast_constructor: EngineState e SensorReadings em cerca de 1/3 do custo do model_construct</td></tr><tr><td class=mono>damage</td><td class=mono>damage/native_bridge.py, damage/knock.py, damage/model.py</td><td class=mono>simremap_rs._native.damage</td><td>Passo contínuo do dano e integral de knock; cache de ComponentHealth</td></tr>
+</tbody></table></div>
+
+<h2>Cadeia de áudio da bancada (feature 003)</h2>
+<p class="muted">Web Audio sintetizado, sem amostras e sem osciladores senoidais puros no spool. Código em <code>frontend/src/features/dyno-cockpit/audio/</code>
+(<code>AudioEngine.ts</code>, <code>EngineSynth.ts</code>, <code>graph.ts</code>, <code>voices.ts</code>, <code>archetypes.ts</code>, <code>spectrum.ts</code>).</p>
+<div class="flow"><span>pulsos de combustão</span><b>→</b><span>WaveShaper (saturação)</span><b>→</b><span>lowpass dinâmico 180→1400 Hz</span><b>→</b>
+<span>ressonadores 90–140 Hz e 280–450 Hz</span><b>→</b><span>sub-bass</span><b>→</b><span>master com corte de presença em 1–4 kHz</span></div>
+<div class="grid g3">
+<div class="card"><h3>Turbo</h3><p>Ruído de banda estreita mais um harmônico discreto, com flutter e chirp no alívio (BOV/diverter). Nenhum <code>OscillatorNode</code> contínuo no spool.</p></div>
+<div class="card"><h3>Pops &amp; bangs</h3><p>Punch grave de 90 a 160 Hz, estalo filtrado e decay curto.</p></div>
+<div class="card"><h3>4 arquétipos</h3><p>i4 turbo, i6 turbo, i4 clássico e V8 com compressor. Energia em 1–4 kHz abaixo de 5 % em todos (máximo medido: 2,2 %).</p></div>
+</div>
+
+<h2>Componentes por camada</h2>
+<h3>Frontend (React 18 + TypeScript + Vite + Tailwind)</h3><div class="grid g4"><div class="card"><h3 class="mono">app</h3><div class="muted">Rotas lazy, tela inicial, sessão ativa, flags</div><div style="margin-top:6px"><span class="badge new">rota /workshop</span><span class="badge n3">homeApi (QA 003)</span></div></div><div class="card"><h3 class="mono">dyno-cockpit</h3><div class="muted">Bancada: curvas, gauges, carro no rolo, áudio, datalogger, laudo</div><div style="margin-top:6px"><span class="badge new">live-tuning</span><span class="badge new">visão térmica</span><span class="badge n3">áudio por pulsos (003)</span><span class="badge new">pedal progressivo</span></div></div><div class="card"><h3 class="mono">ecu-tuning</h3><div class="muted">Software de ECU: editor 2D/3D, estratégias, wizard de swap, versões</div><div style="margin-top:6px"><span class="badge new">Quick Tune Q</span><span class="badge new">H / V / B</span><span class="badge n3">calibração ativa (003)</span></div></div><div class="card"><h3 class="mono">scenarios</h3><div class="muted">Cenários, briefing, progresso, resultado, painel do instrutor</div><div style="margin-top:6px"><span class="badge n3">correções de QA (003)</span></div></div><div class="card" style="border-color:#e7c3ab;background:#fffaf6"><h3 class="mono">workshop</h3><div class="muted">Stage Builder: peças e teor de etanol na criação da sessão</div><div style="margin-top:6px"><span class="badge new">novo na 002</span></div></div><div class="card" style="border-color:#e7c3ab;background:#fffaf6"><h3 class="mono">career</h3><div class="muted">Página Oficina (Carreira): saldo, reputação, ordens</div><div style="margin-top:6px"><span class="badge new">novo na 002</span></div></div><div class="card"><h3 class="mono">pixel-cars</h3><div class="muted">Sprites dos 4 carros</div><div style="margin-top:6px"></div></div><div class="card"><h3 class="mono">lib</h3><div class="muted">Cliente REST orval, WebSocket, unidades</div><div style="margin-top:6px"><span class="badge n3">cliente regenerado (003)</span></div></div><div class="card" style="border-color:#b9c9ee;background:#f6f8fe"><h3 class="mono">e2e</h3><div class="muted">Playwright: 3 jornadas, a11y, FPS e 8 specs novos da 003</div><div style="margin-top:6px"><span class="badge new">8 specs novos</span></div></div></div>
+<h3>Transporte</h3><div class="grid g4"><div class="card"><h3 class="mono">REST /api/v1</h3><div class="muted">Erros RFC 7807, catálogo único de códigos</div><div style="margin-top:6px"><span class="badge new">/upgrades</span><span class="badge new">/career</span><span class="badge n3">/version: native_enabled (003)</span><span class="badge n3">409 SESSION_CLOSED (003)</span></div></div><div class="card"><h3 class="mono">WS /ws/v1/sessions/{id}/telemetry</h3><div class="muted">Envelope com seq, 30 a 60 FPS, canais subscritos</div><div style="margin-top:6px"><span class="badge new">cam_*</span><span class="badge new">ethanol_pct</span></div></div></div>
+<h3>Backend (Python 3.12 + FastAPI + Pydantic v2 + SQLModel)</h3><div class="grid g4"><div class="card"><h3 class="mono">api</h3><div class="muted">create_app, lifespan, registry de routers, health</div><div style="margin-top:6px"><span class="badge n3">native_version (003)</span></div></div><div class="card"><h3 class="mono">dyno</h3><div class="muted">Sessões, 4 tipos de puxada, rolo, correção SAE/DIN</div><div style="margin-top:6px"><span class="badge n3">active_calibration_id (003)</span><span class="badge n3">seed ≤ 2^53−1 (003)</span></div></div><div class="card"><h3 class="mono">ecu</h3><div class="muted">Tabelas 2D/3D, Calibration versionada, estratégias e arbitragem</div><div style="margin-top:6px"><span class="badge n3">native_tables (003)</span><span class="badge n3">dTPS por mediana (003)</span><span class="badge n3">BOV pré-borboleta (003)</span></div></div><div class="card"><h3 class="mono">profiles</h3><div class="muted">OEM-Stage, FT-Pro, M1-Race, HT-Elite, swap e BaseSetup</div><div style="margin-top:6px"><span class="badge new">10 kinds</span><span class="badge n3">nav OEM por cilindros (003)</span></div></div><div class="card"><h3 class="mono">physics</h3><div class="muted">Motor 0D/1D Otto, turbo/compressor, EGT, 100 a 1000 Hz</div><div style="margin-top:6px"><span class="badge n3">kernels.py (003)</span><span class="badge n3">fastmodel.py (003)</span><span class="badge n3">linha de surge (003)</span></div></div><div class="card"><h3 class="mono">damage</h3><div class="muted">Knock (Livengood-Wu), pré-ignição, dano, laudo forense</div><div style="margin-top:6px"><span class="badge n3">native_bridge (003)</span></div></div><div class="card"><h3 class="mono">catalog</h3><div class="muted">4 veículos validados, benchmark, calibração de fábrica</div><div style="margin-top:6px"><span class="badge new">upgrades.py</span><span class="badge n3">PID boost do hatch (003)</span></div></div><div class="card"><h3 class="mono">telemetry</h3><div class="muted">WS, decimação, DataLog SHA-256, export/import, espectro</div><div style="margin-top:6px"><span class="badge new">canais de came e etanol</span></div></div><div class="card"><h3 class="mono">scenarios</h3><div class="muted">Perfis locais, cenários, tentativas, avaliação, pacotes</div><div style="margin-top:6px"><span class="badge new">7 builtins</span><span class="badge n3">liquidação antes da avaliação (003)</span></div></div><div class="card" style="border-color:#e7c3ab;background:#fffaf6"><h3 class="mono">career</h3><div class="muted">Perfil de carreira, 7 ordens, aceitar e liquidar</div><div style="margin-top:6px"><span class="badge new">novo na 002</span></div></div><div class="card"><h3 class="mono">core</h3><div class="muted">Config SIMREMAP_, worker do laço, logging JSON, erros</div><div style="margin-top:6px"><span class="badge n3">native.py (003)</span><span class="badge n3">orçamento de overrun (003)</span></div></div><div class="card"><h3 class="mono">db</h3><div class="muted">SQLite/PostgreSQL, Alembic 0001 a 0008</div><div style="margin-top:6px"><span class="badge new">0008_career</span></div></div></div>
+<h3>Camada nativa (Rust + PyO3 0.23, ABI3 ≥ Python 3.12, maturin)</h3><div class="grid g4"><div class="card" style="border-color:#b9c9ee;background:#f6f8fe"><h3 class="mono">simremap_rs._native</h3><div class="muted">Módulo PyO3 com 3 submódulos; versão em __version__</div><div style="margin-top:6px"><span class="badge new">lib.rs</span><span class="badge n3">novo na 003</span></div></div><div class="card" style="border-color:#b9c9ee;background:#f6f8fe"><h3 class="mono">tables</h3><div class="muted">Interpolação 1D/2D, lookup de eixo e estratégias: boost PID, VVT/overlap, overrun, two-step, flex</div><div style="margin-top:6px"><span class="badge new">tables.rs</span><span class="badge new">tables/strategies.rs</span></div></div><div class="card" style="border-color:#b9c9ee;background:#f6f8fe"><h3 class="mono">cycle</h3><div class="muted">Ciclo Otto (Wiebe, VE, entalpia, EGT), gás, térmico, turbo e compressor</div><div style="margin-top:6px"><span class="badge new">CycleKernel</span><span class="badge new">GasKernel</span><span class="badge new">cycle/{solver,gas,thermal,interp}.rs</span></div></div><div class="card" style="border-color:#b9c9ee;background:#f6f8fe"><h3 class="mono">damage</h3><div class="muted">Integral de detonação (Livengood-Wu) e acumulação de dano dos 6 modos</div><div style="margin-top:6px"><span class="badge new">damage.rs</span></div></div></div>
+
+<h2>Code City 3D</h2>
+<p class="muted">Cada prédio é um arquivo (703 arquivos, 398 de código). Altura = linhas não vazias, base = complexidade aproximada
+(contagem de ramificações), distrito = pacote. O distrito <code>native/*</code> é o crate Rust. A feature 003 criou 46 arquivos e alterou outros 138.
+Passe o mouse para ver o arquivo; clique para focar.</p>
+<div class="layout-side">
+  <div class="chart-card" style="position:relative;height:620px;padding:0;overflow:hidden">
+    <div id="loader" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--ink-2)">Carregando cena 3D...</div>
+    <canvas id="scene" style="width:100%;height:100%;display:block" aria-label="Code City 3D do SimuladorRemap"></canvas>
+  </div>
+  <aside class="sidebar" aria-label="Controles da Code City">
+    <strong>Controles</strong>
+    <label>Altura (LOC) <span data-out="locScale"></span><input type="range" min="0.02" max="0.3" step="0.01" value="0.08" data-param="locScale"></label>
+    <label>Base (complexidade) <span data-out="cxScale"></span><input type="range" min="0.2" max="2" step="0.1" value="0.8" data-param="cxScale"></label>
+    <label>Intensidade da luz <span data-out="light"></span><input type="range" min="0.2" max="2" step="0.1" value="1" data-param="light"></label>
+    <label>Camada <select data-param="layer"><option value="all">Tudo</option><option value="backend">Backend</option><option value="native">Nativo (Rust)</option><option value="frontend">Frontend</option><option value="backend-tests">Testes do backend</option></select></label>
+    <label><input type="checkbox" data-param="showTests" checked> Mostrar testes</label>
+    <label>Destacar feature <select data-param="hl"><option value="003">003 (Rust, áudio, QA)</option><option value="002">002 (evolução comercial)</option><option value="none">Nenhuma</option></select></label>
+    <button class="btn" id="reset">Reset da câmera</button><button class="btn" id="export-png">Exportar PNG</button>
+    <div class="legend"><span><i style="background:#3d4a5c"></i>código backend</span><span><i style="background:#2a78d6"></i>código frontend</span>
+    <span><i style="background:#8a5a2b"></i>código Rust</span><span><i style="background:#bdb4a4"></i>teste</span>
+    <span><i style="background:#eb6834"></i>novo na feature</span><span><i style="background:#eda100"></i>alterado na feature</span></div>
+  </aside>
+</div>
+<div id="tip" class="tooltip" role="status"></div>
+
+</main>
+<footer class="rv-footer">Gerado por reversa-docs-mapper em 2026-10-19T02:09:26+00:00 · Time Reversa Docs · funciona offline via file://</footer>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/nav.js"></script>
+<script src="assets/js/sidebar.js"></script>
+
+<script>
+(function () {
+  "use strict";
+  var loader = document.getElementById("loader");
+  function fail(msg) { loader.innerHTML = '<div class="reversa-error-panel">' + msg + '</div>'; }
+  if (typeof THREE === "undefined" || !THREE.OrbitControls) { fail("Esta visualização requer a biblioteca Three.js em assets/vendor/. Conecte-se à internet e rode /reversa-docs novamente."); return; }
+  var all = (window.RV_DATA && window.RV_DATA.modules && window.RV_DATA.modules.modules) || [];
+  if (!all.length) { fail("Nada para visualizar ainda: modules.json vazio."); return; }
+
+  var COLORS = { be: 0x3d4a5c, fe: 0x2a78d6, rs: 0x8a5a2b, test: 0xbdb4a4, nw: 0xeb6834, tc: 0xeda100 };
+  var CELL = 4, GAP = 10;
+  var canvas = document.getElementById("scene");
+  var renderer;
+  try { renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, preserveDrawingBuffer: true }); }
+  catch (e) { fail("WebGL não está disponível no seu navegador. Use Chrome, Firefox ou Edge atualizados."); return; }
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.shadowMap.enabled = true;
+  var scene = new THREE.Scene();
+  scene.background = new THREE.Color(0xf5f3ee);
+  var camera = new THREE.PerspectiveCamera(45, 1, 1, 5000);
+  var controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  var hemi = new THREE.HemisphereLight(0xffffff, 0xbdb4a4, 0.7);
+  var dir = new THREE.DirectionalLight(0xffffff, 0.8);
+  dir.position.set(200, 400, 150); dir.castShadow = true;
+  dir.shadow.mapSize.set(2048, 2048);
+  ["left","bottom"].forEach(function(k){ dir.shadow.camera[k] = -500; });
+  ["right","top"].forEach(function(k){ dir.shadow.camera[k] = 500; });
+  scene.add(hemi, dir, new THREE.AmbientLight(0xffffff, 0.25));
+  var group = new THREE.Group(); scene.add(group);
+  var mesh = null, shown = [], center = new THREE.Vector3(), span = 300;
+
+  function colorFor(m, hl) {
+    if (hl !== "none" && m["new" + hl]) return COLORS.nw;
+    if (hl !== "none" && m["touched" + hl]) return COLORS.tc;
+    if (m.type === "test") return COLORS.test;
+    return m.layer === "frontend" ? COLORS.fe : (m.layer === "native" ? COLORS.rs : COLORS.be);
+  }
+
+  function build() {
+    while (group.children.length) { var c = group.children.pop(); if (c.geometry) c.geometry.dispose(); if (c.material) c.material.dispose(); }
+    var layer = RV_PARAM("layer", "all"), tests = RV_PARAM("showTests", true), hl = String(RV_PARAM("hl", "003"));
+    var locS = RV_PARAM("locScale", 0.08), cxS = RV_PARAM("cxScale", 0.8);
+    shown = all.filter(function (m) { return (layer === "all" || m.layer === layer) && (tests || m.type !== "test"); });
+    var districts = {};
+    shown.forEach(function (m) { (districts[m.folder] = districts[m.folder] || []).push(m); });
+    var names = Object.keys(districts).sort();
+    var cols = Math.ceil(Math.sqrt(names.length));
+    var x = 0, z = 0, rowMax = 0, maxX = 0;
+    var box = new THREE.BoxGeometry(1, 1, 1); box.translate(0, 0.5, 0);
+    mesh = new THREE.InstancedMesh(box, new THREE.MeshStandardMaterial({ roughness: 0.65 }), shown.length);
+    mesh.castShadow = true; mesh.receiveShadow = true;
+    var dummy = new THREE.Object3D(), col = new THREE.Color(), idx = 0;
+    names.forEach(function (name, i) {
+      var list = districts[name].sort(function (a, b) { return b.loc - a.loc; });
+      var dc = Math.ceil(Math.sqrt(list.length)), size = dc * CELL + 2;
+      var plane = new THREE.Mesh(new THREE.PlaneGeometry(size, size),
+        new THREE.MeshStandardMaterial({ color: name.indexOf("frontend") === 0 ? 0xdbe7f6 : (name.indexOf("native") === 0 ? 0xeee0d0 : (name.indexOf("tests") > 0 ? 0xeae5da : 0xdfe3e8)) }));
+      plane.rotation.x = -Math.PI / 2; plane.position.set(x + size / 2, 0.02, z + size / 2); plane.receiveShadow = true;
+      plane.userData = { district: name };
+      group.add(plane);
+      list.forEach(function (m, k) {
+        var w = Math.min(CELL - 0.6, Math.max(1, Math.sqrt(m.complexity) * cxS * 0.35));
+        var h = Math.max(0.5, m.loc * locS);
+        dummy.position.set(x + 1 + (k % dc) * CELL + CELL / 2, 0, z + 1 + Math.floor(k / dc) * CELL + CELL / 2);
+        dummy.scale.set(w, h, w); dummy.updateMatrix();
+        mesh.setMatrixAt(idx, dummy.matrix);
+        col.setHex(colorFor(m, hl)); mesh.setColorAt(idx, col);
+        idx++;
+      });
+      x += size + GAP; rowMax = Math.max(rowMax, size); maxX = Math.max(maxX, x);
+      if ((i + 1) % cols === 0) { x = 0; z += rowMax + GAP; rowMax = 0; }
+    });
+    group.add(mesh);
+    var bb = new THREE.Box3().setFromObject(group);
+    bb.getCenter(center); span = Math.max(bb.max.x - bb.min.x, bb.max.z - bb.min.z);
+    var ground = new THREE.Mesh(new THREE.PlaneGeometry(span * 3, span * 3), new THREE.MeshStandardMaterial({ color: 0xece8df }));
+    ground.rotation.x = -Math.PI / 2; ground.position.set(center.x, 0, center.z); ground.receiveShadow = true;
+    group.add(ground);
+  }
+  function resetCam() {
+    camera.position.set(center.x + span * 0.55, span * 0.75, center.z + span * 0.95);
+    controls.target.copy(center); controls.update();
+  }
+  function resize() {
+    var r = canvas.parentElement.getBoundingClientRect();
+    renderer.setSize(r.width, r.height, false);
+    camera.aspect = r.width / r.height; camera.updateProjectionMatrix();
+  }
+  build(); resize(); resetCam();
+  window.addEventListener("resize", resize);
+  document.addEventListener("rv:param", function (e) {
+    if (e.detail.param === "light") { dir.intensity = 0.8 * e.detail.value; hemi.intensity = 0.7 * e.detail.value; return; }
+    build();
+  });
+  document.getElementById("reset").addEventListener("click", resetCam);
+  document.getElementById("export-png").addEventListener("click", function () {
+    renderer.domElement.toBlob(function (b) { var a = document.createElement("a"); a.href = URL.createObjectURL(b); a.download = "code-city-simuladorremap.png"; a.click(); });
+  });
+  var ray = new THREE.Raycaster(), mouse = new THREE.Vector2(), tip = document.getElementById("tip");
+  function pick(ev) {
+    var r = canvas.getBoundingClientRect();
+    mouse.set(((ev.clientX - r.left) / r.width) * 2 - 1, -((ev.clientY - r.top) / r.height) * 2 + 1);
+    ray.setFromCamera(mouse, camera);
+    var hit = ray.intersectObject(mesh, false)[0];
+    return hit && hit.instanceId !== undefined ? { m: orderMap()[hit.instanceId], point: hit.point } : null;
+  }
+  var order = null;
+  function orderMap() {
+    if (order && order.n === shown.length) return order.list;
+    var districts = {}; shown.forEach(function (m) { (districts[m.folder] = districts[m.folder] || []).push(m); });
+    var list = []; Object.keys(districts).sort().forEach(function (n) { districts[n].sort(function (a, b) { return b.loc - a.loc; }).forEach(function (m) { list.push(m); }); });
+    order = { n: shown.length, list: list }; return list;
+  }
+  document.addEventListener("rv:param", function () { order = null; });
+  canvas.addEventListener("mousemove", function (ev) {
+    var p = pick(ev);
+    if (!p || !p.m) { tip.style.display = "none"; return; }
+    var m = p.m;
+    tip.innerHTML = "<b>" + m.name + "</b><br>pacote: " + m.folder + "<br>LOC: " + m.loc + " · complexidade: " + m.complexity +
+      (m.new003 ? "<br>novo na feature 003" : (m.touched003 ? "<br>alterado na feature 003" : "")) +
+      (m.new002 ? "<br>novo na feature 002" : (m.touched002 ? "<br>alterado na feature 002" : ""));
+    tip.style.display = "block"; tip.style.left = (ev.clientX + 14) + "px"; tip.style.top = (ev.clientY + 14) + "px";
+  });
+  canvas.addEventListener("mouseleave", function () { tip.style.display = "none"; });
+  canvas.addEventListener("click", function (ev) { var p = pick(ev); if (p) { controls.target.copy(p.point); controls.update(); } });
+  renderer.domElement.addEventListener("webglcontextlost", function (e) { e.preventDefault(); });
+  var first = true;
+  (function loop() { requestAnimationFrame(loop); controls.update(); renderer.render(scene, camera); if (first) { first = false; loader.style.display = "none"; } })();
+})();
+</script>
+
+</body>
+</html>

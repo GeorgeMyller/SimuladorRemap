@@ -1,0 +1,476 @@
+{"ts": "2026-10-18T01:11:05Z", "action": "T001", "status": "done", "files": ["backend/pyproject.toml", "backend/uv.lock", "backend/.python-version"]}
+{"ts": "2026-10-18T01:11:05Z", "action": "T002", "status": "done", "files": ["backend/src/simremap/__init__.py", "backend/src/simremap/py.typed", "backend/src/simremap/{core,physics,damage,catalog,dyno,ecu,profiles,telemetry,scenarios,api,db}/__init__.py", "backend/src/simremap/{...}/py.typed"]}
+{"ts": "2026-10-18T01:11:05Z", "action": "T003", "status": "done", "files": ["backend/pyproject.toml"]}
+{"ts": "2026-10-18T01:11:05Z", "action": "T004", "status": "done", "files": ["frontend/package.json", "frontend/package-lock.json"]}
+{"ts": "2026-10-18T01:11:05Z", "action": "T005", "status": "done", "files": ["frontend/tsconfig.json", "frontend/eslint.config.js"]}
+{"ts": "2026-10-18T01:11:05Z", "action": "T006", "status": "done", "files": ["frontend/vite.config.ts"]}
+{"ts": "2026-10-18T01:11:05Z", "action": "T016", "status": "done", "files": ["backend/src/simremap/core/contracts.py"]}
+{"ts": "2026-10-18T01:11:05Z", "action": "T017", "status": "done", "files": ["backend/src/simremap/db/base.py"]}
+{"ts": "2026-10-18T01:11:05Z", "action": "T018", "status": "done", "files": ["backend/alembic.ini", "backend/src/simremap/db/migrations/env.py", "backend/src/simremap/db/migrations/script.py.mako"]}
+{"ts": "2026-10-18T01:11:05Z", "action": "T019", "status": "done", "files": ["backend/src/simremap/db/models/foundation.py", "backend/src/simremap/db/models/__init__.py"]}
+{"ts": "2026-10-18T01:11:05Z", "action": "T020", "status": "done", "files": ["backend/src/simremap/db/migrations/versions/0001_foundation_base.py"]}
+{"ts": "2026-10-18T01:11:05Z", "action": "T021", "status": "done", "files": ["backend/tests/conftest.py"]}
+{"ts": "2026-10-18T01:39:07Z", "action": "T022", "status": "done", "files": ["backend/src/simremap/physics/contracts.py", "backend/tests/physics/test_contracts.py"]}
+{"ts": "2026-10-18T01:39:07Z", "action": "T023", "status": "done", "files": ["backend/src/simremap/physics/contracts.py", "backend/tests/physics/test_contracts.py"]}
+{"ts": "2026-10-18T01:39:07Z", "action": "T024", "status": "done", "files": ["backend/src/simremap/catalog/contracts.py", "backend/tests/catalog/test_contracts.py"]}
+{"ts": "2026-10-18T01:39:07Z", "action": "T025", "status": "done", "files": ["backend/src/simremap/catalog/contracts.py", "backend/tests/catalog/test_contracts.py"]}
+{"ts": "2026-10-18T01:39:07Z", "action": "T037", "status": "done", "files": ["backend/src/simremap/dyno/contracts.py", "backend/tests/dyno/test_contracts.py"]}
+{"ts": "2026-10-18T01:39:07Z", "action": "T040", "status": "done", "files": ["backend/src/simremap/dyno/contracts.py", "backend/tests/dyno/test_contracts.py"]}
+{"ts": "2026-10-18T01:39:07Z", "action": "T041", "status": "done", "files": ["backend/src/simremap/dyno/contracts.py", "backend/tests/dyno/test_contracts.py"]}
+{"ts": "2026-10-18T01:39:07Z", "action": "T042", "status": "done", "files": ["backend/src/simremap/dyno/contracts.py", "backend/tests/dyno/test_contracts.py"]}
+{"ts": "2026-10-18T01:39:07Z", "action": "T043", "status": "done", "files": ["backend/src/simremap/db/models/dyno.py", "backend/src/simremap/db/models/_columns.py", "backend/tests/db/test_migrations.py"]}
+{"ts": "2026-10-18T01:39:07Z", "action": "T044", "status": "done", "files": ["backend/src/simremap/db/migrations/versions/0002_dyno_sessions_runs.py", "backend/tests/db/test_migrations.py"]}
+{"ts": "2026-10-18T01:39:07Z", "action": "T045", "status": "done", "files": ["backend/src/simremap/damage/contracts.py", "backend/tests/damage/test_contracts.py"]}
+{"ts": "2026-10-18T01:39:07Z", "action": "T046", "status": "done", "files": ["backend/src/simremap/damage/contracts.py", "backend/tests/damage/test_contracts.py"]}
+{"ts": "2026-10-18T01:39:07Z", "action": "T047", "status": "done", "files": ["backend/src/simremap/damage/config.py", "backend/tests/damage/test_contracts.py"]}
+{"ts": "2026-10-18T01:39:07Z", "action": "T048", "status": "done", "files": ["backend/src/simremap/db/models/damage.py", "backend/tests/db/test_migrations.py"]}
+{"ts": "2026-10-18T01:39:07Z", "action": "T049", "status": "done", "files": ["backend/src/simremap/db/migrations/versions/0003_damage_health_reports.py", "backend/tests/db/test_migrations.py"]}
+{"ts": "2026-10-18T01:39:07Z", "action": "T050", "status": "done", "files": ["backend/src/simremap/ecu/contracts.py", "backend/tests/ecu/test_contracts.py"]}
+{"ts": "2026-10-18T01:39:07Z", "action": "T051", "status": "done", "files": ["backend/src/simremap/db/models/calibration.py", "backend/tests/db/test_migrations.py"]}
+{"ts": "2026-10-18T01:39:07Z", "action": "T052", "status": "done", "files": ["backend/src/simremap/db/migrations/versions/0004_ecu_calibrations.py", "backend/tests/db/test_migrations.py"]}
+{"ts": "2026-10-18T01:39:07Z", "action": "T054", "status": "done", "files": ["backend/src/simremap/profiles/contracts.py", "backend/tests/profiles/test_contracts.py"]}
+{"ts": "2026-10-18T01:39:07Z", "action": "T055", "status": "done", "files": ["backend/src/simremap/profiles/contracts.py", "backend/tests/profiles/test_contracts.py"]}
+{"ts": "2026-10-18T01:39:07Z", "action": "T057", "status": "done", "files": ["backend/src/simremap/db/models/profiles.py", "backend/tests/db/test_migrations.py"]}
+{"ts": "2026-10-18T01:39:07Z", "action": "T058", "status": "done", "files": ["backend/src/simremap/db/migrations/versions/0005_profiles_session_state.py", "backend/tests/db/test_migrations.py"]}
+{"ts": "2026-10-18T01:39:07Z", "action": "T059", "status": "done", "files": ["backend/src/simremap/telemetry/contracts.py", "backend/tests/telemetry/test_contracts.py"]}
+{"ts": "2026-10-18T01:39:07Z", "action": "T060", "status": "done", "files": ["backend/src/simremap/telemetry/contracts.py", "backend/tests/telemetry/test_contracts.py"]}
+{"ts": "2026-10-18T01:39:07Z", "action": "T061", "status": "done", "files": ["backend/src/simremap/telemetry/contracts.py", "backend/tests/telemetry/test_contracts.py"]}
+{"ts": "2026-10-18T01:39:07Z", "action": "T062", "status": "done", "files": ["backend/src/simremap/db/models/datalog.py", "backend/tests/db/test_migrations.py"]}
+{"ts": "2026-10-18T01:39:07Z", "action": "T063", "status": "done", "files": ["backend/src/simremap/db/migrations/versions/0006_telemetry_datalog.py", "backend/tests/db/test_migrations.py"]}
+{"ts": "2026-10-18T01:39:07Z", "action": "T069", "status": "done", "files": ["backend/src/simremap/scenarios/contracts.py", "backend/tests/scenarios/test_contracts.py"]}
+{"ts": "2026-10-18T01:39:07Z", "action": "T070", "status": "done", "files": ["backend/src/simremap/scenarios/contracts.py", "backend/tests/scenarios/test_contracts.py"]}
+{"ts": "2026-10-18T01:39:07Z", "action": "T071", "status": "done", "files": ["backend/src/simremap/scenarios/contracts.py", "backend/tests/scenarios/test_contracts.py"]}
+{"ts": "2026-10-18T01:39:07Z", "action": "T073", "status": "done", "files": ["backend/src/simremap/db/models/scenarios.py", "backend/tests/db/test_migrations.py"]}
+{"ts": "2026-10-18T01:39:07Z", "action": "T074", "status": "done", "files": ["backend/src/simremap/db/migrations/versions/0007_scenarios_base.py", "backend/tests/db/test_migrations.py"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T007", "status": "done", "files": ["Dockerfile"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T008", "status": "done", "files": ["compose.yaml"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T009", "status": "done", "files": ["compose.dev.yaml"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T010", "status": "done", "files": ["compose.staging.yaml"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T011", "status": "done", "files": ["compose.prod.yaml", ".dockerignore"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T012", "status": "done", "files": ["Makefile", "scripts/check.sh"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T013", "status": "done", "files": ["scripts/coverage_per_package.py", "backend/tests/contract/test_coverage_per_package.py"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T014", "status": "done", "files": ["Makefile", "backend/tests/conftest.py"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T015", "status": "done", "files": ["Makefile"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T053", "status": "done", "files": ["Makefile"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T064", "status": "done", "files": ["frontend/orval.config.ts", "scripts/export_openapi.py"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T065", "status": "done", "files": ["frontend/src/test/setup.ts", "frontend/src/test/mocks/canvas.ts", "frontend/src/test/mocks/audio.ts", "frontend/src/test/mocks/websocket.ts", "frontend/src/test/mocks/browser.ts", "frontend/src/test/mocks/index.ts", "frontend/src/test/mocks/mocks.test.ts"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T066", "status": "done", "files": ["frontend/src/app/App.tsx"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T067", "status": "done", "files": ["frontend/playwright.config.ts", "frontend/e2e/tsconfig.json", "frontend/e2e/smoke.spec.ts"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T068", "status": "done", "files": ["frontend/package.json", "frontend/eslint.config.js"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T075", "status": "done", "files": ["Makefile"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T076", "status": "done", "files": ["backend/tests/contract/test_error_catalog.py"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T077", "status": "done", "files": ["backend/tests/contract/test_problem_detail.py"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T078", "status": "done", "files": ["backend/tests/contract/test_openapi.py"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T079", "status": "done", "files": ["backend/tests/contract/test_versions.py"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T080", "status": "done", "files": ["backend/tests/core/test_settings.py"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T081", "status": "done", "files": ["backend/tests/core/test_logging.py"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T082", "status": "done", "files": ["backend/tests/core/test_worker_host.py", "backend/tests/core/test_worker_queues.py"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T083", "status": "done", "files": ["backend/tests/core/bench/test_bench_worker_modes.py"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T084", "status": "done", "files": ["backend/tests/api/test_health.py"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T085", "status": "done", "files": ["backend/tests/api/test_registry.py"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T086", "status": "done", "files": ["backend/tests/api/test_middleware.py"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T087", "status": "done", "files": ["backend/tests/db/test_engine.py"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T088", "status": "done", "files": ["backend/tests/db/test_migrate_backup.py", "backend/tests/db/test_migrations.py"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T089", "status": "done", "files": ["backend/tests/contract/test_determinism_imports.py"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T090", "status": "done", "files": ["backend/tests/contract/test_no_pii.py"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T149", "status": "done", "files": ["backend/tests/core/bench/test_bench_rss.py"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T188", "status": "done", "files": ["backend/tests/integration/test_migrations_postgres.py"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T225", "status": "done", "files": ["backend/src/simremap/core/config.py"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T226", "status": "done", "files": ["backend/src/simremap/core/errors.py", "backend/tests/contract/test_error_catalog.py"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T227", "status": "done", "files": ["backend/src/simremap/core/versions.py"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T228", "status": "done", "files": ["backend/src/simremap/core/logging.py"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T229", "status": "done", "files": ["backend/src/simremap/db/engine.py"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T230", "status": "done", "files": ["backend/src/simremap/db/migrate.py"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T231", "status": "done", "files": ["backend/src/simremap/core/worker/queues.py", "backend/src/simremap/core/worker/protocol.py"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T232", "status": "done", "files": ["backend/src/simremap/core/worker/host.py", "backend/src/simremap/core/worker/loop.py", "backend/src/simremap/core/worker/__init__.py", "backend/src/simremap/core/worker/synthetic.py"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T233", "status": "done", "files": ["backend/src/simremap/core/worker/thread_backend.py"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T234", "status": "done", "files": ["backend/src/simremap/core/cache.py", "backend/tests/core/test_cache.py"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T235", "status": "done", "files": ["backend/src/simremap/api/registry.py"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T236", "status": "done", "files": ["backend/src/simremap/api/middleware.py", "backend/src/simremap/api/deps.py", "backend/src/simremap/api/problems.py"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T237", "status": "done", "files": ["backend/src/simremap/api/static.py"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T238", "status": "done", "files": ["backend/src/simremap/api/health.py"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T239", "status": "done", "files": ["backend/src/simremap/api/main.py", "backend/tests/api/test_app.py"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T407", "status": "done", "files": ["backend/src/simremap/db/seeds.py", "backend/tests/db/test_seeds.py"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T412", "status": "done", "files": ["backend/src/simremap/core/config.py"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T422", "status": "done", "files": ["backend/src/simremap/core/config.py"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T436", "status": "done", "files": ["backend/src/simremap/core/config.py"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T446", "status": "done", "files": ["backend/src/simremap/core/worker/logbridge.py"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T447", "status": "done", "files": ["backend/src/simremap/core/worker/host.py"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T448", "status": "done", "files": ["backend/src/simremap/api/main.py", "backend/src/simremap/api/serve.py", "backend/tests/api/test_serve.py"]}
+{"ts": "2026-10-18T01:58:45Z", "action": "T449", "status": "done", "files": ["backend/src/simremap/api/main.py"]}
+{"ts": "2026-10-18T02:07:34Z", "action": "T026", "status": "done", "files": ["backend/src/simremap/catalog/data/fuels/e27.json", "backend/src/simremap/catalog/data/fuels/e100.json", "backend/src/simremap/catalog/data/fuels/podium.json", "backend/src/simremap/catalog/data/fuels/e0.json", "backend/src/simremap/catalog/tools/gen_data.py"]}
+{"ts": "2026-10-18T02:07:34Z", "action": "T027", "status": "done", "files": ["backend/src/simremap/catalog/data/vehicles/hatch-20t-gdi/vehicle.json", "backend/src/simremap/catalog/tools/gen_data.py", "backend/src/simremap/catalog/tools/gen_ve.py"]}
+{"ts": "2026-10-18T02:07:34Z", "action": "T028", "status": "done", "files": ["backend/src/simremap/catalog/data/vehicles/hatch-20t-gdi/reference-curves/stock-e27.json"]}
+{"ts": "2026-10-18T02:07:34Z", "action": "T029", "status": "done", "files": ["backend/src/simremap/catalog/data/vehicles/coupe-30t-i6/vehicle.json"]}
+{"ts": "2026-10-18T02:07:34Z", "action": "T030", "status": "done", "files": ["backend/src/simremap/catalog/data/vehicles/coupe-30t-i6/reference-curves/stock-e27.json"]}
+{"ts": "2026-10-18T02:07:34Z", "action": "T031", "status": "done", "files": ["backend/src/simremap/catalog/data/vehicles/classic-20t-swap/vehicle.json"]}
+{"ts": "2026-10-18T02:07:34Z", "action": "T032", "status": "done", "files": ["backend/src/simremap/catalog/data/vehicles/classic-20t-swap/reference-curves/stock-e100.json"]}
+{"ts": "2026-10-18T02:07:34Z", "action": "T033", "status": "done", "files": ["backend/src/simremap/catalog/data/vehicles/muscle-v8-sc/vehicle.json"]}
+{"ts": "2026-10-18T02:07:34Z", "action": "T034", "status": "done", "files": ["backend/src/simremap/catalog/data/vehicles/muscle-v8-sc/reference-curves/stock-e27.json"]}
+{"ts": "2026-10-18T02:07:34Z", "action": "T035", "status": "done", "files": ["backend/src/simremap/catalog/tools/rehash.py", "backend/src/simremap/catalog/tools/jsonfmt.py", "backend/src/simremap/catalog/canonical.py", "backend/tests/catalog/test_tools.py"]}
+{"ts": "2026-10-18T02:07:34Z", "action": "T036", "status": "done", "files": ["backend/src/simremap/catalog/data/manifest.json"]}
+{"ts": "2026-10-18T02:07:34Z", "action": "T038", "status": "done", "files": ["backend/src/simremap/catalog/data/vehicles/hatch-20t-gdi/calibrations/oem-stage.json", "backend/src/simremap/catalog/data/vehicles/coupe-30t-i6/calibrations/oem-stage.json", "backend/src/simremap/catalog/data/vehicles/classic-20t-swap/calibrations/oem-stage.json", "backend/src/simremap/catalog/data/vehicles/classic-20t-swap/calibrations/ft-pro.json", "backend/src/simremap/catalog/data/vehicles/muscle-v8-sc/calibrations/oem-stage.json", "backend/tests/catalog/test_factory_calibrations.py"]}
+{"ts": "2026-10-18T02:07:34Z", "action": "T039", "status": "done", "files": ["backend/src/simremap/catalog/data/manifest.json"]}
+{"ts": "2026-10-18T02:07:34Z", "action": "T108", "status": "done", "files": ["backend/tests/catalog/test_invariants.py", "backend/tests/catalog/test_contracts.py"]}
+{"ts": "2026-10-18T02:07:34Z", "action": "T109", "status": "done", "files": ["backend/tests/catalog/test_loader.py", "backend/tests/catalog/conftest.py"]}
+{"ts": "2026-10-18T02:07:34Z", "action": "T110", "status": "done", "files": ["backend/tests/catalog/test_prd_values.py"]}
+{"ts": "2026-10-18T02:07:34Z", "action": "T111", "status": "done", "files": ["backend/tests/catalog/test_trademarks.py"]}
+{"ts": "2026-10-18T02:07:34Z", "action": "T112", "status": "done", "files": ["backend/tests/catalog/test_reference_curves.py"]}
+{"ts": "2026-10-18T02:07:34Z", "action": "T113", "status": "done", "files": ["backend/tests/catalog/test_compare.py"]}
+{"ts": "2026-10-18T02:07:34Z", "action": "T114", "status": "done", "files": ["backend/tests/catalog/test_drivetrain.py"]}
+{"ts": "2026-10-18T02:07:34Z", "action": "T115", "status": "done", "files": ["backend/tests/catalog/test_service.py"]}
+{"ts": "2026-10-18T02:07:34Z", "action": "T116", "status": "done", "files": ["backend/tests/catalog/test_api.py"]}
+{"ts": "2026-10-18T02:07:34Z", "action": "T257", "status": "done", "files": ["backend/src/simremap/catalog/contracts.py", "backend/src/simremap/catalog/loader.py"]}
+{"ts": "2026-10-18T02:07:34Z", "action": "T258", "status": "done", "files": ["backend/src/simremap/catalog/grids.py", "backend/tests/catalog/test_grids_provenance.py"]}
+{"ts": "2026-10-18T02:07:34Z", "action": "T259", "status": "done", "files": ["backend/src/simremap/catalog/provenance.py", "backend/tests/catalog/test_grids_provenance.py"]}
+{"ts": "2026-10-18T02:07:34Z", "action": "T260", "status": "done", "files": ["backend/src/simremap/catalog/trademarks.py"]}
+{"ts": "2026-10-18T02:07:34Z", "action": "T261", "status": "done", "files": ["backend/src/simremap/catalog/errors.py"]}
+{"ts": "2026-10-18T02:07:34Z", "action": "T262", "status": "done", "files": ["backend/src/simremap/catalog/loader.py", "backend/src/simremap/catalog/settings.py", "backend/src/simremap/catalog/__main__.py"]}
+{"ts": "2026-10-18T02:07:34Z", "action": "T263", "status": "done", "files": ["backend/src/simremap/catalog/drivetrain.py"]}
+{"ts": "2026-10-18T02:07:34Z", "action": "T264", "status": "done", "files": ["backend/src/simremap/catalog/compare.py"]}
+{"ts": "2026-10-18T02:07:34Z", "action": "T265", "status": "done", "files": ["backend/src/simremap/catalog/service.py"]}
+{"ts": "2026-10-18T02:07:34Z", "action": "T410", "status": "done", "files": ["backend/src/simremap/catalog/router.py"]}
+{"ts": "2026-10-18T02:13:54Z", "action": "T045", "status": "done", "files": ["backend/src/simremap/damage/contracts.py", "backend/tests/damage/test_contracts.py"]}
+{"ts": "2026-10-18T02:13:54Z", "action": "T046", "status": "done", "files": ["backend/src/simremap/damage/contracts.py", "backend/tests/damage/test_contracts.py"]}
+{"ts": "2026-10-18T02:13:54Z", "action": "T047", "status": "done", "files": ["backend/src/simremap/damage/config.py", "backend/tests/damage/test_contracts.py"]}
+{"ts": "2026-10-18T02:13:54Z", "action": "T048", "status": "done", "files": ["backend/src/simremap/db/models/damage.py"]}
+{"ts": "2026-10-18T02:13:54Z", "action": "T049", "status": "done", "files": ["backend/src/simremap/db/migrations/versions/0003_damage_health_reports.py"]}
+{"ts": "2026-10-18T02:13:54Z", "action": "T129", "status": "done", "files": ["backend/tests/damage/test_knock.py", "backend/tests/damage/conftest.py", "backend/tests/damage/kfm_helpers.py"]}
+{"ts": "2026-10-18T02:13:54Z", "action": "T130", "status": "done", "files": ["backend/tests/damage/test_signal_spectrum.py"]}
+{"ts": "2026-10-18T02:13:54Z", "action": "T131", "status": "done", "files": ["backend/tests/damage/test_preignition.py"]}
+{"ts": "2026-10-18T02:13:54Z", "action": "T132", "status": "done", "files": ["backend/tests/damage/test_damage_thermal.py"]}
+{"ts": "2026-10-18T02:13:54Z", "action": "T133", "status": "done", "files": ["backend/tests/damage/test_damage_mechanical.py"]}
+{"ts": "2026-10-18T02:13:54Z", "action": "T134", "status": "done", "files": ["backend/tests/damage/test_failure_modes.py"]}
+{"ts": "2026-10-18T02:13:54Z", "action": "T135", "status": "done", "files": ["backend/tests/damage/test_forensic.py"]}
+{"ts": "2026-10-18T02:13:54Z", "action": "T136", "status": "done", "files": ["backend/tests/damage/test_api.py"]}
+{"ts": "2026-10-18T02:13:54Z", "action": "T137", "status": "done", "files": ["backend/tests/damage/test_determinism.py"]}
+{"ts": "2026-10-18T02:13:54Z", "action": "T279", "status": "done", "files": ["backend/src/simremap/damage/knock.py"]}
+{"ts": "2026-10-18T02:13:54Z", "action": "T280", "status": "done", "files": ["backend/src/simremap/damage/signal.py"]}
+{"ts": "2026-10-18T02:13:54Z", "action": "T281", "status": "done", "files": ["backend/src/simremap/damage/spectrum.py"]}
+{"ts": "2026-10-18T02:13:54Z", "action": "T282", "status": "done", "files": ["backend/src/simremap/damage/preignition.py"]}
+{"ts": "2026-10-18T02:13:54Z", "action": "T283", "status": "done", "files": ["backend/src/simremap/damage/thermal.py"]}
+{"ts": "2026-10-18T02:13:54Z", "action": "T284", "status": "done", "files": ["backend/src/simremap/damage/mechanical.py"]}
+{"ts": "2026-10-18T02:13:54Z", "action": "T285", "status": "done", "files": ["backend/src/simremap/damage/failure.py"]}
+{"ts": "2026-10-18T02:13:54Z", "action": "T286", "status": "done", "files": ["backend/src/simremap/damage/trace.py"]}
+{"ts": "2026-10-18T02:13:54Z", "action": "T287", "status": "done", "files": ["backend/src/simremap/damage/digest.py"]}
+{"ts": "2026-10-18T02:13:54Z", "action": "T288", "status": "done", "files": ["backend/src/simremap/damage/model.py"]}
+{"ts": "2026-10-18T02:13:54Z", "action": "T289", "status": "done", "files": ["backend/src/simremap/damage/forensic/chain.py", "backend/src/simremap/damage/forensic/view.py"]}
+{"ts": "2026-10-18T02:13:54Z", "action": "T290", "status": "done", "files": ["backend/src/simremap/damage/forensic/warnings.py"]}
+{"ts": "2026-10-18T02:13:54Z", "action": "T291", "status": "done", "files": ["backend/src/simremap/damage/forensic/recommend.py"]}
+{"ts": "2026-10-18T02:13:54Z", "action": "T292", "status": "done", "files": ["backend/src/simremap/damage/forensic/texts/__init__.py", "backend/src/simremap/damage/forensic/texts/pt-BR/beginner.json", "backend/src/simremap/damage/forensic/texts/pt-BR/intermediate.json", "backend/src/simremap/damage/forensic/texts/pt-BR/instructor.json", "backend/src/simremap/damage/forensic/texts/pt-BR/phrases.json", "backend/src/simremap/damage/forensic/report.py", "backend/src/simremap/damage/forensic/__init__.py"]}
+{"ts": "2026-10-18T02:13:54Z", "action": "T293", "status": "done", "files": ["backend/src/simremap/damage/errors.py"]}
+{"ts": "2026-10-18T02:13:54Z", "action": "T294", "status": "done", "files": ["backend/src/simremap/damage/service.py", "backend/src/simremap/damage/session_port.py"]}
+{"ts": "2026-10-18T02:13:54Z", "action": "T418", "status": "done", "files": ["backend/src/simremap/damage/router.py"]}
+{"ts": "2026-10-18T02:16:08Z", "action": "T172", "status": "done", "files": ["backend/tests/contract/test_openapi_orval_parity.py"]}
+{"ts": "2026-10-18T02:16:08Z", "action": "T173", "status": "done", "files": ["frontend/src/features/dyno-cockpit/render/RingBuffer.test.ts"]}
+{"ts": "2026-10-18T02:16:08Z", "action": "T174", "status": "done", "files": ["frontend/src/lib/ws/TelemetrySocket.test.ts"]}
+{"ts": "2026-10-18T02:16:08Z", "action": "T175", "status": "done", "files": ["frontend/src/lib/units/units.test.tsx"]}
+{"ts": "2026-10-18T02:16:08Z", "action": "T176", "status": "done", "files": ["frontend/src/features/dyno-cockpit/prefs.test.ts"]}
+{"ts": "2026-10-18T02:16:08Z", "action": "T177", "status": "done", "files": ["frontend/src/features/dyno-cockpit/charts.test.tsx"]}
+{"ts": "2026-10-18T02:16:08Z", "action": "T178", "status": "done", "files": ["frontend/src/features/dyno-cockpit/GaugeCluster.test.tsx"]}
+{"ts": "2026-10-18T02:16:08Z", "action": "T179", "status": "done", "files": ["frontend/src/features/dyno-cockpit/KnockSpectrogram.test.tsx"]}
+{"ts": "2026-10-18T02:16:08Z", "action": "T180", "status": "done", "files": ["frontend/src/features/dyno-cockpit/CarOnRollerView.test.tsx"]}
+{"ts": "2026-10-18T02:16:08Z", "action": "T181", "status": "done", "files": ["frontend/src/features/dyno-cockpit/RunControls.test.tsx"]}
+{"ts": "2026-10-18T02:16:08Z", "action": "T182", "status": "done", "files": ["frontend/src/features/dyno-cockpit/EventTimeline.test.tsx"]}
+{"ts": "2026-10-18T02:16:08Z", "action": "T183", "status": "done", "files": ["frontend/src/features/dyno-cockpit/EngineAutopsyView.test.tsx"]}
+{"ts": "2026-10-18T02:16:08Z", "action": "T184", "status": "done", "files": ["frontend/src/features/dyno-cockpit/DataloggerPanel.test.tsx"]}
+{"ts": "2026-10-18T02:16:08Z", "action": "T185", "status": "done", "files": ["frontend/src/features/dyno-cockpit/audio/AudioEngine.test.ts"]}
+{"ts": "2026-10-18T02:16:08Z", "action": "T186", "status": "done", "files": ["frontend/src/features/dyno-cockpit/a11y.test.tsx"]}
+{"ts": "2026-10-18T02:16:08Z", "action": "T341", "status": "done", "files": ["frontend/src/features/dyno-cockpit/render/RingBuffer.ts", "frontend/src/features/dyno-cockpit/render/RenderLoop.ts", "frontend/src/features/dyno-cockpit/store.ts"]}
+{"ts": "2026-10-18T02:16:08Z", "action": "T342", "status": "done", "files": ["frontend/src/features/dyno-cockpit/render/createSurface.ts", "frontend/src/features/dyno-cockpit/render/spectrogramRenderers.ts"]}
+{"ts": "2026-10-18T02:16:08Z", "action": "T343", "status": "done", "files": ["frontend/src/lib/ws/TelemetrySocket.ts", "frontend/src/lib/ws/envelope.ts", "frontend/src/lib/ws/index.ts"]}
+{"ts": "2026-10-18T02:16:08Z", "action": "T344", "status": "done", "files": ["frontend/src/lib/units/index.ts", "frontend/src/lib/units/units.ts", "frontend/src/lib/units/UnitsContext.tsx"]}
+{"ts": "2026-10-18T02:16:08Z", "action": "T345", "status": "done", "files": ["frontend/src/features/dyno-cockpit/prefs.ts", "frontend/src/features/dyno-cockpit/channels.ts"]}
+{"ts": "2026-10-18T02:16:08Z", "action": "T346", "status": "done", "files": ["frontend/src/features/dyno-cockpit/DynoChart.tsx", "frontend/src/features/dyno-cockpit/charts/UPlotChart.tsx"]}
+{"ts": "2026-10-18T02:16:08Z", "action": "T347", "status": "done", "files": ["frontend/src/features/dyno-cockpit/LambdaEgtChart.tsx"]}
+{"ts": "2026-10-18T02:16:08Z", "action": "T348", "status": "done", "files": ["frontend/src/features/dyno-cockpit/CylinderPressureTrace.tsx"]}
+{"ts": "2026-10-18T02:16:08Z", "action": "T349", "status": "done", "files": ["frontend/src/features/dyno-cockpit/GaugeCluster.tsx"]}
+{"ts": "2026-10-18T02:16:08Z", "action": "T350", "status": "done", "files": ["frontend/src/features/dyno-cockpit/KnockSpectrogram.tsx", "frontend/src/features/dyno-cockpit/render/SpectrogramModel.ts"]}
+{"ts": "2026-10-18T02:16:08Z", "action": "T351", "status": "done", "files": ["frontend/src/features/dyno-cockpit/CarOnRollerView.tsx", "frontend/src/features/dyno-cockpit/render/CarAnimator.ts", "frontend/src/features/dyno-cockpit/flashGuard.ts"]}
+{"ts": "2026-10-18T02:16:08Z", "action": "T352", "status": "done", "files": ["frontend/src/features/dyno-cockpit/RunControls.tsx", "frontend/src/features/dyno-cockpit/cockpitState.ts"]}
+{"ts": "2026-10-18T02:16:08Z", "action": "T353", "status": "done", "files": ["frontend/src/features/dyno-cockpit/EventTimeline.tsx"]}
+{"ts": "2026-10-18T02:16:08Z", "action": "T354", "status": "done", "files": ["frontend/src/features/dyno-cockpit/EngineAutopsyView.tsx", "frontend/src/features/dyno-cockpit/Dialog.tsx"]}
+{"ts": "2026-10-18T02:16:08Z", "action": "T355", "status": "done", "files": ["frontend/src/features/dyno-cockpit/DataloggerPanel.tsx"]}
+{"ts": "2026-10-18T02:16:08Z", "action": "T356", "status": "done", "files": ["frontend/src/features/dyno-cockpit/audio/AudioEngine.ts", "frontend/src/features/dyno-cockpit/audio/EngineSynth.ts"]}
+{"ts": "2026-10-18T02:16:08Z", "action": "T357", "status": "done", "files": ["frontend/src/features/dyno-cockpit/AudioControls.tsx"]}
+{"ts": "2026-10-18T02:16:08Z", "action": "T358", "status": "done", "files": ["frontend/src/features/dyno-cockpit/ConnectionIndicator.tsx"]}
+{"ts": "2026-10-18T02:16:08Z", "action": "T359", "status": "done", "files": ["frontend/src/features/dyno-cockpit/ShortcutsDialog.tsx"]}
+{"ts": "2026-10-18T02:16:08Z", "action": "T360", "status": "done", "files": ["frontend/src/features/dyno-cockpit/DynoCockpitPage.tsx", "frontend/src/features/dyno-cockpit/useCockpit.ts", "frontend/src/features/dyno-cockpit/api.ts", "frontend/src/features/dyno-cockpit/UnitsMenu.tsx", "frontend/src/features/dyno-cockpit/DiagnosticsPanel.tsx", "frontend/src/features/dyno-cockpit/DynoCockpitPage.test.tsx"]}
+{"ts": "2026-10-18T02:16:08Z", "action": "T434", "status": "done", "files": ["Makefile", "scripts/check.sh"]}
+{"ts": "2026-10-18T02:16:08Z", "action": "T450", "status": "done", "files": ["frontend/src/features/dyno-cockpit/messages.ts"]}
+{"ts": "2026-10-18T02:20:09Z", "action": "T050", "status": "done", "files": ["backend/src/simremap/ecu/contracts.py (entregue pelo contracts-db; consumido e validado aqui)"]}
+{"ts": "2026-10-18T02:20:09Z", "action": "T051", "status": "done", "files": ["backend/src/simremap/db/models/calibration.py (entregue pelo contracts-db; usado pelo repository)"]}
+{"ts": "2026-10-18T02:20:09Z", "action": "T052", "status": "done", "files": ["backend/src/simremap/db/migrations/versions/0004_ecu_calibrations.py (entregue pelo contracts-db)"]}
+{"ts": "2026-10-18T02:20:09Z", "action": "T138", "status": "done", "files": ["backend/tests/ecu/test_tables.py"]}
+{"ts": "2026-10-18T02:20:09Z", "action": "T139", "status": "done", "files": ["backend/tests/ecu/test_calibration.py"]}
+{"ts": "2026-10-18T02:20:09Z", "action": "T140", "status": "done", "files": ["backend/tests/ecu/test_fuel.py"]}
+{"ts": "2026-10-18T02:20:09Z", "action": "T141", "status": "done", "files": ["backend/tests/ecu/test_ignition_knock.py"]}
+{"ts": "2026-10-18T02:20:09Z", "action": "T142", "status": "done", "files": ["backend/tests/ecu/test_boost.py"]}
+{"ts": "2026-10-18T02:20:09Z", "action": "T143", "status": "done", "files": ["backend/tests/ecu/test_strategies.py"]}
+{"ts": "2026-10-18T02:20:09Z", "action": "T144", "status": "done", "files": ["backend/tests/ecu/test_failsafe.py"]}
+{"ts": "2026-10-18T02:20:09Z", "action": "T145", "status": "done", "files": ["backend/tests/ecu/test_arbitration.py"]}
+{"ts": "2026-10-18T02:20:09Z", "action": "T146", "status": "done", "files": ["backend/tests/ecu/test_api.py"]}
+{"ts": "2026-10-18T02:20:09Z", "action": "T147", "status": "done", "files": ["backend/tests/ecu/test_apply.py"]}
+{"ts": "2026-10-18T02:20:09Z", "action": "T148", "status": "done", "files": ["backend/tests/ecu/bench/test_bench_ecu_step.py"]}
+{"ts": "2026-10-18T02:20:09Z", "action": "T296", "status": "done", "files": ["backend/src/simremap/ecu/tables.py"]}
+{"ts": "2026-10-18T02:20:09Z", "action": "T297", "status": "done", "files": ["backend/src/simremap/ecu/limits.py"]}
+{"ts": "2026-10-18T02:20:09Z", "action": "T298", "status": "done", "files": ["backend/src/simremap/ecu/calibration.py"]}
+{"ts": "2026-10-18T02:20:09Z", "action": "T299", "status": "done", "files": ["backend/src/simremap/ecu/strategies/fuel.py", "backend/src/simremap/ecu/strategies/base.py"]}
+{"ts": "2026-10-18T02:20:09Z", "action": "T300", "status": "done", "files": ["backend/src/simremap/ecu/strategies/closed_loop.py"]}
+{"ts": "2026-10-18T02:20:09Z", "action": "T301", "status": "done", "files": ["backend/src/simremap/ecu/strategies/ignition.py"]}
+{"ts": "2026-10-18T02:20:09Z", "action": "T302", "status": "done", "files": ["backend/src/simremap/ecu/strategies/boost.py"]}
+{"ts": "2026-10-18T02:20:09Z", "action": "T303", "status": "done", "files": ["backend/src/simremap/ecu/strategies/rev_limiter.py"]}
+{"ts": "2026-10-18T02:20:09Z", "action": "T304", "status": "done", "files": ["backend/src/simremap/ecu/strategies/two_step.py"]}
+{"ts": "2026-10-18T02:20:09Z", "action": "T305", "status": "done", "files": ["backend/src/simremap/ecu/strategies/antilag.py"]}
+{"ts": "2026-10-18T02:20:09Z", "action": "T306", "status": "done", "files": ["backend/src/simremap/ecu/strategies/powershift.py"]}
+{"ts": "2026-10-18T02:20:09Z", "action": "T307", "status": "done", "files": ["backend/src/simremap/ecu/strategies/overrun.py"]}
+{"ts": "2026-10-18T02:20:09Z", "action": "T308", "status": "done", "files": ["backend/src/simremap/ecu/strategies/failsafe.py"]}
+{"ts": "2026-10-18T02:20:09Z", "action": "T309", "status": "done", "files": ["backend/src/simremap/ecu/arbitration.py"]}
+{"ts": "2026-10-18T02:20:09Z", "action": "T310", "status": "done", "files": ["backend/src/simremap/ecu/runtime.py", "backend/src/simremap/ecu/compiled.py", "backend/src/simremap/ecu/hooks.py", "backend/tests/ecu/test_runtime.py"]}
+{"ts": "2026-10-18T02:20:09Z", "action": "T311", "status": "done", "files": ["backend/src/simremap/ecu/errors.py"]}
+{"ts": "2026-10-18T02:20:09Z", "action": "T312", "status": "done", "files": ["backend/src/simremap/ecu/repository.py", "backend/src/simremap/ecu/service.py"]}
+{"ts": "2026-10-18T02:20:09Z", "action": "T313", "status": "done", "files": ["backend/src/simremap/ecu/apply.py", "backend/src/simremap/ecu/session_port.py"]}
+{"ts": "2026-10-18T02:20:09Z", "action": "T314", "status": "done", "files": ["backend/src/simremap/ecu/seed_stock.py", "backend/tests/ecu/test_seed_stock.py"]}
+{"ts": "2026-10-18T02:20:09Z", "action": "T419", "status": "done", "files": ["backend/src/simremap/ecu/router.py (E-15 a E-19; alvo api/routers/calibrations.py substituído pelo ponto de registo fixo ecu/router.py)"]}
+{"ts": "2026-10-18T02:20:09Z", "action": "T420", "status": "done", "files": ["backend/src/simremap/ecu/router.py (E-20; alvo api/routers/session_calibration.py idem)", "backend/src/simremap/ecu/session_port.py", "backend/src/simremap/ecu/ports.py"]}
+{"ts": "2026-10-18T02:28:32Z", "action": "T092", "status": "done", "files": ["backend/tests/physics/conftest.py"]}
+{"ts": "2026-10-18T02:28:32Z", "action": "T093", "status": "done", "files": ["backend/tests/physics/test_config_geometry.py"]}
+{"ts": "2026-10-18T02:28:32Z", "action": "T094", "status": "done", "files": ["backend/tests/physics/test_manifold.py"]}
+{"ts": "2026-10-18T02:28:32Z", "action": "T095", "status": "done", "files": ["backend/tests/physics/test_fuel_air.py"]}
+{"ts": "2026-10-18T02:28:32Z", "action": "T096", "status": "done", "files": ["backend/tests/physics/test_combustion.py"]}
+{"ts": "2026-10-18T02:28:32Z", "action": "T097", "status": "done", "files": ["backend/tests/physics/test_cycle_solver.py"]}
+{"ts": "2026-10-18T02:28:32Z", "action": "T098", "status": "done", "files": ["backend/tests/physics/test_friction_dynamics.py"]}
+{"ts": "2026-10-18T02:28:32Z", "action": "T099", "status": "done", "files": ["backend/tests/physics/test_exhaust.py"]}
+{"ts": "2026-10-18T02:28:32Z", "action": "T100", "status": "done", "files": ["backend/tests/physics/test_turbo.py"]}
+{"ts": "2026-10-18T02:28:32Z", "action": "T101", "status": "done", "files": ["backend/tests/physics/test_supercharger.py"]}
+{"ts": "2026-10-18T02:28:32Z", "action": "T102", "status": "done", "files": ["backend/tests/physics/test_thermal.py"]}
+{"ts": "2026-10-18T02:28:32Z", "action": "T103", "status": "done", "files": ["backend/tests/physics/test_sensors_property.py"]}
+{"ts": "2026-10-18T02:28:32Z", "action": "T104", "status": "done", "files": ["backend/tests/physics/test_faults.py"]}
+{"ts": "2026-10-18T02:28:32Z", "action": "T105", "status": "done", "files": ["backend/tests/physics/test_lock.py"]}
+{"ts": "2026-10-18T02:28:32Z", "action": "T106", "status": "done", "files": ["backend/tests/physics/test_determinism.py"]}
+{"ts": "2026-10-18T02:28:32Z", "action": "T107", "status": "done", "files": ["backend/tests/physics/bench/test_bench_step.py"]}
+{"ts": "2026-10-18T02:28:32Z", "action": "T240", "status": "done", "files": ["backend/src/simremap/physics/config.py"]}
+{"ts": "2026-10-18T02:28:32Z", "action": "T241", "status": "done", "files": ["backend/src/simremap/physics/geometry.py"]}
+{"ts": "2026-10-18T02:28:32Z", "action": "T242", "status": "done", "files": ["backend/src/simremap/physics/manifold.py"]}
+{"ts": "2026-10-18T02:28:32Z", "action": "T243", "status": "done", "files": ["backend/src/simremap/physics/fuel.py", "backend/src/simremap/physics/interp.py"]}
+{"ts": "2026-10-18T02:28:32Z", "action": "T244", "status": "done", "files": ["backend/src/simremap/physics/combustion.py"]}
+{"ts": "2026-10-18T02:28:32Z", "action": "T245", "status": "done", "files": ["backend/src/simremap/physics/cycle_solver.py"]}
+{"ts": "2026-10-18T02:28:32Z", "action": "T246", "status": "done", "files": ["backend/src/simremap/physics/friction.py"]}
+{"ts": "2026-10-18T02:28:32Z", "action": "T247", "status": "done", "files": ["backend/src/simremap/physics/exhaust.py"]}
+{"ts": "2026-10-18T02:28:32Z", "action": "T248", "status": "done", "files": ["backend/src/simremap/physics/turbo.py"]}
+{"ts": "2026-10-18T02:28:32Z", "action": "T249", "status": "done", "files": ["backend/src/simremap/physics/supercharger.py"]}
+{"ts": "2026-10-18T02:28:32Z", "action": "T250", "status": "done", "files": ["backend/src/simremap/physics/thermal.py"]}
+{"ts": "2026-10-18T02:28:32Z", "action": "T251", "status": "done", "files": ["backend/src/simremap/physics/thermal.py"]}
+{"ts": "2026-10-18T02:28:32Z", "action": "T252", "status": "done", "files": ["backend/src/simremap/physics/sensors.py"]}
+{"ts": "2026-10-18T02:28:32Z", "action": "T253", "status": "done", "files": ["backend/src/simremap/physics/faults.py"]}
+{"ts": "2026-10-18T02:28:32Z", "action": "T254", "status": "done", "files": ["backend/src/simremap/physics/digest.py"]}
+{"ts": "2026-10-18T02:28:32Z", "action": "T255", "status": "done", "files": ["backend/src/simremap/physics/errors.py"]}
+{"ts": "2026-10-18T02:28:32Z", "action": "T256", "status": "done", "files": ["backend/src/simremap/physics/engine.py", "backend/src/simremap/physics/reference.py"]}
+{"ts": "2026-10-18T02:56:57Z", "action": "T189", "status": "done", "files": ["frontend/src/features/ecu-tuning/ops/ops.test.ts"]}
+{"ts": "2026-10-18T02:56:57Z", "action": "T190", "status": "done", "files": ["frontend/src/features/ecu-tuning/history/UndoStack.test.ts"]}
+{"ts": "2026-10-18T02:56:57Z", "action": "T191", "status": "done", "files": ["frontend/src/features/ecu-tuning/prefs.test.ts"]}
+{"ts": "2026-10-18T02:56:57Z", "action": "T192", "status": "done", "files": ["frontend/src/features/ecu-tuning/ProfileNavigator.test.tsx", "frontend/src/features/ecu-tuning/test-utils/fixtures.ts", "frontend/src/features/ecu-tuning/test-utils/harness.tsx"]}
+{"ts": "2026-10-18T02:56:57Z", "action": "T193", "status": "done", "files": ["frontend/src/features/ecu-tuning/TableEditor.test.tsx", "frontend/src/features/ecu-tuning/Table3DView.test.tsx", "frontend/src/features/ecu-tuning/OperationCursor.test.tsx"]}
+{"ts": "2026-10-18T02:56:57Z", "action": "T194", "status": "done", "files": ["frontend/src/features/ecu-tuning/usePatchQueue.test.ts"]}
+{"ts": "2026-10-18T02:56:57Z", "action": "T195", "status": "done", "files": ["frontend/src/features/ecu-tuning/StrategyForms.test.tsx", "frontend/src/features/ecu-tuning/fixtures/strategy-parity.json", "backend/tests/contract/test_strategy_zod_parity.py"]}
+{"ts": "2026-10-18T02:56:57Z", "action": "T196", "status": "done", "files": ["frontend/src/features/ecu-tuning/BaseSetupWizard.test.tsx"]}
+{"ts": "2026-10-18T02:56:57Z", "action": "T197", "status": "done", "files": ["frontend/src/features/ecu-tuning/CalibrationVersions.test.tsx"]}
+{"ts": "2026-10-18T02:56:57Z", "action": "T198", "status": "done", "files": ["frontend/src/features/ecu-tuning/LiveTuneIndicator.test.tsx"]}
+{"ts": "2026-10-18T02:56:57Z", "action": "T199", "status": "done", "files": ["frontend/src/features/ecu-tuning/TuningWarnings.test.tsx"]}
+{"ts": "2026-10-18T02:56:57Z", "action": "T361", "status": "done", "files": ["frontend/src/features/ecu-tuning/ops/selectionOps.ts", "frontend/src/features/ecu-tuning/model.ts"]}
+{"ts": "2026-10-18T02:56:57Z", "action": "T362", "status": "done", "files": ["frontend/src/features/ecu-tuning/ops/interpolate.ts"]}
+{"ts": "2026-10-18T02:56:57Z", "action": "T363", "status": "done", "files": ["frontend/src/features/ecu-tuning/ops/tsv.ts"]}
+{"ts": "2026-10-18T02:56:57Z", "action": "T364", "status": "done", "files": ["frontend/src/features/ecu-tuning/ops/diffCalibrations.ts"]}
+{"ts": "2026-10-18T02:56:57Z", "action": "T365", "status": "done", "files": ["frontend/src/features/ecu-tuning/history/UndoStack.ts"]}
+{"ts": "2026-10-18T02:56:57Z", "action": "T366", "status": "done", "files": ["frontend/src/features/ecu-tuning/prefs.ts"]}
+{"ts": "2026-10-18T02:56:57Z", "action": "T367", "status": "done", "files": ["frontend/src/features/ecu-tuning/ProfileNavigator.tsx"]}
+{"ts": "2026-10-18T02:56:57Z", "action": "T368", "status": "done", "files": ["frontend/src/features/ecu-tuning/TableEditor2D.tsx", "frontend/src/features/ecu-tuning/TableEditorCore.tsx", "frontend/src/features/ecu-tuning/TableGrid.tsx", "frontend/src/features/ecu-tuning/heatmap.ts"]}
+{"ts": "2026-10-18T02:56:57Z", "action": "T369", "status": "done", "files": ["frontend/src/features/ecu-tuning/TableEditor3D.tsx"]}
+{"ts": "2026-10-18T02:56:57Z", "action": "T370", "status": "done", "files": ["frontend/src/features/ecu-tuning/TableToolbar.tsx"]}
+{"ts": "2026-10-18T02:56:57Z", "action": "T371", "status": "done", "files": ["frontend/src/features/ecu-tuning/OperationCursor.tsx", "frontend/src/features/ecu-tuning/telemetryFeed.ts"]}
+{"ts": "2026-10-18T02:56:57Z", "action": "T372", "status": "done", "files": ["frontend/src/features/ecu-tuning/Table3DView.tsx", "frontend/src/features/ecu-tuning/Table3DSurface.tsx", "frontend/src/features/ecu-tuning/Table3DGeometry.ts"]}
+{"ts": "2026-10-18T02:56:57Z", "action": "T373", "status": "done", "files": ["frontend/src/features/ecu-tuning/usePatchQueue.ts"]}
+{"ts": "2026-10-18T02:56:57Z", "action": "T374", "status": "done", "files": ["frontend/src/features/ecu-tuning/StrategyForms.tsx", "frontend/src/features/ecu-tuning/strategySchemas.ts"]}
+{"ts": "2026-10-18T02:56:57Z", "action": "T375", "status": "done", "files": ["frontend/src/features/ecu-tuning/CylinderTrims.tsx"]}
+{"ts": "2026-10-18T02:56:57Z", "action": "T376", "status": "done", "files": ["frontend/src/features/ecu-tuning/BaseSetupWizard.tsx", "frontend/src/features/ecu-tuning/baseSetupSchemas.ts", "frontend/src/features/ecu-tuning/SwapSelector.tsx"]}
+{"ts": "2026-10-18T02:56:57Z", "action": "T377", "status": "done", "files": ["frontend/src/features/ecu-tuning/CalibrationVersions.tsx"]}
+{"ts": "2026-10-18T02:56:57Z", "action": "T378", "status": "done", "files": ["frontend/src/features/ecu-tuning/LiveTuneIndicator.tsx"]}
+{"ts": "2026-10-18T02:56:57Z", "action": "T379", "status": "done", "files": ["frontend/src/features/ecu-tuning/TuningWarnings.tsx", "frontend/src/features/ecu-tuning/warnings.ts"]}
+{"ts": "2026-10-18T02:56:57Z", "action": "T380", "status": "done", "files": ["frontend/src/features/ecu-tuning/ShortcutsDialog.tsx"]}
+{"ts": "2026-10-18T02:56:57Z", "action": "T381", "status": "done", "files": ["frontend/src/features/ecu-tuning/EcuWorkspace.tsx", "frontend/src/features/ecu-tuning/EcuWorkspacePage.tsx", "frontend/src/features/ecu-tuning/workspaceStore.ts", "frontend/src/features/ecu-tuning/api.ts", "frontend/src/features/ecu-tuning/types.ts", "frontend/src/features/ecu-tuning/VehicleSelector.tsx", "frontend/src/features/ecu-tuning/EcuWorkspace.test.tsx"]}
+{"ts": "2026-10-18T02:56:57Z", "action": "T452", "status": "done", "files": ["frontend/src/features/ecu-tuning/messages.ts"]}
+{"ts": "2026-10-18T03:08:15Z", "action": "T054", "status": "done", "files": ["backend/src/simremap/profiles/contracts.py (entregue pelo contracts-db; consumido e validado aqui)"]}
+{"ts": "2026-10-18T03:08:15Z", "action": "T055", "status": "done", "files": ["backend/src/simremap/profiles/contracts.py (idem)"]}
+{"ts": "2026-10-18T03:08:15Z", "action": "T056", "status": "done", "files": ["backend/src/simremap/profiles/data/hardware/classic-20t-swap.json", "backend/src/simremap/profiles/data/hardware/hatch-20t-gdi.json", "backend/src/simremap/profiles/data/hardware/coupe-30t-i6.json", "backend/src/simremap/profiles/data/hardware/muscle-v8-sc.json"]}
+{"ts": "2026-10-18T03:08:15Z", "action": "T057", "status": "done", "files": ["backend/src/simremap/db/models/profiles.py (entregue pelo contracts-db; usado pelo repository)"]}
+{"ts": "2026-10-18T03:08:15Z", "action": "T058", "status": "done", "files": ["backend/src/simremap/db/migrations/versions/0005_profiles_session_state.py (idem)"]}
+{"ts": "2026-10-18T03:08:15Z", "action": "T150", "status": "done", "files": ["backend/tests/profiles/test_registry.py"]}
+{"ts": "2026-10-18T03:08:15Z", "action": "T151", "status": "done", "files": ["backend/tests/profiles/test_oem_torque_path.py"]}
+{"ts": "2026-10-18T03:08:15Z", "action": "T152", "status": "done", "files": ["backend/tests/profiles/test_oem_protection.py"]}
+{"ts": "2026-10-18T03:08:15Z", "action": "T153", "status": "done", "files": ["backend/tests/profiles/test_standalone_profiles.py"]}
+{"ts": "2026-10-18T03:08:15Z", "action": "T154", "status": "done", "files": ["backend/tests/profiles/test_swap_setup.py"]}
+{"ts": "2026-10-18T03:08:15Z", "action": "T155", "status": "done", "files": ["backend/tests/profiles/test_wizard.py"]}
+{"ts": "2026-10-18T03:08:15Z", "action": "T156", "status": "done", "files": ["backend/tests/profiles/test_symptoms.py"]}
+{"ts": "2026-10-18T03:08:15Z", "action": "T157", "status": "done", "files": ["backend/tests/profiles/test_protections_overrides.py"]}
+{"ts": "2026-10-18T03:08:15Z", "action": "T158", "status": "done", "files": ["backend/tests/profiles/test_api.py", "backend/tests/profiles/test_hardware_repository.py"]}
+{"ts": "2026-10-18T03:08:15Z", "action": "T159", "status": "done", "files": ["backend/tests/profiles/test_trademark_blocklist.py (alvo tests/contract/ fora do escopo de escrita)", "backend/src/simremap/profiles/compliance.py"]}
+{"ts": "2026-10-18T03:08:15Z", "action": "T315", "status": "done", "files": ["backend/src/simremap/profiles/descriptors/oem_stage.py", "backend/src/simremap/profiles/descriptors/common.py"]}
+{"ts": "2026-10-18T03:08:15Z", "action": "T316", "status": "done", "files": ["backend/src/simremap/profiles/descriptors/ft_pro.py"]}
+{"ts": "2026-10-18T03:08:15Z", "action": "T317", "status": "done", "files": ["backend/src/simremap/profiles/descriptors/m1_race.py"]}
+{"ts": "2026-10-18T03:08:15Z", "action": "T318", "status": "done", "files": ["backend/src/simremap/profiles/descriptors/ht_elite.py"]}
+{"ts": "2026-10-18T03:08:15Z", "action": "T319", "status": "done", "files": ["backend/src/simremap/profiles/registry.py", "backend/src/simremap/profiles/descriptors/__init__.py"]}
+{"ts": "2026-10-18T03:08:15Z", "action": "T320", "status": "done", "files": ["backend/src/simremap/profiles/hardware.py"]}
+{"ts": "2026-10-18T03:08:15Z", "action": "T321", "status": "done", "files": ["backend/src/simremap/profiles/hooks/oem_stage.py", "backend/src/simremap/profiles/hooks/common.py"]}
+{"ts": "2026-10-18T03:08:15Z", "action": "T322", "status": "done", "files": ["backend/src/simremap/profiles/hooks/oem_stage.py"]}
+{"ts": "2026-10-18T03:08:15Z", "action": "T323", "status": "done", "files": ["backend/src/simremap/profiles/hooks/standalone.py"]}
+{"ts": "2026-10-18T03:08:15Z", "action": "T324", "status": "done", "files": ["backend/src/simremap/profiles/adapter.py", "backend/src/simremap/profiles/worker.py", "backend/tests/profiles/bench/test_bench_profiled_ecu.py"]}
+{"ts": "2026-10-18T03:08:15Z", "action": "T325", "status": "done", "files": ["backend/src/simremap/profiles/setup.py"]}
+{"ts": "2026-10-18T03:08:15Z", "action": "T326", "status": "done", "files": ["backend/src/simremap/profiles/wizard.py"]}
+{"ts": "2026-10-18T03:08:15Z", "action": "T327", "status": "done", "files": ["backend/src/simremap/profiles/swap.py", "backend/src/simremap/profiles/service.py"]}
+{"ts": "2026-10-18T03:08:15Z", "action": "T328", "status": "done", "files": ["backend/src/simremap/profiles/errors.py"]}
+{"ts": "2026-10-18T03:08:15Z", "action": "T329", "status": "done", "files": ["backend/src/simremap/profiles/repository.py"]}
+{"ts": "2026-10-18T03:08:15Z", "action": "T426", "status": "done", "files": ["backend/src/simremap/profiles/router.py (E-21, E-22; ponto de registo fixo profiles/router.py em vez de api/routers/ecu_profiles.py)"]}
+{"ts": "2026-10-18T03:08:15Z", "action": "T427", "status": "done", "files": ["backend/src/simremap/profiles/router.py (E-23 a E-25)", "backend/src/simremap/profiles/session_port.py", "backend/src/simremap/profiles/service.py"]}
+{"ts": "2026-10-18T03:40:01Z", "action": "T117", "status": "done", "files": ["backend/tests/catalog/accuracy/test_accuracy_reference.py"]}
+{"ts": "2026-10-18T03:40:01Z", "action": "T217", "status": "done", "files": ["backend/tests/catalog/accuracy/test_accuracy_reference.py"]}
+{"ts": "2026-10-18T03:40:01Z", "action": "T266", "status": "done", "files": ["backend/src/simremap/catalog/accuracy.py"]}
+{"ts": "2026-10-18T03:40:01Z", "action": "T267", "status": "done", "files": ["backend/src/simremap/catalog/tools/gen_data.py", "backend/src/simremap/catalog/data/vehicles/hatch-20t-gdi/vehicle.json", "backend/src/simremap/catalog/data/vehicles/hatch-20t-gdi/calibrations/oem-stage.json"]}
+{"ts": "2026-10-18T03:40:01Z", "action": "T268", "status": "done", "files": ["backend/src/simremap/catalog/data/manifest.json"]}
+{"ts": "2026-10-18T03:40:01Z", "action": "T403", "status": "done", "files": ["backend/src/simremap/catalog/tools/gen_data.py", "backend/src/simremap/catalog/data/vehicles/coupe-30t-i6/vehicle.json", "backend/src/simremap/catalog/data/vehicles/coupe-30t-i6/calibrations/oem-stage.json"]}
+{"ts": "2026-10-18T03:40:01Z", "action": "T404", "status": "done", "files": ["backend/src/simremap/catalog/tools/gen_data.py", "backend/src/simremap/catalog/tools/gen_ve.py", "backend/src/simremap/catalog/data/vehicles/classic-20t-swap/vehicle.json", "backend/src/simremap/catalog/data/vehicles/classic-20t-swap/calibrations/oem-stage.json"]}
+{"ts": "2026-10-18T03:40:01Z", "action": "T405", "status": "done", "files": ["backend/src/simremap/catalog/tools/gen_data.py", "backend/src/simremap/catalog/tools/gen_ve.py", "backend/src/simremap/catalog/data/vehicles/muscle-v8-sc/vehicle.json", "backend/src/simremap/catalog/data/vehicles/muscle-v8-sc/calibrations/oem-stage.json"]}
+{"ts": "2026-10-18T03:40:01Z", "action": "T406", "status": "done", "files": ["backend/src/simremap/catalog/data/manifest.json", "backend/tests/catalog/test_api.py", "backend/tests/catalog/test_service.py", "backend/tests/catalog/test_invariants.py", "backend/tests/catalog/test_loader.py", "backend/tests/catalog/test_reference_curves.py"]}
+{"ts": "2026-10-18T03:40:01Z", "action": "T408", "status": "done", "files": ["backend/src/simremap/core/worker/physics_task.py", "backend/tests/core/test_physics_task.py", "backend/tests/core/bench/test_bench_worker_modes.py"]}
+{"ts": "2026-10-18T03:40:01Z", "action": "T409", "status": "done", "files": ["backend/src/simremap/core/config.py", "backend/tests/core/test_physics_task.py"]}
+{"ts": "2026-10-18T04:19:51Z", "action": "T037", "status": "done", "files": ["backend/src/simremap/dyno/contracts.py (entregue pelo contracts-db; consumido sem alterações)"]}
+{"ts": "2026-10-18T04:19:51Z", "action": "T040", "status": "done", "files": ["backend/src/simremap/dyno/contracts.py (idem)"]}
+{"ts": "2026-10-18T04:19:51Z", "action": "T041", "status": "done", "files": ["backend/src/simremap/dyno/contracts.py (idem)"]}
+{"ts": "2026-10-18T04:19:51Z", "action": "T042", "status": "done", "files": ["backend/src/simremap/dyno/contracts.py (idem)"]}
+{"ts": "2026-10-18T04:19:51Z", "action": "T043", "status": "done", "files": ["backend/src/simremap/db/models/dyno.py (entregue pelo contracts-db; usado por dyno/repository.py)"]}
+{"ts": "2026-10-18T04:19:51Z", "action": "T044", "status": "done", "files": ["backend/src/simremap/db/migrations/versions/0002_dyno_sessions_runs.py (idem)"]}
+{"ts": "2026-10-18T04:19:51Z", "action": "T118", "status": "done", "files": ["backend/tests/dyno/test_rig.py"]}
+{"ts": "2026-10-18T04:19:51Z", "action": "T119", "status": "done", "files": ["backend/tests/dyno/test_controllers.py"]}
+{"ts": "2026-10-18T04:19:51Z", "action": "T120", "status": "done", "files": ["backend/tests/dyno/test_correction.py"]}
+{"ts": "2026-10-18T04:19:51Z", "action": "T121", "status": "done", "files": ["backend/tests/dyno/test_curve.py"]}
+{"ts": "2026-10-18T04:19:51Z", "action": "T122", "status": "done", "files": ["backend/tests/dyno/test_run_state_machine.py"]}
+{"ts": "2026-10-18T04:19:51Z", "action": "T123", "status": "done", "files": ["backend/tests/dyno/test_pull_types.py"]}
+{"ts": "2026-10-18T04:19:51Z", "action": "T124", "status": "done", "files": ["backend/tests/dyno/test_tick_order.py (alvo tests/contract/ fora do escopo de escrita; pode ser movido sem alterações)"]}
+{"ts": "2026-10-18T04:19:51Z", "action": "T125", "status": "done", "files": ["backend/tests/dyno/test_session_manager.py"]}
+{"ts": "2026-10-18T04:19:51Z", "action": "T126", "status": "done", "files": ["backend/tests/dyno/test_api.py", "backend/tests/dyno/test_ports.py", "backend/tests/dyno/test_determinism.py"]}
+{"ts": "2026-10-18T04:19:51Z", "action": "T127", "status": "done", "files": ["backend/tests/integration/test_sprint2_failure_flow.py", "backend/tests/integration/conftest.py"]}
+{"ts": "2026-10-18T04:19:51Z", "action": "T128", "status": "done", "files": ["backend/tests/dyno/bench/test_bench_loop.py (pytest -m bench)"]}
+{"ts": "2026-10-18T04:19:51Z", "action": "T269", "status": "done", "files": ["backend/src/simremap/dyno/rig.py"]}
+{"ts": "2026-10-18T04:19:51Z", "action": "T270", "status": "done", "files": ["backend/src/simremap/dyno/controllers.py"]}
+{"ts": "2026-10-18T04:19:51Z", "action": "T271", "status": "done", "files": ["backend/src/simremap/dyno/correction.py"]}
+{"ts": "2026-10-18T04:19:51Z", "action": "T272", "status": "done", "files": ["backend/src/simremap/dyno/curve.py"]}
+{"ts": "2026-10-18T04:19:51Z", "action": "T273", "status": "done", "files": ["backend/src/simremap/dyno/runs.py"]}
+{"ts": "2026-10-18T04:19:51Z", "action": "T274", "status": "done", "files": ["backend/src/simremap/dyno/runs.py"]}
+{"ts": "2026-10-18T04:19:51Z", "action": "T275", "status": "done", "files": ["backend/src/simremap/dyno/runner.py", "backend/src/simremap/dyno/sampler.py", "backend/src/simremap/dyno/trace_codec.py"]}
+{"ts": "2026-10-18T04:19:51Z", "action": "T276", "status": "done", "files": ["backend/src/simremap/dyno/errors.py"]}
+{"ts": "2026-10-18T04:19:51Z", "action": "T277", "status": "done", "files": ["backend/src/simremap/dyno/session.py"]}
+{"ts": "2026-10-18T04:19:51Z", "action": "T278", "status": "done", "files": ["backend/src/simremap/dyno/repository.py"]}
+{"ts": "2026-10-18T04:19:51Z", "action": "T414", "status": "done", "files": ["backend/src/simremap/dyno/assembly.py"]}
+{"ts": "2026-10-18T04:19:51Z", "action": "T415", "status": "done", "files": ["backend/src/simremap/dyno/output_router.py", "backend/src/simremap/dyno/stream.py"]}
+{"ts": "2026-10-18T04:19:51Z", "action": "T416", "status": "done", "files": ["backend/src/simremap/dyno/guards.py"]}
+{"ts": "2026-10-18T04:19:51Z", "action": "T417", "status": "done", "files": ["backend/src/simremap/dyno/router.py (layout real <pacote>/router.py do api/registry; alvo api/routers/sessions.py não existe)", "backend/src/simremap/dyno/ports.py"]}
+{"ts": "2026-10-18T05:08:23Z", "action": "T059", "status": "done", "files": ["backend/src/simremap/telemetry/contracts.py (entregue pelo contracts-db; consumido sem alterações)"]}
+{"ts": "2026-10-18T05:08:23Z", "action": "T060", "status": "done", "files": ["backend/src/simremap/telemetry/contracts.py (idem)"]}
+{"ts": "2026-10-18T05:08:23Z", "action": "T061", "status": "done", "files": ["backend/src/simremap/telemetry/contracts.py (idem)"]}
+{"ts": "2026-10-18T05:08:23Z", "action": "T062", "status": "done", "files": ["backend/src/simremap/db/models/datalog.py (idem; usado por telemetry/repository.py)"]}
+{"ts": "2026-10-18T05:08:23Z", "action": "T063", "status": "done", "files": ["backend/src/simremap/db/migrations/versions/0006_telemetry_datalog.py (idem)"]}
+{"ts": "2026-10-18T05:08:23Z", "action": "T161", "status": "done", "files": ["backend/tests/telemetry/test_channels.py"]}
+{"ts": "2026-10-18T05:08:23Z", "action": "T162", "status": "done", "files": ["backend/tests/telemetry/test_decimator.py"]}
+{"ts": "2026-10-18T05:08:23Z", "action": "T163", "status": "done", "files": ["backend/tests/telemetry/test_seq.py"]}
+{"ts": "2026-10-18T05:08:23Z", "action": "T164", "status": "done", "files": ["backend/tests/telemetry/test_backpressure.py"]}
+{"ts": "2026-10-18T05:08:23Z", "action": "T165", "status": "done", "files": ["backend/tests/telemetry/test_ws_protocol.py", "backend/tests/telemetry/ws_helpers.py"]}
+{"ts": "2026-10-18T05:08:23Z", "action": "T166", "status": "done", "files": ["backend/tests/telemetry/test_resume.py"]}
+{"ts": "2026-10-18T05:08:23Z", "action": "T167", "status": "done", "files": ["backend/tests/telemetry/test_events.py"]}
+{"ts": "2026-10-18T05:08:23Z", "action": "T168", "status": "done", "files": ["backend/tests/telemetry/test_datalog.py", "backend/tests/telemetry/test_logbook.py"]}
+{"ts": "2026-10-18T05:08:23Z", "action": "T169", "status": "done", "files": ["backend/tests/telemetry/test_export_import_compare.py"]}
+{"ts": "2026-10-18T05:08:23Z", "action": "T170", "status": "done", "files": ["backend/tests/telemetry/test_spectrum_trace.py"]}
+{"ts": "2026-10-18T05:08:23Z", "action": "T171", "status": "done", "files": ["backend/tests/telemetry/bench/test_bench_sampler.py (pytest -m bench)"]}
+{"ts": "2026-10-18T05:08:23Z", "action": "T330", "status": "done", "files": ["backend/src/simremap/telemetry/channels.py"]}
+{"ts": "2026-10-18T05:08:23Z", "action": "T331", "status": "done", "files": ["backend/src/simremap/telemetry/decimator.py"]}
+{"ts": "2026-10-18T05:08:23Z", "action": "T332", "status": "done", "files": ["backend/src/simremap/telemetry/spectrum.py"]}
+{"ts": "2026-10-18T05:08:23Z", "action": "T333", "status": "done", "files": ["backend/src/simremap/telemetry/datalog.py", "backend/src/simremap/telemetry/logbook.py"]}
+{"ts": "2026-10-18T05:08:23Z", "action": "T334", "status": "done", "files": ["backend/src/simremap/telemetry/datalog.py (parse_import)"]}
+{"ts": "2026-10-18T05:08:23Z", "action": "T335", "status": "done", "files": ["backend/src/simremap/telemetry/export.py"]}
+{"ts": "2026-10-18T05:08:23Z", "action": "T336", "status": "done", "files": ["backend/src/simremap/telemetry/compare.py"]}
+{"ts": "2026-10-18T05:08:23Z", "action": "T337", "status": "done", "files": ["backend/src/simremap/telemetry/sampler.py"]}
+{"ts": "2026-10-18T05:08:23Z", "action": "T338", "status": "done", "files": ["backend/src/simremap/telemetry/broadcaster.py"]}
+{"ts": "2026-10-18T05:08:23Z", "action": "T339", "status": "done", "files": ["backend/src/simremap/telemetry/errors.py"]}
+{"ts": "2026-10-18T05:08:23Z", "action": "T340", "status": "done", "files": ["backend/src/simremap/telemetry/repository.py"]}
+{"ts": "2026-10-18T05:08:23Z", "action": "T428", "status": "done", "files": ["backend/src/simremap/telemetry/service.py (sem editar dyno/assembly.py: TelemetryService.install grava DynoService.task_options['sampler'] = 'simremap.telemetry.sampler:TelemetrySampler', ponto de assinatura existente)"]}
+{"ts": "2026-10-18T05:08:23Z", "action": "T429", "status": "done", "files": ["backend/src/simremap/telemetry/broadcaster.py + logbook.py (sem editar dyno/output_router.py: o hub do dyno passa a criar TelemetryStream, subclasse do SessionStream, que desvia telemetry.log_* para o Logbook e regista o datalog no repositório)"]}
+{"ts": "2026-10-18T05:08:23Z", "action": "T430", "status": "done", "files": ["backend/src/simremap/telemetry/router.py (layout real <pacote>/router.py; api/routers/telemetry.py não existe)"]}
+{"ts": "2026-10-18T05:08:23Z", "action": "T431", "status": "done", "files": ["backend/src/simremap/telemetry/ws.py", "backend/src/simremap/telemetry/router.py (WebSocketRoute /ws/v1/sessions/{session_id}/telemetry)"]}
+{"ts": "2026-10-18T05:08:23Z", "action": "T432", "status": "done", "files": ["backend/src/simremap/api/registry.py já lista simremap.telemetry.router (sem mudança); a flag SIMREMAP_FEATURE_TELEMETRY é aplicada no lifespan do router (serviço não instalado ⇒ REST 404 ROUTE_NOT_FOUND, WS 4404)"]}
+{"ts": "2026-10-18T06:03:26Z", "action": "T200", "status": "done", "files": ["backend/tests/scenarios/test_player_profiles.py"]}
+{"ts": "2026-10-18T06:03:26Z", "action": "T201", "status": "done", "files": ["backend/tests/scenarios/test_catalog.py"]}
+{"ts": "2026-10-18T06:03:26Z", "action": "T202", "status": "done", "files": ["backend/tests/scenarios/test_challenges.py"]}
+{"ts": "2026-10-18T06:03:26Z", "action": "T203", "status": "done", "files": ["backend/tests/scenarios/test_attempts.py"]}
+{"ts": "2026-10-18T06:03:26Z", "action": "T204", "status": "done", "files": ["backend/tests/scenarios/test_validity.py"]}
+{"ts": "2026-10-18T06:03:26Z", "action": "T205", "status": "done", "files": ["backend/tests/scenarios/test_evaluator.py"]}
+{"ts": "2026-10-18T06:03:26Z", "action": "T206", "status": "done", "files": ["backend/tests/scenarios/test_probe.py"]}
+{"ts": "2026-10-18T06:03:26Z", "action": "T207", "status": "done", "files": ["backend/tests/scenarios/test_hints_stats.py"]}
+{"ts": "2026-10-18T06:03:26Z", "action": "T208", "status": "done", "files": ["backend/tests/scenarios/test_packages.py"]}
+{"ts": "2026-10-18T06:03:26Z", "action": "T209", "status": "done", "files": ["backend/tests/scenarios/test_replay.py"]}
+{"ts": "2026-10-18T06:03:26Z", "action": "T210", "status": "done", "files": ["backend/tests/scenarios/test_api.py"]}
+{"ts": "2026-10-18T06:03:26Z", "action": "T211", "status": "done", "files": ["backend/tests/integration/test_import_50_packages.py"]}
+{"ts": "2026-10-18T06:03:26Z", "action": "T212", "status": "done", "files": ["frontend/src/features/scenarios/gradesCsv.test.ts"]}
+{"ts": "2026-10-18T06:03:26Z", "action": "T213", "status": "done", "files": ["frontend/src/features/scenarios/ProfilePicker.test.tsx"]}
+{"ts": "2026-10-18T06:03:26Z", "action": "T214", "status": "done", "files": ["frontend/src/features/scenarios/ScenarioList.test.tsx"]}
+{"ts": "2026-10-18T06:03:26Z", "action": "T215", "status": "done", "files": ["frontend/src/features/scenarios/EvaluationResult.test.tsx"]}
+{"ts": "2026-10-18T06:03:26Z", "action": "T216", "status": "done", "files": ["frontend/src/features/scenarios/PackageImportQueue.test.tsx"]}
+{"ts": "2026-10-18T06:03:26Z", "action": "T382", "status": "done", "files": ["backend/src/simremap/scenarios/errors.py"]}
+{"ts": "2026-10-18T06:03:26Z", "action": "T383", "status": "done", "files": ["backend/src/simremap/scenarios/repository.py"]}
+{"ts": "2026-10-18T06:03:26Z", "action": "T384", "status": "done", "files": ["backend/src/simremap/scenarios/profiles.py"]}
+{"ts": "2026-10-18T06:03:26Z", "action": "T385", "status": "done", "files": ["backend/src/simremap/scenarios/catalog.py", "backend/src/simremap/scenarios/jcs.py", "backend/src/simremap/scenarios/builtin/stage1-oem.json", "backend/src/simremap/scenarios/builtin/stage2-pops-bangs.json", "backend/src/simremap/scenarios/builtin/standalone-swap.json", "backend/src/simremap/scenarios/builtin/examples/challenge-400whp-e27.json"]}
+{"ts": "2026-10-18T06:03:26Z", "action": "T386", "status": "done", "files": ["backend/src/simremap/scenarios/trace.py"]}
+{"ts": "2026-10-18T06:03:26Z", "action": "T387", "status": "done", "files": ["backend/src/simremap/scenarios/validity.py"]}
+{"ts": "2026-10-18T06:03:26Z", "action": "T388", "status": "done", "files": ["backend/src/simremap/scenarios/evaluator.py"]}
+{"ts": "2026-10-18T06:03:26Z", "action": "T389", "status": "done", "files": ["backend/src/simremap/scenarios/probe.py"]}
+{"ts": "2026-10-18T06:03:26Z", "action": "T390", "status": "done", "files": ["backend/src/simremap/scenarios/hints.py"]}
+{"ts": "2026-10-18T06:03:26Z", "action": "T391", "status": "done", "files": ["backend/src/simremap/scenarios/events.py"]}
+{"ts": "2026-10-18T06:03:26Z", "action": "T392", "status": "done", "files": ["backend/src/simremap/scenarios/attempts.py", "backend/src/simremap/scenarios/ports.py", "backend/tests/integration/test_stage1_real_attempt.py"]}
+{"ts": "2026-10-18T06:03:26Z", "action": "T393", "status": "done", "files": ["backend/src/simremap/scenarios/packages.py"]}
+{"ts": "2026-10-18T06:03:26Z", "action": "T394", "status": "done", "files": ["backend/src/simremap/scenarios/replay.py"]}
+{"ts": "2026-10-18T06:03:26Z", "action": "T395", "status": "done", "files": ["frontend/src/features/scenarios/gradesCsv.ts"]}
+{"ts": "2026-10-18T06:03:26Z", "action": "T396", "status": "done", "files": ["frontend/src/features/scenarios/ProfilePicker.tsx", "frontend/src/features/scenarios/ProfileCreateDialog.tsx", "frontend/src/features/scenarios/useActiveProfile.ts"]}
+{"ts": "2026-10-18T06:03:26Z", "action": "T397", "status": "done", "files": ["frontend/src/features/scenarios/ScenarioList.tsx", "frontend/src/features/scenarios/ScenarioBriefing.tsx"]}
+{"ts": "2026-10-18T06:03:26Z", "action": "T398", "status": "done", "files": ["frontend/src/features/scenarios/AttemptProgressPanel.tsx", "frontend/src/features/scenarios/HintPanel.tsx", "frontend/src/features/scenarios/useAttempt.ts"]}
+{"ts": "2026-10-18T06:03:26Z", "action": "T399", "status": "done", "files": ["frontend/src/features/scenarios/EvaluationResult.tsx", "frontend/src/features/scenarios/EvidenceLink.tsx"]}
+{"ts": "2026-10-18T06:03:26Z", "action": "T400", "status": "done", "files": ["frontend/src/features/scenarios/PackageImportQueue.tsx"]}
+{"ts": "2026-10-18T06:03:26Z", "action": "T401", "status": "done", "files": ["frontend/src/features/scenarios/ClassGradeTable.tsx"]}
+{"ts": "2026-10-18T06:03:26Z", "action": "T402", "status": "done", "files": ["frontend/src/features/scenarios/InstructorPanel.tsx", "frontend/src/features/scenarios/ChallengeForm.tsx", "frontend/src/features/scenarios/ScenariosPage.tsx", "frontend/src/features/scenarios/api.ts", "frontend/src/features/scenarios/types.ts", "frontend/src/features/scenarios/ui.tsx"]}
+{"ts": "2026-10-18T06:03:26Z", "action": "T438", "status": "done", "files": ["backend/src/simremap/scenarios/router.py"]}
+{"ts": "2026-10-18T06:03:26Z", "action": "T439", "status": "done", "files": ["backend/src/simremap/scenarios/router.py"]}
+{"ts": "2026-10-18T06:03:26Z", "action": "T440", "status": "done", "files": ["backend/src/simremap/scenarios/router.py"]}
+{"ts": "2026-10-18T06:03:26Z", "action": "T441", "status": "done", "files": ["backend/src/simremap/scenarios/router.py"]}
+{"ts": "2026-10-18T06:03:26Z", "action": "T442", "status": "done", "files": ["backend/src/simremap/scenarios/router.py"]}
+{"ts": "2026-10-18T06:48:50Z", "action": "T160", "status": "done", "files": ["backend/tests/integration/test_journey_rodrigo.py (alvo do actions.md era tests/e2e/; ficou em tests/integration conforme o pedido)"]}
+{"ts": "2026-10-18T06:48:50Z", "action": "T295", "status": "done", "files": ["backend/src/simremap/damage/config.py", "backend/src/simremap/damage/model.py", "backend/src/simremap/damage/thermal.py", "backend/src/simremap/damage/knock.py", "backend/tests/damage/test_contracts.py", "backend/tests/damage/test_damage_thermal.py", "backend/tests/damage/test_damage_mechanical.py", "backend/tests/dyno/test_acceptance_catalog.py"]}
+{"ts": "2026-10-18T06:48:50Z", "action": "T421", "status": "done", "files": ["backend/tests/integration/test_stock_seed.py (routers do Sprint 2 no registry e seed das 5 calibrações de fábrica no arranque)"]}
+{"ts": "2026-10-18T06:48:50Z", "action": "T423", "status": "done", "files": ["backend/tests/integration/test_journey_rodrigo.py (verifica SimulationSession.ecu_state oem → standalone_ready pelo laço REST real; código já existente em dyno/)"]}
+{"ts": "2026-10-18T06:48:50Z", "action": "T424", "status": "done", "files": ["backend/tests/integration/test_journey_rodrigo.py (409 ECU_SETUP_INCOMPLETE em awaiting_base_setup; dyno/guards.py já existente)"]}
+{"ts": "2026-10-18T06:48:50Z", "action": "T425", "status": "done", "files": ["backend/tests/dyno/test_acceptance_catalog.py", "backend/tests/integration/test_journey_lucas.py (ProfiledEcu do dyno/assembly.py com o oem-stage do catálogo)"]}
+{"ts": "2026-10-18T07:10:56Z", "action": "T433", "status": "done", "files": ["frontend/orval.config.ts", "frontend/openapi.json", "frontend/src/lib/api/generated/", "Makefile"]}
+{"ts": "2026-10-18T07:10:56Z", "action": "T435", "status": "done", "files": ["frontend/src/app/HomePage.tsx", "frontend/src/app/homeApi.ts", "frontend/src/app/routes.tsx", "frontend/src/app/paths.ts", "frontend/src/app/flags.ts", "frontend/src/app/HomePage.test.tsx", "frontend/src/app/homeApi.test.ts", "frontend/src/app/flags.test.ts"]}
+{"ts": "2026-10-18T07:10:56Z", "action": "T437", "status": "done", "files": ["frontend/src/app/routes.tsx", "frontend/src/app/flags.ts", "frontend/src/app/App.test.tsx"]}
+{"ts": "2026-10-18T07:10:56Z", "action": "T443", "status": "done", "files": ["frontend/src/lib/api/generated/training-scenarios/training-scenarios.ts", "frontend/src/lib/api/generated/zod/training-scenarios/training-scenarios.ts"]}
+{"ts": "2026-10-18T07:10:56Z", "action": "T444", "status": "done", "files": ["frontend/src/app/routes.tsx", "frontend/src/app/paths.ts", "frontend/src/app/App.test.tsx"]}
+{"ts": "2026-10-18T07:10:56Z", "action": "T445", "status": "done", "files": ["frontend/src/features/dyno-cockpit/DynoCockpitPage.tsx", "frontend/src/features/dyno-cockpit/useCockpit.ts", "frontend/src/features/dyno-cockpit/api.ts", "frontend/src/features/dyno-cockpit/messages.ts", "frontend/src/features/dyno-cockpit/AttemptSidebar.test.tsx"]}
+{"ts": "2026-10-18T07:53:21Z", "action": "T072", "status": "done", "files": ["backend/src/simremap/scenarios/builtin/stage1-oem.json", "backend/src/simremap/scenarios/builtin/stage2-pops-bangs.json", "backend/src/simremap/scenarios/builtin/standalone-swap.json", "backend/tests/scenarios/test_catalog.py"]}
+{"ts": "2026-10-18T07:53:21Z", "action": "T159", "status": "done", "files": ["backend/tests/contract/test_trademark_blocklist.py"]}
+{"ts": "2026-10-18T07:53:21Z", "action": "T411", "status": "done", "files": ["backend/src/simremap/api/main.py", "backend/src/simremap/api/registry.py", "backend/tests/api/test_registry.py", "backend/tests/api/test_app.py"]}
+{"ts": "2026-10-18T07:53:21Z", "action": "T413", "status": "done", "files": ["backend/src/simremap/ecu/calibration.py", "backend/src/simremap/catalog/loader.py", "backend/tests/catalog/test_ecu_validator.py"]}
+{"ts": "2026-10-18T07:53:21Z", "action": "T451", "status": "done", "files": ["backend/tests/contract/test_no_pii.py"]}
+{"ts": "2026-10-18T09:11:49Z", "action": "T187", "status": "done", "files": ["frontend/e2e/cockpit-fps.spec.ts", "frontend/src/features/dyno-cockpit/useCockpit.ts", "frontend/src/features/dyno-cockpit/DynoCockpitPage.test.tsx", "scripts/e2e_local.sh", "Makefile"]}
+{"ts": "2026-10-18T09:11:49Z", "action": "T218", "status": "done", "files": ["backend/tests/e2e/test_journey_lucas.py", "backend/tests/e2e/e2e_support.py", "backend/tests/e2e/conftest.py"]}
+{"ts": "2026-10-18T09:11:49Z", "action": "T219", "status": "done", "files": ["backend/tests/e2e/test_journey_marcos.py", "backend/src/simremap/scenarios/attempts.py", "backend/tests/scenarios/test_attempts.py"]}
+{"ts": "2026-10-18T09:11:49Z", "action": "T220", "status": "done", "files": ["backend/tests/e2e/test_determinism_20x.py", "backend/tests/e2e/e2e_support.py"]}
+{"ts": "2026-10-18T09:11:49Z", "action": "T221", "status": "done", "files": ["frontend/e2e/journey-lucas.spec.ts", "frontend/e2e/helpers.ts"]}
+{"ts": "2026-10-18T09:11:49Z", "action": "T222", "status": "done", "files": ["frontend/e2e/journey-rodrigo.spec.ts", "frontend/e2e/helpers.ts"]}
+{"ts": "2026-10-18T09:11:49Z", "action": "T223", "status": "done", "files": ["frontend/e2e/journey-marcos.spec.ts", "frontend/e2e/helpers.ts"]}
+{"ts": "2026-10-18T09:11:49Z", "action": "T224", "status": "done", "files": ["frontend/e2e/a11y.spec.ts", "frontend/e2e/helpers.ts", "frontend/src/app/App.tsx", "frontend/src/features/scenarios/EvaluationResult.tsx", "frontend/src/features/ecu-tuning/BaseSetupWizard.tsx", "frontend/src/features/ecu-tuning/LiveTuneIndicator.tsx", "frontend/src/features/ecu-tuning/EcuWorkspace.tsx"]}
+{"ts": "2026-10-18T09:11:49Z", "action": "T453", "status": "done", "files": ["backend/tests/fixtures/digests/arm64.json", "backend/tests/e2e/test_determinism_20x.py"]}

@@ -1,0 +1,77 @@
+{
+  "fuel_id": "e0",
+  "display_name": "Gasolina pura E0",
+  "afr_stoich": 14.7,
+  "lhv_mj_kg": 43.4,
+  "ron": 95.0,
+  "mon": 85.0,
+  "knock_on": 95.0,
+  "h_fg_kj_kg": 350.0,
+  "density_kg_m3": 740.0,
+  "ethanol_mass_fraction": 0.0,
+  "laminar_bm_m_s": 0.305,
+  "laminar_bphi_m_s": -0.549,
+  "laminar_phi_m": 1.21,
+  "preignition_surface_temp_c": 900.0,
+  "provenance": {
+    "/afr_stoich": {
+      "kind": "literature",
+      "note": "Apêndice A.5 da spec vehicle-catalog",
+      "source": "Heywood, J. B. Internal Combustion Engine Fundamentals (1988)"
+    },
+    "/density_kg_m3": {
+      "kind": "literature",
+      "note": "Apêndice A.5 da spec vehicle-catalog",
+      "source": "Heywood, J. B. Internal Combustion Engine Fundamentals (1988)"
+    },
+    "/ethanol_mass_fraction": {
+      "kind": "literature",
+      "note": "fração mássica de etanol",
+      "source": "especificação brasileira de combustíveis"
+    },
+    "/h_fg_kj_kg": {
+      "kind": "literature",
+      "note": "Apêndice A.5 da spec vehicle-catalog",
+      "source": "Heywood, J. B. Internal Combustion Engine Fundamentals (1988)"
+    },
+    "/knock_on": {
+      "kind": "literature",
+      "note": "Apêndice A.5",
+      "source": "Heywood, J. B. Internal Combustion Engine Fundamentals (1988)"
+    },
+    "/laminar_bm_m_s": {
+      "kind": "literature",
+      "note": "Metghalchi-Keck, gasolina",
+      "source": "Metghalchi, M.; Keck, J. C. Combustion and Flame 48 (1982)"
+    },
+    "/laminar_bphi_m_s": {
+      "kind": "literature",
+      "note": "Metghalchi-Keck, gasolina",
+      "source": "Metghalchi, M.; Keck, J. C. Combustion and Flame 48 (1982)"
+    },
+    "/laminar_phi_m": {
+      "kind": "literature",
+      "note": "Metghalchi-Keck, gasolina",
+      "source": "Metghalchi, M.; Keck, J. C. Combustion and Flame 48 (1982)"
+    },
+    "/lhv_mj_kg": {
+      "kind": "literature",
+      "note": "Apêndice A.5 da spec vehicle-catalog",
+      "source": "Heywood, J. B. Internal Combustion Engine Fundamentals (1988)"
+    },
+    "/mon": {
+      "kind": "literature",
+      "note": "Apêndice A.5",
+      "source": "Heywood, J. B. Internal Combustion Engine Fundamentals (1988)"
+    },
+    "/preignition_surface_temp_c": {
+      "kind": "estimate",
+      "note": "estimativa a validar"
+    },
+    "/ron": {
+      "kind": "literature",
+      "note": "Apêndice A.5",
+      "source": "Heywood, J. B. Internal Combustion Engine Fundamentals (1988)"
+    }
+  }
+}

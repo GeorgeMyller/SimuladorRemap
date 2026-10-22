@@ -1,0 +1,51 @@
+{
+  "scenario_id": "challenge-400whp-e27",
+  "kind": "challenge",
+  "title": "400 whp com gasolina comum e EGT até 900 °C",
+  "briefing": "Coupé 3.0 turbo de 6 cilindros em linha com gasolina comum E27. Chegue a 400 whp em todas as puxadas de evidência sem passar de 900 °C de EGT pré-turbina e de 3° de retardo de knock, com o motor intacto e 3 puxadas válidas com dispersão até 3 %.",
+  "vehicle_id": "coupe-30t-i6",
+  "initial_profile_id": "oem-stage",
+  "initial_calibration": {"source": "vehicle_stock", "content_hash": "0000000000000000000000000000000000000000000000000000000000000000"},
+  "fuel_id": "e27",
+  "ambient": {"temperature_c": 25.0, "pressure_kpa": 99.0, "relative_humidity": 0.0},
+  "correction_standard": "sae_j1349",
+  "seed": null,
+  "objectives": [
+    "Chegar a 400 whp em todas as puxadas de evidência",
+    "Manter a EGT pré-turbina em até 900 °C",
+    "Manter o retardo de knock em até 3°",
+    "Terminar com o motor 100 % íntegro e 3 puxadas válidas com dispersão até 3 %"
+  ],
+  "constraints": {
+    "allowed_run_types": ["baseline_pull", "sweep_pull", "multi_pull"],
+    "gear": 4,
+    "allowed_final_profiles": [],
+    "swap_allowed": false,
+    "locked_table_ids": [],
+    "max_submissions": 5,
+    "time_limit_min": null,
+    "operator_protection": false
+  },
+  "criteria": {
+    "required_valid_pulls": 3,
+    "min_end_rpm": null,
+    "lambda_window_min_rpm": 3000,
+    "require_defect_diagnosis": false,
+    "criteria": [
+      {"criterion_id": "min-whp", "kind": "min_whp", "comparator": "ge", "threshold": 400, "weight": 2.0},
+      {"criterion_id": "egt", "kind": "max_egt_c", "comparator": "le", "threshold": 900},
+      {"criterion_id": "knock", "kind": "max_knock_retard_deg", "comparator": "le", "threshold": 3},
+      {"criterion_id": "integrity", "kind": "integrity", "comparator": "ge", "threshold": 100},
+      {"criterion_id": "pulls", "kind": "valid_pulls", "comparator": "ge", "threshold": 3},
+      {"criterion_id": "spread", "kind": "max_spread_pct", "comparator": "le", "threshold": 3}
+    ]
+  },
+  "hidden_defect": null,
+  "hints": [
+    {"order": 1, "text": "Com 900 °C de limite, enriqueça o lambda alvo acima de 5000 rpm antes de subir a pressão.", "unlock": {}},
+    {"order": 2, "text": "Suba o alvo de pressão em degraus de 10 kPa e acompanhe a EGT pré-turbina a cada puxada.", "unlock": {"after_failed_submissions": 1}}
+  ],
+  "author_nickname": "prof_marcos",
+  "builtin": false,
+  "origin": "local"
+}

@@ -1,0 +1,651 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-19T02:13:52+00:00",
+  "source": "requirements.md 1.1 (001), specs SDD, requirements da 002 (sem .reversa/soul.md)",
+  "concepts": [
+    {
+      "term": "Lambda (λ)",
+      "slug": "lambda",
+      "category": "Mistura",
+      "definition": "Razão entre a mistura ar/combustível real e a estequiométrica. λ = 1 é estequiométrico; λ < 1 é rica; λ > 1 é pobre. Mistura pobre em carga alta eleva a temperatura e provoca knock.",
+      "where": "lambda_measured, tabela lambda alvo"
+    },
+    {
+      "term": "AFR",
+      "slug": "afr",
+      "category": "Mistura",
+      "definition": "Relação ar/combustível em massa. O AFR estequiométrico muda com o combustível: cerca de 14,7 na gasolina pura e cerca de 9 no E100. Lambda normaliza o AFR pelo estequiométrico.",
+      "where": "physics/fuel_blend.py"
+    },
+    {
+      "term": "VE (eficiência volumétrica)",
+      "slug": "ve-eficiencia-volumetrica",
+      "category": "Ar",
+      "definition": "Fração do volume do cilindro que o motor realmente enche de ar em cada ciclo. Nas ECUs standalone a tabela VE (RPM × MAP) define o combustível no modo speed-density.",
+      "where": "tabela VE 16×16, Quick Tune"
+    },
+    {
+      "term": "Speed-density",
+      "slug": "speed-density",
+      "category": "Ar",
+      "definition": "Estratégia que calcula a massa de ar a partir de RPM, MAP, IAT e VE, sem medidor de fluxo de ar.",
+      "where": "ecu-core"
+    },
+    {
+      "term": "VVT (comando variável)",
+      "slug": "vvt-comando-variavel",
+      "category": "Ar",
+      "definition": "Variação da fase dos cames de admissão e escape. Muda o cruzamento de válvulas e, com ele, a VE e a fração residual. Entregue na feature 002 (estratégia vvt).",
+      "where": "ecu/strategies/vvt.py, cam_intake_deg"
+    },
+    {
+      "term": "Overlap (cruzamento de válvulas)",
+      "slug": "overlap-cruzamento-de-valvulas",
+      "category": "Ar",
+      "definition": "Ângulo em que admissão e escape ficam abertos ao mesmo tempo. No simulador: overlap = base + vvt_in − vvt_ex. Em baixa rotação, mais overlap reduz a VE; em alta rotação, com MAP maior que a contrapressão, aumenta a VE.",
+      "where": "physics/fuel.py (ValveOverlap)"
+    },
+    {
+      "term": "Fração residual",
+      "slug": "fracao-residual",
+      "category": "Ar",
+      "definition": "Parte dos gases queimados que fica no cilindro e dilui a mistura nova. Cresce com o overlap em baixa rotação.",
+      "where": "engine-physics-core"
+    },
+    {
+      "term": "MAP",
+      "slug": "map",
+      "category": "Sensores",
+      "definition": "Pressão absoluta no coletor de admissão (kPa). Eixo de carga das tabelas VE e ignição em ECUs standalone. Acima de 100 kPa indica sobrealimentação.",
+      "where": "eixo das tabelas, Live Cell Tracing"
+    },
+    {
+      "term": "IAT",
+      "slug": "iat",
+      "category": "Sensores",
+      "definition": "Temperatura do ar de admissão. IAT alta reduz a densidade do ar e aproxima o limiar de knock. O intercooler esportivo da oficina reduz a IAT.",
+      "where": "SensorReadings"
+    },
+    {
+      "term": "ECT",
+      "slug": "ect",
+      "category": "Sensores",
+      "definition": "Temperatura do líquido de arrefecimento. A estratégia VVT fica inibida com motor frio (ECT abaixo do mínimo).",
+      "where": "VvtConfig"
+    },
+    {
+      "term": "TPS e pedal",
+      "slug": "tps-e-pedal",
+      "category": "Sensores",
+      "definition": "Posição da borboleta e do pedal. Na bancada, segurar Espaço sobe o pedal a 120 %/s; soltar fecha para 0 % em até 150 ms.",
+      "where": "useHoldThrottle, pedal_pct"
+    },
+    {
+      "term": "Sonda wideband",
+      "slug": "sonda-wideband",
+      "category": "Sensores",
+      "definition": "Sensor de oxigênio de banda larga que mede lambda em toda a faixa. Base da malha fechada.",
+      "where": "closed loop"
+    },
+    {
+      "term": "Sensor flex",
+      "slug": "sensor-flex",
+      "category": "Sensores",
+      "definition": "Sensor que mede o teor de etanol do combustível. No simulador publica ethanol_pct com ruído pequeno e determinístico.",
+      "where": "SensorReadings.ethanol_pct"
+    },
+    {
+      "term": "Malha fechada (closed loop)",
+      "slug": "malha-fechada-closed-loop",
+      "category": "ECU",
+      "definition": "Correção contínua do combustível pela leitura da wideband em relação ao lambda alvo, com trims de curto (STFT) e longo prazo (LTFT).",
+      "where": "ecu-core"
+    },
+    {
+      "term": "STFT e LTFT",
+      "slug": "stft-e-ltft",
+      "category": "ECU",
+      "definition": "Trims de combustível de curto e de longo prazo. O LTFT reinicia a cada nova sessão.",
+      "where": "ecu-core"
+    },
+    {
+      "term": "IDC (duty cycle do bico)",
+      "slug": "idc-duty-cycle-do-bico",
+      "category": "Combustível",
+      "definition": "Percentagem do tempo em que o bico fica aberto no ciclo. Acima de cerca de 85 % o bico satura. Bicos de maior vazão reduzem o IDC para a mesma carga.",
+      "where": "injector_duty_pct"
+    },
+    {
+      "term": "Pulso de injeção",
+      "slug": "pulso-de-injecao",
+      "category": "Combustível",
+      "definition": "Tempo de abertura do bico em milissegundos por ciclo.",
+      "where": "injector_pw_ms"
+    },
+    {
+      "term": "Flex fuel",
+      "slug": "flex-fuel",
+      "category": "Combustível",
+      "definition": "Combustível com teor de etanol variável entre E27 e E100. A física mistura as propriedades (AFR, PCI, calor latente, densidade, octanagem) e a ECU compensa combustível, avanço e boost.",
+      "where": "blend_fuel, flex_ign_add, flex_boost_add"
+    },
+    {
+      "term": "E27, E100 e Podium",
+      "slug": "e27-e100-e-podium",
+      "category": "Combustível",
+      "definition": "Gasolina comum brasileira (27 % de etanol), etanol hidratado e gasolina de competição de alta octanagem. Âncoras do blend flex.",
+      "where": "vehicle-catalog"
+    },
+    {
+      "term": "Octanagem (RON, MON)",
+      "slug": "octanagem-ron-mon",
+      "category": "Combustível",
+      "definition": "Resistência do combustível à detonação. O simulador usa ON = (RON + MON) / 2 no limiar de knock.",
+      "where": "knock-and-failure-model"
+    },
+    {
+      "term": "Avanço de ignição",
+      "slug": "avanco-de-ignicao",
+      "category": "Ignição",
+      "definition": "Ângulo antes do PMS em que a vela dispara. Mais avanço aproxima o MBT, mas aumenta pressão e temperatura e pode provocar knock.",
+      "where": "tabela de ignição 3D"
+    },
+    {
+      "term": "MBT",
+      "slug": "mbt",
+      "category": "Ignição",
+      "definition": "Minimum spark advance for Best Torque: o menor avanço que entrega o torque máximo. Avançar além do MBT não ganha torque e só aumenta o risco.",
+      "where": "jornada do Rodrigo"
+    },
+    {
+      "term": "Knock (detonação)",
+      "slug": "knock-detonacao",
+      "category": "Falhas",
+      "definition": "Autoignição da mistura não queimada depois da faísca. Gera oscilação de pressão, calor no pistão e dano. A física publica knock_sensor_v (0 a 5 V) e knock_intensity (0 a 1).",
+      "where": "damage, espectrograma"
+    },
+    {
+      "term": "Pré-ignição e LSPI",
+      "slug": "pre-ignicao-e-lspi",
+      "category": "Falhas",
+      "definition": "Ignição da mistura antes da faísca, por ponto quente ou, em baixa rotação e carga alta, por LSPI (low-speed pre-ignition). Muito mais destrutiva que o knock.",
+      "where": "damage/model.py"
+    },
+    {
+      "term": "Livengood-Wu e Douaud-Eyzat",
+      "slug": "livengood-wu-e-douaud-eyzat",
+      "category": "Falhas",
+      "definition": "Integral de atraso de autoignição (Livengood-Wu) com a correlação de Douaud-Eyzat. Prevê quando a zona não queimada detona.",
+      "where": "knock-and-failure-model"
+    },
+    {
+      "term": "EGT",
+      "slug": "egt",
+      "category": "Temperatura",
+      "definition": "Temperatura dos gases de escape. Limite típico de 950 a 980 °C na turbina. A visão térmica pinta o coletor de vermelho (650 °C) a amarelo (980 °C).",
+      "where": "egt_c, render/thermal.ts"
+    },
+    {
+      "term": "Laudo forense (autópsia)",
+      "slug": "laudo-forense-autopsia",
+      "category": "Falhas",
+      "definition": "Relatório da quebra com a cadeia causal termodinâmica, os sinais antecipados e recomendações didáticas.",
+      "where": "ForensicReport"
+    },
+    {
+      "term": "Saúde de componente",
+      "slug": "saude-de-componente",
+      "category": "Falhas",
+      "definition": "Valor de 0 a 1 por pistão, biela, válvulas, junta, turbina e bronzinas. Integridade de 100 % equivale a saúde mínima >= 0,999.",
+      "where": "ComponentHealth"
+    },
+    {
+      "term": "Wastegate",
+      "slug": "wastegate",
+      "category": "Sobrealimentação",
+      "definition": "Válvula que desvia gases de escape da turbina para limitar o boost. Um dos defeitos ocultos é a wastegate travada.",
+      "where": "defect-wastegate-stuck"
+    },
+    {
+      "term": "Boost e controle PID",
+      "slug": "boost-e-controle-pid",
+      "category": "Sobrealimentação",
+      "definition": "Pressão de sobrealimentação acima da atmosférica. A ECU controla o boost por malha PID e por marcha.",
+      "where": "ecu-core, boost por marcha"
+    },
+    {
+      "term": "Spool e lag",
+      "slug": "spool-e-lag",
+      "category": "Sobrealimentação",
+      "definition": "Tempo para a turbina ganhar rotação e gerar boost. A turbina upgraded da oficina dá mais fluxo no topo e mais lag em baixa.",
+      "where": "turbo_rpm"
+    },
+    {
+      "term": "Contrapressão",
+      "slug": "contrapressao",
+      "category": "Sobrealimentação",
+      "definition": "Pressão no coletor de escape antes da turbina. O downpipe de alto fluxo reduz contrapressão e EGT (escala 0,6).",
+      "where": "exhaust_backpressure_scale"
+    },
+    {
+      "term": "Supercharger (compressor)",
+      "slug": "supercharger-compressor",
+      "category": "Sobrealimentação",
+      "definition": "Compressor acionado pela correia do motor, sem lag de turbina. No V8 o áudio tem assobio proporcional à rotação.",
+      "where": "muscle-v8-sc"
+    },
+    {
+      "term": "Two-step e launch control",
+      "slug": "two-step-e-launch-control",
+      "category": "Estratégias",
+      "definition": "Limitador de rotação para largada com atraso de ponto e enriquecimento, para criar boost parado.",
+      "where": "TwoStepConfig"
+    },
+    {
+      "term": "Antilag",
+      "slug": "antilag",
+      "category": "Estratégias",
+      "definition": "Atraso de ignição e enriquecimento fora de carga para manter a turbina girando entre trocas.",
+      "where": "ecu-core"
+    },
+    {
+      "term": "Powershift",
+      "slug": "powershift",
+      "category": "Estratégias",
+      "definition": "Corte curto de ignição para trocar de marcha sem tirar o pé.",
+      "where": "ecu-core"
+    },
+    {
+      "term": "Overrun e pops & bangs",
+      "slug": "overrun-e-pops-bangs",
+      "category": "Estratégias",
+      "definition": "Na desaceleração, corte de injeção atrasado e atraso de ignição queimam combustível no escape. Gera estalos e chamas, mas aquece a turbina.",
+      "where": "overrun, chamas no escape"
+    },
+    {
+      "term": "Limitador de rotação",
+      "slug": "limitador-de-rotacao",
+      "category": "Estratégias",
+      "definition": "Corte de injeção ou ignição acima de uma rotação máxima.",
+      "where": "ecu-core"
+    },
+    {
+      "term": "Failsafe",
+      "slug": "failsafe",
+      "category": "Estratégias",
+      "definition": "Proteções da ECU (EGT, lambda, pressão) que reduzem potência ou cortam o motor.",
+      "where": "BaseSetup"
+    },
+    {
+      "term": "Roda fônica e PMS",
+      "slug": "roda-fonica-e-pms",
+      "category": "Configuração",
+      "definition": "Roda dentada que dá posição e rotação do virabrequim; o PMS é o ponto morto superior. PMS errado desloca o avanço real e provoca knock.",
+      "where": "BaseSetup, swap"
+    },
+    {
+      "term": "OEM e OEM-Stage",
+      "slug": "oem-e-oem-stage",
+      "category": "ECU",
+      "definition": "ECU de série do fabricante. OEM-Stage é o perfil genérico do simulador com lógica por torque e carga.",
+      "where": "profiles/descriptors"
+    },
+    {
+      "term": "Standalone",
+      "slug": "standalone",
+      "category": "ECU",
+      "definition": "ECU programável que substitui a OEM. Perfis genéricos FT-Pro, M1-Race e HT-Elite, sem marcas registradas.",
+      "where": "ecu-profiles"
+    },
+    {
+      "term": "Swap",
+      "slug": "swap",
+      "category": "ECU",
+      "definition": "Troca da ECU OEM por uma standalone, com checklist e mapa base gerado por assistente.",
+      "where": "BaseSetupWizard"
+    },
+    {
+      "term": "Calibração (remap)",
+      "slug": "calibracao-remap",
+      "category": "ECU",
+      "definition": "Conjunto versionado de tabelas e estratégias. Calibrações stock-* são somente leitura desde a 002 (409 CALIBRATION_STOCK_IMMUTABLE).",
+      "where": "ecu/calibration.py"
+    },
+    {
+      "term": "Tabela live-tunable",
+      "slug": "tabela-live-tunable",
+      "category": "ECU",
+      "definition": "Tabela que pode mudar durante a puxada: VE, lambda alvo, ignição, trims e, na 002, as tabelas de came.",
+      "where": "live_tunable_table_ids"
+    },
+    {
+      "term": "Stage 1, 2 e 3",
+      "slug": "stage-1-2-e-3",
+      "category": "Treino",
+      "definition": "Níveis de preparação: Stage 1 só calibração; Stage 2 com peças de admissão e escape; Stage 3 com turbina e internos.",
+      "where": "cenários, Stage Builder"
+    },
+    {
+      "term": "Internos forjados",
+      "slug": "internos-forjados",
+      "category": "Oficina",
+      "definition": "Pistões e bielas forjados. Elevam carga máxima da biela (×1,35), pressão de cilindro (×1,25) e temperatura do pistão (+40 °C).",
+      "where": "catalog/upgrades.py"
+    },
+    {
+      "term": "Intercooler",
+      "slug": "intercooler",
+      "category": "Oficina",
+      "definition": "Trocador que resfria o ar comprimido. O esportivo melhora a eficiência em +0,08 e reduz a IAT.",
+      "where": "catalog/upgrades.py"
+    },
+    {
+      "term": "Downpipe",
+      "slug": "downpipe",
+      "category": "Oficina",
+      "definition": "Tubo logo após a turbina. O de alto fluxo reduz contrapressão e EGT.",
+      "where": "catalog/upgrades.py"
+    },
+    {
+      "term": "whp",
+      "slug": "whp",
+      "category": "Dinamômetro",
+      "definition": "Potência medida na roda (wheel horsepower), com perdas de transmissão.",
+      "where": "dyno-bench"
+    },
+    {
+      "term": "Puxada",
+      "slug": "puxada",
+      "category": "Dinamômetro",
+      "definition": "Medição no rolo: baseline, varredura (sweep), carga estacionária (steady-state hold) ou série (multi_pull).",
+      "where": "dyno-bench"
+    },
+    {
+      "term": "Correção SAE J1349 e DIN 70020",
+      "slug": "correcao-sae-j1349-e-din-70020",
+      "category": "Dinamômetro",
+      "definition": "Normas que corrigem a potência medida para condições atmosféricas padrão.",
+      "where": "dyno-bench"
+    },
+    {
+      "term": "Absorvedor de Foucault",
+      "slug": "absorvedor-de-foucault",
+      "category": "Dinamômetro",
+      "definition": "Freio por correntes parasitas que aplica carga no rolo para a carga estacionária.",
+      "where": "dyno-bench"
+    },
+    {
+      "term": "Quick Tune",
+      "slug": "quick-tune",
+      "category": "Live Tuning",
+      "definition": "Tecla Q: VE nova = VE atual × (λ medido / λ alvo), limitado a ±25 % por aplicação e só na tabela VE.",
+      "where": "ecu-tuning/ops/quickTune.ts"
+    },
+    {
+      "term": "Live Cell Tracing",
+      "slug": "live-cell-tracing",
+      "category": "Live Tuning",
+      "definition": "Destaque piscante da célula [RPM × MAP] em operação, a partir dos frames do WebSocket. Fica estático com prefers-reduced-motion.",
+      "where": "live-tuning/liveCell.ts"
+    },
+    {
+      "term": "Interpolação H, V e B",
+      "slug": "interpolacao-h-v-e-b",
+      "category": "Live Tuning",
+      "definition": "Atalhos do editor: H interpola na horizontal, V na vertical, B suaviza o bloco com núcleo 3×3.",
+      "where": "TableEditorCore"
+    },
+    {
+      "term": "Defeito oculto",
+      "slug": "defeito-oculto",
+      "category": "Treino",
+      "definition": "Falha física escondida no cenário (bomba fraca, vazamento de boost, bico obstruído, wastegate travada) que o aluno precisa diagnosticar antes de culpar o mapa.",
+      "where": "HiddenDefect, defect-*"
+    },
+    {
+      "term": "Modo carreira e ordem de serviço",
+      "slug": "modo-carreira-e-ordem-de-servico",
+      "category": "Treino",
+      "definition": "Perfil com saldo e reputação. A ordem paga só com tentativa aprovada; quebra de motor debita o custo do motor.",
+      "where": "backend/career, /workshop"
+    },
+    {
+      "term": "Benchmark Reference Baseline v1",
+      "slug": "benchmark-reference-baseline-v1",
+      "category": "Qualidade",
+      "definition": "Conjunto canônico de curvas dos 4 veículos. A física precisa ficar com desvio < 5 % em torque, potência, lambda e EGT.",
+      "where": "tests -m accuracy"
+    },
+    {
+      "term": "Determinismo e seed",
+      "slug": "determinismo-e-seed",
+      "category": "Qualidade",
+      "definition": "Mesma seed, mesmos upgrades e mesmo etanol produzem a mesma telemetria, verificada por SHA-256.",
+      "where": "D-07, test_determinism_20x"
+    },
+    {
+      "term": "Pacote assinado",
+      "slug": "pacote-assinado",
+      "category": "Qualidade",
+      "definition": "JSON de desafio ou tentativa com SHA-256 do JSON canônico RFC 8785 (JCS). Permite ao instrutor avaliar sem rede.",
+      "where": "SignedPackage"
+    },
+    {
+      "term": "seq",
+      "slug": "seq",
+      "category": "Telemetria",
+      "definition": "Número de sequência de cada envelope do WebSocket. Nunca se repete, inclusive em mensagens de erro.",
+      "where": "WsEnvelope"
+    },
+    {
+      "term": "Chunk e code-splitting",
+      "slug": "chunk-e-code-splitting",
+      "category": "Frontend",
+      "definition": "Arquivo JavaScript gerado pelo build. A 002 dividiu fornecedores (three, react, zod, uPlot) e carrega páginas por React.lazy; nenhum chunk passa de 500 kB.",
+      "where": "vite.config.ts"
+    },
+    {
+      "term": "Rust e crate simremap_rs",
+      "slug": "rust-e-crate-simremap-rs",
+      "category": "Motor nativo",
+      "definition": "Rust é uma linguagem compilada, sem coletor de lixo, com desempenho de C. O crate simremap_rs reúne os kernels nativos da simulação em três submódulos: tables (ECU), cycle (física) e damage (detonação e dano).",
+      "where": "backend/rust/simremap_rs/"
+    },
+    {
+      "term": "PyO3",
+      "slug": "pyo3",
+      "category": "Motor nativo",
+      "definition": "Biblioteca Rust que expõe funções e classes Rust como módulo Python. O crate usa PyO3 0.23; o módulo importável é simremap_rs._native.",
+      "where": "src/lib.rs"
+    },
+    {
+      "term": "maturin",
+      "slug": "maturin",
+      "category": "Motor nativo",
+      "definition": "Ferramenta que compila um crate PyO3 e o instala como pacote Python. make native roda maturin develop --release; maturin é dependência de desenvolvimento do backend.",
+      "where": "Makefile (make native), pyproject.toml"
+    },
+    {
+      "term": "ABI3 (ABI estável)",
+      "slug": "abi3-abi-estavel",
+      "category": "Motor nativo",
+      "definition": "Interface binária estável do CPython. Um wheel ABI3 compilado para Python 3.12 funciona nas versões seguintes sem recompilar (feature abi3-py312).",
+      "where": "Cargo.toml, _native.abi3.so"
+    },
+    {
+      "term": "FFI",
+      "slug": "ffi",
+      "category": "Motor nativo",
+      "definition": "Foreign Function Interface: a travessia entre Python e Rust. Cada travessia tem custo fixo; por isso a 003 faz uma chamada por subsistema por tick (D-03), nunca uma por célula de tabela.",
+      "where": "physics/kernels.py, ecu/native_tables.py"
+    },
+    {
+      "term": "Kernel",
+      "slug": "kernel",
+      "category": "Motor nativo",
+      "definition": "Rotina numérica compacta do caminho quente, executada a cada tick: interpolação de tabelas, ciclo Otto, bloco de gás e turbo, integral de knock e dano. Exemplos: TableSet, CycleKernel e GasKernel.",
+      "where": "simremap_rs.tables, simremap_rs.cycle"
+    },
+    {
+      "term": "SIMREMAP_NATIVE",
+      "slug": "simremap-native",
+      "category": "Motor nativo",
+      "definition": "Variável que escolhe o caminho: auto (padrão) usa a extensão se ela importar; off usa só Python; on exige a extensão e falha sem ela. Lida uma vez por processo.",
+      "where": "simremap/core/native.py"
+    },
+    {
+      "term": "Fallback Python",
+      "slug": "fallback-python",
+      "category": "Motor nativo",
+      "definition": "Sem a extensão, ou com SIMREMAP_NATIVE=off, a simulação usa o Python de referência com o mesmo comportamento. A imagem Docker funciona sem toolchain Rust.",
+      "where": "core/native.py, Dockerfile"
+    },
+    {
+      "term": "Paridade bit a bit",
+      "slug": "paridade-bit-a-bit",
+      "category": "Motor nativo",
+      "definition": "Python e Rust produzem exatamente os mesmos números quando a ordem das operações é a mesma. Os testes de paridade aceitam no máximo erro relativo de 1e-9 por grandeza por tick; o determinismo por seed se mantém.",
+      "where": "backend/tests/native/"
+    },
+    {
+      "term": "Hot path (caminho quente)",
+      "slug": "hot-path-caminho-quente",
+      "category": "Motor nativo",
+      "definition": "Código executado milhares de vezes por segundo. No simulador: o tick de 1 ms do laço sensors → ecu → physics → damage → telemetry.",
+      "where": "physics/fastmodel.py"
+    },
+    {
+      "term": "Tick e P99",
+      "slug": "tick-e-p99",
+      "category": "Desempenho",
+      "definition": "Tick é um passo do laço (1 ms a 1000 Hz). P99 é a latência abaixo da qual ficam 99 % dos ticks. No hatch, o tick médio caiu de 179 para 107 µs e o P99 de 490 para 345 µs.",
+      "where": "tests/bench/test_bench_native_tick.py"
+    },
+    {
+      "term": "Overrun do worker",
+      "slug": "overrun-do-worker",
+      "category": "Desempenho",
+      "definition": "Evento worker.overrun: o tick passou do orçamento de tempo real. Desde a 003 só conta acima de dt × wall_budget_ticks, e o arrefecimento acelerado do multi_pull declara o seu orçamento.",
+      "where": "core/worker/loop.py"
+    },
+    {
+      "term": "Surge do compressor",
+      "slug": "surge-do-compressor",
+      "category": "Sobrealimentação",
+      "definition": "Instabilidade do compressor com pouca vazão e razão de pressão alta: o fluxo reverte e o boost oscila. A 003 recalibrou a linha de surge (0,30·ṁ_choke·√min(N/N_design,1), sem surge abaixo de PR 1,05).",
+      "where": "physics/turbo.py, cycle/gas.rs"
+    },
+    {
+      "term": "BOV / diverter",
+      "slug": "bov-diverter",
+      "category": "Sobrealimentação",
+      "definition": "Blow-off valve: válvula que alivia a pressão entre compressor e borboleta quando a borboleta fecha. Evita surge no coastdown e gera o chirp de alívio no áudio. Abre com borboleta < 5 % e pré-borboleta > MAP + 10 kPa.",
+      "where": "ecu/runtime.py, audio/AudioEngine.ts"
+    },
+    {
+      "term": "Ciclo-limite PID",
+      "slug": "ciclo-limite-pid",
+      "category": "ECU",
+      "definition": "Oscilação sustentada de uma malha PID com ganhos altos demais. No hatch de série, o PID de boost gerava 7,5 Hz de ±12,3 N·m; os ganhos kp 0,1 / ki 0,3 / kd 0 reduziram para ±0,44 N·m.",
+      "where": "calibrations/oem-stage.json"
+    },
+    {
+      "term": "dTPS e enriquecimento de aceleração",
+      "slug": "dtps-e-enriquecimento-de-aceleracao",
+      "category": "ECU",
+      "definition": "dTPS/dt é a taxa de variação da borboleta. A ECU enriquece a mistura quando o pedal sobe rápido. Desde a 003 a taxa usa a mediana de 3 amostras para ignorar ruído do sensor.",
+      "where": "ecu/runtime.py (B1)"
+    },
+    {
+      "term": "Calibração ativa",
+      "slug": "calibracao-ativa",
+      "category": "ECU",
+      "definition": "Calibração em uso na sessão depois de aplicar, swap ou base setup. Fica em active_calibration_id; calibration_id segue como a calibração inicial.",
+      "where": "dyno/contracts.py"
+    },
+    {
+      "term": "Web Audio",
+      "slug": "web-audio",
+      "category": "Áudio",
+      "definition": "API do navegador que monta um grafo de nós de áudio (fontes, filtros, ganhos) processado em tempo real. A bancada sintetiza o som do motor sem amostras gravadas.",
+      "where": "dyno-cockpit/audio/graph.ts"
+    },
+    {
+      "term": "Pulsos de combustão",
+      "slug": "pulsos-de-combustao",
+      "category": "Áudio",
+      "definition": "Fonte do som: um impulso por explosão, na frequência de disparo (rpm / 60 × cilindros / 2). Substitui os osciladores puros da 002.",
+      "where": "audio/EngineSynth.ts, waveforms.ts"
+    },
+    {
+      "term": "WaveShaper",
+      "slug": "waveshaper",
+      "category": "Áudio",
+      "definition": "Nó do Web Audio que aplica uma curva de saturação ao sinal. Dá corpo e aspereza mecânica aos pulsos.",
+      "where": "audio/graph.ts"
+    },
+    {
+      "term": "Passa-baixa dinâmico",
+      "slug": "passa-baixa-dinamico",
+      "category": "Áudio",
+      "definition": "Filtro lowpass cuja frequência de corte sobe de 180 para 1400 Hz com rpm e carga. Em marcha lenta o som é abafado; a plena carga, mais aberto.",
+      "where": "audio/AudioEngine.ts"
+    },
+    {
+      "term": "Ressonador (filtro peaking)",
+      "slug": "ressonador-filtro-peaking",
+      "category": "Áudio",
+      "definition": "Filtro que reforça uma faixa estreita de frequências, como a caixa do escapamento. A cadeia usa dois: 90–140 Hz e 280–450 Hz.",
+      "where": "audio/archetypes.ts"
+    },
+    {
+      "term": "Sub-bass",
+      "slug": "sub-bass",
+      "category": "Áudio",
+      "definition": "Camada abaixo de cerca de 80 Hz que dá peso ao motor nos alto-falantes.",
+      "where": "audio/voices.ts"
+    },
+    {
+      "term": "Corte de presença (1–4 kHz)",
+      "slug": "corte-de-presenca-14-khz",
+      "category": "Áudio",
+      "definition": "Atenuação da faixa onde o ouvido é mais sensível e o som fica estridente. RN-03: nenhum arquétipo passa de 5 % da energia em 1–4 kHz (máximo medido 2,2 %).",
+      "where": "audio/spectrum.ts"
+    },
+    {
+      "term": "Ruído de banda estreita",
+      "slug": "ruido-de-banda-estreita",
+      "category": "Áudio",
+      "definition": "Ruído filtrado numa faixa estreita. Simula o assobio do turbo sem o apito de um seno puro; nenhum OscillatorNode contínuo no spool.",
+      "where": "audio/AudioEngine.ts"
+    },
+    {
+      "term": "Flutter e chirp",
+      "slug": "flutter-e-chirp",
+      "category": "Áudio",
+      "definition": "Sons do alívio do turbo: flutter é a vibração do compressor quando o ar volta; chirp é o assobio curto da BOV.",
+      "where": "audio/AudioEngine.ts"
+    },
+    {
+      "term": "Arquétipo de áudio",
+      "slug": "arquetipo-de-audio",
+      "category": "Áudio",
+      "definition": "Perfil sonoro por arquitetura: i4 turbo, i6 turbo, i4 clássico e V8 com compressor. Define ressonadores, saturação e mistura de cada carro.",
+      "where": "audio/archetypes.ts"
+    },
+    {
+      "term": "Playwright e spec E2E",
+      "slug": "playwright-e-spec-e2e",
+      "category": "Qualidade",
+      "definition": "Playwright abre o app num navegador real e executa fluxos completos. Cada arquivo *.spec.ts é um conjunto de testes; a 003 criou 8 specs novos.",
+      "where": "frontend/e2e/"
+    },
+    {
+      "term": "mypy --strict",
+      "slug": "mypy-strict",
+      "category": "Qualidade",
+      "definition": "Verificador de tipos estático do Python no modo mais rigoroso. make type roda mypy --strict src tests; na 003 ficou com 0 erros em 440 arquivos.",
+      "where": "Makefile#type"
+    }
+  ]
+}

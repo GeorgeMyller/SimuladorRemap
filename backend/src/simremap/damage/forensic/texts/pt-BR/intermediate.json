@@ -1,0 +1,6 @@
+{
+  "title": "$headline: $component_id ($mode_label)",
+  "summary": "$mode_label por $mechanism_label em $component_id aos $t_end s. $cause_intermediate",
+  "explanation": "Avisos antecipados: $warnings_txt. Cilindros com knock: $knock_cyls_txt. Tabelas afetadas: $tables_txt. Recomendações: $actions_txt. $diff_txt",
+  "questions": []
+}

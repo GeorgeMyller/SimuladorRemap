@@ -1,0 +1,408 @@
+{
+ "description": "Paridade zod × Pydantic de StrategyConfig (tuning RF-14): 20 válidos e 20 inválidos.",
+ "cases": [
+  {
+   "name": "boost padrão",
+   "payload": {
+    "kind": "boost_control"
+   },
+   "valid": true
+  },
+  {
+   "name": "boost PID completo",
+   "payload": {
+    "kind": "boost_control",
+    "mode": "closed_loop",
+    "kp_pct_per_kpa": 1.2,
+    "ki_pct_per_kpa_s": 2,
+    "kd_pct_s_per_kpa": 0.1,
+    "by_gear_enabled": true,
+    "overboost_kpa": 300
+   },
+   "valid": true
+  },
+  {
+   "name": "boost malha aberta",
+   "payload": {
+    "kind": "boost_control",
+    "mode": "open_loop",
+    "overboost_cut_mode": "fuel_cut"
+   },
+   "valid": true
+  },
+  {
+   "name": "limitador",
+   "payload": {
+    "kind": "rev_limiter",
+    "hard_rpm": 7200,
+    "cut_mode": "spark_cut",
+    "soft_window_rpm": 300
+   },
+   "valid": true
+  },
+  {
+   "name": "limitador sem suave",
+   "payload": {
+    "kind": "rev_limiter",
+    "hard_rpm": 1000,
+    "soft_enabled": false,
+    "soft_window_rpm": 1000
+   },
+   "valid": true
+  },
+  {
+   "name": "two-step",
+   "payload": {
+    "kind": "two_step",
+    "target_rpm": 4500,
+    "cut_mode": "rolling_cut",
+    "ign_advance_deg": -10,
+    "lambda_target": 0.8
+   },
+   "valid": true
+  },
+  {
+   "name": "two-step botão",
+   "payload": {
+    "kind": "two_step",
+    "activation": "launch_switch",
+    "max_active_s": 60
+   },
+   "valid": true
+  },
+  {
+   "name": "antilag",
+   "payload": {
+    "kind": "antilag",
+    "activation": "rolling",
+    "rpm_min": 3500,
+    "rpm_max": 6500,
+    "cut_fraction": 0.5
+   },
+   "valid": true
+  },
+  {
+   "name": "antilag padrão",
+   "payload": {
+    "kind": "antilag",
+    "enabled": false
+   },
+   "valid": true
+  },
+  {
+   "name": "powershift",
+   "payload": {
+    "kind": "powershift",
+    "trigger": "clutch",
+    "cut_time_ms": 80,
+    "cut_mode": "fuel_cut"
+   },
+   "valid": true
+  },
+  {
+   "name": "overrun pops",
+   "payload": {
+    "kind": "overrun",
+    "pops_enabled": true,
+    "ign_advance_deg": -20,
+    "fuel_cut_delay_s": 2,
+    "intensity_pct": 90
+   },
+   "valid": true
+  },
+  {
+   "name": "overrun dfco",
+   "payload": {
+    "kind": "overrun",
+    "dfco_rpm_min": 2000,
+    "dfco_resume_rpm": 1500
+   },
+   "valid": true
+  },
+  {
+   "name": "malha fechada",
+   "payload": {
+    "kind": "closed_loop",
+    "kp": 1,
+    "ki_per_s": 5,
+    "trim_limit_pct": 20,
+    "rpm_min": 900,
+    "rpm_max": 7000
+   },
+   "valid": true
+  },
+  {
+   "name": "malha fechada ltft",
+   "payload": {
+    "kind": "closed_loop",
+    "ltft_enabled": true,
+    "ltft_rate_pct_s": 1,
+    "ltft_limit_pct": 25
+   },
+   "valid": true
+  },
+  {
+   "name": "knock",
+   "payload": {
+    "kind": "knock_control",
+    "retard_step_deg": 3,
+    "max_retard_deg": 12
+   },
+   "valid": true
+  },
+  {
+   "name": "knock igual",
+   "payload": {
+    "kind": "knock_control",
+    "retard_step_deg": 5,
+    "max_retard_deg": 5
+   },
+   "valid": true
+  },
+  {
+   "name": "failsafe vazio",
+   "payload": {
+    "kind": "failsafe",
+    "rules": []
+   },
+   "valid": true
+  },
+  {
+   "name": "failsafe regras",
+   "payload": {
+    "kind": "failsafe",
+    "overspeed_rpm": 8000,
+    "rules": [
+     {
+      "rule_id": "egt_high",
+      "threshold": 950,
+      "confirm_s": 0.5,
+      "actions": [
+       "boost_reduce",
+       "enrich"
+      ],
+      "action_value": 30,
+      "release_s": 2
+     },
+     {
+      "rule_id": "oil_pressure_low",
+      "threshold": 0,
+      "confirm_s": 0.5,
+      "actions": [
+       "fuel_cut"
+      ],
+      "latch_until_stop": true
+     }
+    ]
+   },
+   "valid": true
+  },
+  {
+   "name": "failsafe regra mínima",
+   "payload": {
+    "kind": "failsafe",
+    "rules": [
+     {
+      "rule_id": "overspeed",
+      "threshold": 7500,
+      "confirm_s": 0,
+      "actions": [
+       "fuel_cut"
+      ]
+     }
+    ]
+   },
+   "valid": true
+  },
+  {
+   "name": "boost limites",
+   "payload": {
+    "kind": "boost_control",
+    "kp_pct_per_kpa": 10,
+    "ki_pct_per_kpa_s": 0,
+    "d_filter_tau_s": 1,
+    "overboost_kpa": 100
+   },
+   "valid": true
+  },
+  {
+   "name": "kind desconhecido",
+   "payload": {
+    "kind": "nitro"
+   },
+   "valid": false
+  },
+  {
+   "name": "campo extra",
+   "payload": {
+    "kind": "boost_control",
+    "turbo_magic": 1
+   },
+   "valid": false
+  },
+  {
+   "name": "boost kp negativo",
+   "payload": {
+    "kind": "boost_control",
+    "kp_pct_per_kpa": -0.1
+   },
+   "valid": false
+  },
+  {
+   "name": "boost d_filter zero",
+   "payload": {
+    "kind": "boost_control",
+    "d_filter_tau_s": 0
+   },
+   "valid": false
+  },
+  {
+   "name": "boost modo inválido",
+   "payload": {
+    "kind": "boost_control",
+    "mode": "pid"
+   },
+   "valid": false
+  },
+  {
+   "name": "limitador acima de 12000",
+   "payload": {
+    "kind": "rev_limiter",
+    "hard_rpm": 12500
+   },
+   "valid": false
+  },
+  {
+   "name": "limitador janela ≥ corte",
+   "payload": {
+    "kind": "rev_limiter",
+    "hard_rpm": 1000,
+    "soft_window_rpm": 1000
+   },
+   "valid": false
+  },
+  {
+   "name": "limitador histerese baixa",
+   "payload": {
+    "kind": "rev_limiter",
+    "hysteresis_rpm": 5
+   },
+   "valid": false
+  },
+  {
+   "name": "two-step rpm baixa",
+   "payload": {
+    "kind": "two_step",
+    "target_rpm": 1000
+   },
+   "valid": false
+  },
+  {
+   "name": "two-step lambda alta",
+   "payload": {
+    "kind": "two_step",
+    "lambda_target": 1.05
+   },
+   "valid": false
+  },
+  {
+   "name": "two-step max_active zero",
+   "payload": {
+    "kind": "two_step",
+    "max_active_s": 0
+   },
+   "valid": false
+  },
+  {
+   "name": "antilag faixa invertida",
+   "payload": {
+    "kind": "antilag",
+    "rpm_min": 6000,
+    "rpm_max": 5000
+   },
+   "valid": false
+  },
+  {
+   "name": "antilag corte excessivo",
+   "payload": {
+    "kind": "antilag",
+    "cut_fraction": 0.8
+   },
+   "valid": false
+  },
+  {
+   "name": "powershift corte curto",
+   "payload": {
+    "kind": "powershift",
+    "cut_time_ms": 10
+   },
+   "valid": false
+  },
+  {
+   "name": "powershift rolling_cut",
+   "payload": {
+    "kind": "powershift",
+    "cut_mode": "rolling_cut"
+   },
+   "valid": false
+  },
+  {
+   "name": "overrun retomada ≥ mínima",
+   "payload": {
+    "kind": "overrun",
+    "dfco_rpm_min": 1500,
+    "dfco_resume_rpm": 1500
+   },
+   "valid": false
+  },
+  {
+   "name": "overrun avanço < −20",
+   "payload": {
+    "kind": "overrun",
+    "ign_advance_deg": -25
+   },
+   "valid": false
+  },
+  {
+   "name": "knock passo > máximo",
+   "payload": {
+    "kind": "knock_control",
+    "retard_step_deg": 5,
+    "max_retard_deg": 4
+   },
+   "valid": false
+  },
+  {
+   "name": "failsafe sem rules",
+   "payload": {
+    "kind": "failsafe"
+   },
+   "valid": false
+  },
+  {
+   "name": "failsafe regra duplicada",
+   "payload": {
+    "kind": "failsafe",
+    "rules": [
+     {
+      "rule_id": "egt_high",
+      "threshold": 950,
+      "confirm_s": 0.5,
+      "actions": [
+       "boost_cut"
+      ]
+     },
+     {
+      "rule_id": "egt_high",
+      "threshold": 980,
+      "confirm_s": 0.5,
+      "actions": [
+       "boost_cut"
+      ]
+     }
+    ]
+   },
+   "valid": false
+  }
+ ]
+}

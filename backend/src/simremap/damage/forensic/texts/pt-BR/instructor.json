@@ -1,0 +1,11 @@
+{
+  "title": "$headline: $mechanism_label em $component_id",
+  "summary": "$mode_label aos $t_end s ($component_id). Ciclo crítico no cilindro $crit_cyl com I_LW $lw_end, θ_k $theta_k° ATDC e MAPO $mapo kPa.",
+  "explanation": "Douaud-Eyzat: τ = 17,68·(ON/100)^3,402·p^(−1,7)·exp(3800/T_u), com ON $octane e T_u máx. $tu_max K no ciclo crítico. Livengood-Wu: I_LW = Σ Δt_deg/τ = $lw_end; knock em θ_k = $theta_k° ATDC, MAPO = 0,5·(1 − x_b)·p = $mapo kPa (I = $intensity bar). Avisos: $warnings_txt. Cadeia: $chain_txt. Recomendações: $actions_txt.",
+  "questions": [
+    "Por que o knock surgiu primeiro no cilindro $first_knock_cyl?",
+    "Qual sinal apareceu $lead_max s antes da falha e como a ECU reagiu?",
+    "Como τ de Douaud-Eyzat muda se a IAT subir 20 °C com o mesmo boost?",
+    "Que mudança de calibração elimina o elo $weak_link da cadeia?"
+  ]
+}

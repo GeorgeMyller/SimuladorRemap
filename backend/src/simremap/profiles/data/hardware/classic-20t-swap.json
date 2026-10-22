@@ -1,0 +1,14 @@
+{
+  "vehicle_id": "classic-20t-swap",
+  "trigger_wheel": "60-2",
+  "tdc_offset_true_deg": 90.0,
+  "tdc_offset_nominal_deg": 90.0,
+  "phase_sensor_present": true,
+  "phase_edge_true_deg": 108.0,
+  "firing_order": [1, 3, 4, 2],
+  "map_sensor_kpa": [20.0, 400.0],
+  "iat_curve": "ntc_a",
+  "ect_curve": "ntc_a",
+  "wideband_true": [0.5, 1.5],
+  "swap_supported": true
+}

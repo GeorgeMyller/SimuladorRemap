@@ -1,0 +1,59 @@
+{
+  "scenario_id": "standalone-swap",
+  "kind": "base",
+  "title": "Swap standalone até o limite seguro de knock",
+  "briefing": "Clássico com swap 2.0 turbo a etanol E100. Troque a ECU de série por uma standalone (FT-Pro, M1-Race ou HT-Elite), faça o setup base e mapeie VE, lambda e ignição. A meta é pelo menos 300 whp com margem de knock de 2° provada pela sonda (mais 2° de avanço sem nenhum ciclo com knock), EGT pré-turbina até 950 °C, lambda de plena carga entre 0,75 e 0,88 e 3 puxadas válidas num multi_pull com dispersão até 3 %.",
+  "vehicle_id": "classic-20t-swap",
+  "initial_profile_id": "oem-stage",
+  "initial_calibration": {"source": "vehicle_stock"},
+  "fuel_id": "e100",
+  "ambient": {"temperature_c": 25.0, "pressure_kpa": 99.0, "relative_humidity": 0.0},
+  "correction_standard": "sae_j1349",
+  "seed": null,
+  "objectives": [
+    "Trocar para uma ECU standalone e completar o setup base",
+    "Chegar a pelo menos 300 whp em todas as puxadas de evidência",
+    "Ter margem de knock de 2° pela sonda determinística",
+    "Manter a EGT pré-turbina em até 950 °C",
+    "Lambda de plena carga entre 0,75 e 0,88 acima de 3000 rpm",
+    "Fazer 3 puxadas válidas num multi_pull com dispersão até 3 % e o motor intacto"
+  ],
+  "constraints": {
+    "allowed_run_types": ["multi_pull"],
+    "gear": 4,
+    "allowed_final_profiles": ["ft-pro", "m1-race", "ht-elite"],
+    "swap_allowed": true,
+    "locked_table_ids": [],
+    "max_submissions": 5,
+    "time_limit_min": null,
+    "operator_protection": false
+  },
+  "criteria": {
+    "required_valid_pulls": 3,
+    "min_end_rpm": null,
+    "lambda_window_min_rpm": 3000,
+    "require_defect_diagnosis": false,
+    "criteria": [
+      {"criterion_id": "min-whp", "kind": "min_whp", "comparator": "ge", "threshold": 300, "weight": 2.0},
+      {"criterion_id": "knock-margin", "kind": "min_knock_margin_deg", "comparator": "ge", "threshold": 2},
+      {"criterion_id": "egt", "kind": "max_egt_c", "comparator": "le", "threshold": 950},
+      {"criterion_id": "lambda-max", "kind": "lambda_wot_max", "comparator": "le", "threshold": 0.88},
+      {"criterion_id": "lambda-min", "kind": "lambda_wot_min", "comparator": "ge", "threshold": 0.75},
+      {"criterion_id": "integrity", "kind": "integrity", "comparator": "ge", "threshold": 100},
+      {"criterion_id": "pulls", "kind": "valid_pulls", "comparator": "ge", "threshold": 3},
+      {"criterion_id": "spread", "kind": "max_spread_pct", "comparator": "le", "threshold": 3},
+      {"criterion_id": "final-profile", "kind": "final_profile", "comparator": "bool"}
+    ]
+  },
+  "hidden_defect": null,
+  "hints": [
+    {"order": 1, "text": "Faça o swap em ECU > Trocar ECU e preencha o setup base (injetores, sensores e roda fônica) antes da primeira puxada.", "unlock": {}},
+    {"order": 2, "text": "Com etanol E100 o lambda estequiométrico muda de AFR: mapeie em lambda, não em AFR.", "unlock": {"after_sim_time_s": 600}},
+    {"order": 3, "text": "A sonda soma 2° ao avanço final: deixe a ignição de plena carga 2 a 3° abaixo do ponto em que aparece knock.", "unlock": {"after_failed_submissions": 1}},
+    {"order": 4, "text": "Para os 300 whp, suba o alvo de pressão em degraus de 10 kPa e confira a EGT a cada puxada.", "unlock": {"after_failed_submissions": 2}},
+    {"order": 5, "text": "Dispersão acima de 3 % indica motor quente: use o multi_pull com arrefecimento e ventilador ligados.", "unlock": {"after_event": "invalid_run"}}
+  ],
+  "author_nickname": null,
+  "builtin": true,
+  "origin": "builtin"
+}

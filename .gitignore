@@ -1,0 +1,61 @@
+# --- SO / editores ---
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# --- Segredos ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# --- Node / frontend ---
+node_modules/
+frontend/dist/
+frontend/playwright-report/
+frontend/test-results/
+frontend/src/lib/api/generated/
+
+# --- Python / backend ---
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.hypothesis/
+.benchmarks/
+.coverage
+.coverage.*
+coverage.json
+htmlcov/
+
+# --- Dados locais e benchmarks do backend ---
+backend/.data/
+backend/.bench/
+*.db
+*.sqlite
+*.sqlite3
+
+# --- Rust ---
+backend/rust/simremap_rs/target/
+backend/rust/simremap_rs/python/simremap_rs/*.so
+
+# --- Reversa: logs, screenshots, backups e snapshots ---
+_reversa_docs/.logs/
+_reversa_docs/.backup-*/
+.vlm-AIStack/reversa/snapshots/
+
+# --- Stack VLM: estado local ---
+.vlm-AIStack/meta/.update-check.json
+.vlm-AIStack/meta/backups/
+.ag-kit-backups
+.claude/settings.local.json
+
+# --- Temporários ---
+temp/
+*.log

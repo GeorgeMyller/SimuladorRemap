@@ -1,0 +1,14 @@
+[build-system]
+requires = ["maturin>=1.7,<2"]
+build-backend = "maturin"
+
+[project]
+name = "simremap-rs"
+version = "0.1.0"
+description = "Kernels nativos do SimuladorRemap (PyO3, ABI3 Python 3.12+)"
+requires-python = ">=3.12"
+
+[tool.maturin]
+module-name = "simremap_rs._native"
+python-source = "python"
+features = ["pyo3/extension-module"]
