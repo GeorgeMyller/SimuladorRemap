@@ -296,7 +296,43 @@ img, svg, video, canvas, iframe, table, pre { max-width: 100%; }
         </div>
     </section>
 
-    <!-- ============ SLIDE 5: TUNAGEM POR IA (LAYA.AI) ============ -->
+    <!-- ============ SLIDE 5: VÍDEO DA JORNADA REAL ============ -->
+    <section class="min-h-screen flex flex-col items-center justify-center px-6 py-16" id="slide-video">
+        <div class="text-center mb-8 max-w-3xl" data-aos="fade-up">
+            <div class="inline-flex items-center gap-2 attribute-pill px-4 py-1.5 text-xs tracking-widest uppercase text-soft mb-3">
+                <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                Gravação da Aplicação Real · Docker
+            </div>
+            <h2 class="text-5xl font-black">Vídeo da Jornada Completa</h2>
+            <p class="text-soft text-lg mt-3">
+                Assista à primeira puxada OEM, ao ajuste do mapa na ECU via LAYA.ai e à segunda passagem com o ganho de potência traçado na tela.
+            </p>
+        </div>
+        <div class="glass-card w-full max-w-5xl p-5 relative overflow-hidden" data-aos="zoom-in">
+            <div class="relative rounded-lg overflow-hidden border border-white/10 bg-black shadow-2xl">
+                <video id="dyno-video" controls preload="metadata" poster="assets/video/poster.jpg" class="w-full aspect-video rounded-lg object-contain">
+                    <source src="assets/video/dyno_tune_comparison.mp4" type="video/mp4">
+                    Seu navegador não suporta a tag de vídeo.
+                </video>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-5 pt-4 border-t border-white/10 text-xs">
+                <div class="flex items-start gap-2.5 bg-white/5 p-3 rounded-lg border border-white/5">
+                    <span class="px-2 py-0.5 rounded bg-zinc-800 text-zinc-300 font-mono font-bold shrink-0">00:00</span>
+                    <p class="text-soft leading-relaxed"><strong class="text-white block mb-0.5">1. Puxada OEM (Stock)</strong>Aceleração de 1200 a 6500 RPM na bancada de dinamômetro com mapa original.</p>
+                </div>
+                <div class="flex items-start gap-2.5 bg-purple-950/20 p-3 rounded-lg border border-purple-500/20">
+                    <span class="px-2 py-0.5 rounded bg-purple-900/60 text-purple-200 font-mono font-bold shrink-0">00:25</span>
+                    <p class="text-soft leading-relaxed"><strong class="text-purple-300 block mb-0.5">2. Tunagem LAYA.ai</strong>Abertura da ECU, seleção do preset Race e inferência neural rápida.</p>
+                </div>
+                <div class="flex items-start gap-2.5 bg-orange-950/20 p-3 rounded-lg border border-orange-500/20">
+                    <span class="px-2 py-0.5 rounded bg-orange-900/60 text-orange-200 font-mono font-bold shrink-0">00:45</span>
+                    <p class="text-soft leading-relaxed"><strong class="text-orange-300 block mb-0.5">3. Puxada Remap</strong>Segunda passagem no rolo exibindo ganho de +48 cv e +6.5 kgfm.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ SLIDE 6: TUNAGEM POR IA (LAYA.AI) ============ -->
     <section class="min-h-screen flex flex-col items-center justify-center px-6 py-16" id="slide-5">
         <div class="text-center mb-10 max-w-3xl" data-aos="fade-up">
             <p class="text-xs uppercase tracking-widest crop-color font-bold mb-2">Inovação Recente</p>
