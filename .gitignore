@@ -60,6 +60,7 @@ _reversa_docs/.backup-*/
 temp/
 *.log
 *.webm
+*.wav
 data/logs/*
 !data/logs/.gitkeep
 
