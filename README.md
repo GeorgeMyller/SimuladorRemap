@@ -227,3 +227,7 @@ make api-types
 | [`_reversa_forward/`](_reversa_forward/) | Histórico das features implementadas |
 | [`_reversa_docs/`](_reversa_docs/) | Mini-site visual (arquitetura, métricas, glossário) |
 | [`apresentacao/decks/simulador-remap-overview/index.html`](apresentacao/decks/simulador-remap-overview/index.html) | Apresentação animada Mira (como o sistema funciona) |
+
+## Licença
+
+Este projeto usa licença proprietária. Consulte [`LICENSE`](LICENSE).
