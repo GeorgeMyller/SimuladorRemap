@@ -1,0 +1,1242 @@
+<title>Manual do SimuladorRemap</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: manual de oficina — índice fixo à esquerda, coluna de leitura de ~68ch, figuras largas, avisos no padrão ADVERTÊNCIA / CUIDADO / NOTA */
+:root {
+  --paper: #f4f5f6;
+  --sheet: #ffffff;
+  --ink: #15191e;
+  --ink-2: #4a525c;
+  --rule: #d6dade;
+  --signal: #b4500a;
+  --signal-soft: #fbeadc;
+  --warn: #a3161b;
+  --warn-soft: #fbe5e5;
+  --caution: #8a5a00;
+  --caution-soft: #fdf2d6;
+  --note: #1f5f8b;
+  --note-soft: #e2eef7;
+  --ok: #1d6b3b;
+  --code-bg: #eceef0;
+  --f-display: "Barlow Condensed", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --f-body: "Barlow", "Helvetica Neue", Arial, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #101317; --sheet: #171b20; --ink: #e8eaed; --ink-2: #a5adb7; --rule: #2c333b;
+    --signal: #f5a04a; --signal-soft: #3a2614; --warn: #ff8a8a; --warn-soft: #3a1618;
+    --caution: #f0c25a; --caution-soft: #33280f; --note: #8cc4ee; --note-soft: #132a3b;
+    --ok: #6fd39a; --code-bg: #20262d; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #101317; --sheet: #171b20; --ink: #e8eaed; --ink-2: #a5adb7; --rule: #2c333b;
+  --signal: #f5a04a; --signal-soft: #3a2614; --warn: #ff8a8a; --warn-soft: #3a1618;
+  --caution: #f0c25a; --caution-soft: #33280f; --note: #8cc4ee; --note-soft: #132a3b;
+  --ok: #6fd39a; --code-bg: #20262d; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 16px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  background: var(--paper); color: var(--ink);
+  font-family: var(--f-body); font-size: 17px; line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+a { color: var(--signal); text-underline-offset: 2px; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
+.shell { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 48px; padding-block: 32px 80px; }
+@media (max-width: 960px) { .shell { grid-template-columns: minmax(0, 1fr); gap: 24px; } }
+
+/* índice */
+.toc { position: sticky; top: calc(16px + env(safe-area-inset-top, 0px)); align-self: start; max-height: calc(100vh - 32px); overflow-y: auto; font-size: 14.5px; line-height: 1.35; padding-right: 8px; }
+.toc h2 { font-family: var(--f-display); text-transform: uppercase; letter-spacing: .08em; font-size: 13px; color: var(--ink-2); margin: 0 0 10px; }
+.toc ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.toc a { display: grid; grid-template-columns: 2.2em 1fr; padding: 4px 6px; border-radius: 4px; color: var(--ink); text-decoration: none; }
+.toc a:hover { background: var(--sheet); }
+.toc a span:first-child { font-family: var(--f-mono); font-size: 12px; color: var(--ink-2); padding-top: 2px; }
+.toc .aud { font-size: 11px; font-family: var(--f-mono); color: var(--signal); margin-left: 4px; }
+@media (max-width: 960px) {
+  .toc { position: static; max-height: none; background: var(--sheet); border: 1px solid var(--rule); border-radius: 6px; padding: 16px; }
+  .toc ol { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+}
+
+main { min-width: 0; }
+.cover { border-bottom: 3px solid var(--ink); padding-bottom: 24px; margin-bottom: 8px; display: grid; gap: 10px; }
+.docid { font-family: var(--f-mono); font-size: 12.5px; color: var(--ink-2); display: flex; flex-wrap: wrap; gap: 6px 18px; }
+.cover h1 { font-family: var(--f-display); font-weight: 700; font-size: clamp(40px, 6vw, 68px); line-height: .95; letter-spacing: -.01em; margin: 0; text-wrap: balance; }
+.cover h1 em { font-style: normal; color: var(--signal); }
+.cover p { margin: 0; max-width: 64ch; color: var(--ink-2); font-size: 18px; }
+.cover-img { margin-top: 12px; border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; }
+.cover-img img { display: block; width: 100%; height: auto; }
+
+section.chap { padding-top: 48px; }
+.chap > header { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 16px; align-items: baseline; border-top: 1px solid var(--rule); padding-top: 18px; margin-bottom: 8px; }
+.chap > header .num { font-family: var(--f-display); font-weight: 700; font-size: 44px; line-height: 1; color: var(--signal); grid-row: span 2; }
+.chap > header h2 { font-family: var(--f-display); font-weight: 700; font-size: 34px; line-height: 1.05; margin: 0; text-wrap: balance; }
+.chap > header .who { font-family: var(--f-mono); font-size: 12px; color: var(--ink-2); text-transform: uppercase; letter-spacing: .06em; }
+h3 { font-family: var(--f-display); font-weight: 600; font-size: 24px; line-height: 1.15; margin: 36px 0 8px; text-wrap: balance; }
+h3 .n { font-family: var(--f-mono); font-size: 14px; font-weight: 400; color: var(--ink-2); margin-right: 8px; }
+h4 { font-family: var(--f-display); font-weight: 600; font-size: 19px; margin: 24px 0 6px; letter-spacing: .01em; }
+p, ul, ol.steps, dl { max-width: 68ch; }
+p { margin: 0 0 12px; }
+ul { padding-left: 1.2em; margin: 0 0 14px; }
+li { margin: 3px 0; }
+ol.steps { counter-reset: s; list-style: none; padding: 0; margin: 0 0 16px; display: grid; gap: 6px; }
+ol.steps > li { counter-increment: s; display: grid; grid-template-columns: 2em minmax(0, 1fr); gap: 8px; margin: 0; }
+ol.steps > li::before { content: counter(s) "."; font-family: var(--f-mono); font-weight: 600; color: var(--signal); text-align: right; }
+.ui { font-family: var(--f-body); font-weight: 600; background: var(--code-bg); border: 1px solid var(--rule); border-radius: 3px; padding: 0 5px; font-size: .93em; -webkit-box-decoration-break: clone; box-decoration-break: clone; overflow-wrap: anywhere; }
+kbd { font-family: var(--f-mono); font-size: .82em; background: var(--sheet); border: 1px solid var(--rule); border-bottom-width: 2px; border-radius: 4px; padding: 1px 6px; white-space: nowrap; }
+code { font-family: var(--f-mono); font-size: .84em; background: var(--code-bg); border-radius: 3px; padding: 1px 4px; overflow-wrap: anywhere; }
+
+/* figuras */
+figure { margin: 20px 0 24px; }
+figure a { display: block; border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; background: #0b0b0d; }
+figure img { display: block; width: 100%; height: auto; }
+figcaption { font-size: 14px; color: var(--ink-2); margin-top: 8px; max-width: 80ch; }
+figcaption b { font-family: var(--f-mono); font-weight: 600; color: var(--ink); font-size: 12.5px; margin-right: 6px; }
+.figrow { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+.figrow figure { margin: 8px 0; }
+
+/* avisos */
+.callout { max-width: 72ch; border: 1px solid; border-left-width: 6px; border-radius: 4px; padding: 10px 14px; margin: 16px 0; display: grid; gap: 4px; }
+.callout > strong { font-family: var(--f-display); letter-spacing: .1em; font-size: 15px; text-transform: uppercase; }
+.callout p, .callout ul { margin: 0; }
+.callout.warn { border-color: var(--warn); background: var(--warn-soft); }
+.callout.warn > strong { color: var(--warn); }
+.callout.caution { border-color: var(--caution); background: var(--caution-soft); }
+.callout.caution > strong { color: var(--caution); }
+.callout.note { border-color: var(--note); background: var(--note-soft); }
+.callout.note > strong { color: var(--note); }
+
+/* tabelas */
+.tbl { overflow-x: auto; margin: 14px 0 22px; border: 1px solid var(--rule); border-radius: 6px; background: var(--sheet); }
+table { border-collapse: collapse; width: 100%; font-size: 15px; line-height: 1.4; }
+th, td { text-align: left; vertical-align: top; padding: 8px 12px; border-bottom: 1px solid var(--rule); }
+thead th { font-family: var(--f-display); font-weight: 600; font-size: 14px; letter-spacing: .05em; text-transform: uppercase; color: var(--ink-2); background: var(--paper); white-space: nowrap; }
+tbody tr:last-child td { border-bottom: 0; }
+td.num, th.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.cmp td:first-child, .cmp th:first-child { font-weight: 600; white-space: nowrap; }
+.yes { color: var(--ok); font-weight: 600; }
+.no { color: var(--warn); font-weight: 600; }
+.part { color: var(--caution); font-weight: 600; }
+.zone { display: inline-block; width: .8em; height: .8em; border-radius: 2px; vertical-align: -1px; margin-right: 4px; }
+
+/* cartões de perfil de ECU */
+.ecus { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; margin: 18px 0 24px; }
+.ecu { background: var(--sheet); border: 1px solid var(--rule); border-top: 4px solid var(--c); border-radius: 6px; padding: 14px 16px; display: grid; gap: 6px; align-content: start; }
+.ecu h4 { margin: 0; font-size: 22px; }
+.ecu .kind { font-family: var(--f-mono); font-size: 12px; color: var(--ink-2); text-transform: uppercase; letter-spacing: .05em; }
+.ecu p { margin: 0; font-size: 15px; }
+.ecu ul { margin: 0; padding-left: 1.1em; font-size: 14.5px; }
+
+/* fluxo */
+.flow { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 16px 0 22px; font-size: 15px; }
+.flow span { background: var(--sheet); border: 1px solid var(--rule); border-radius: 4px; padding: 6px 10px; font-weight: 600; }
+.flow i { color: var(--signal); font-style: normal; font-family: var(--f-mono); }
+dl.terms { display: grid; grid-template-columns: minmax(120px, max-content) minmax(0, 1fr); gap: 6px 18px; max-width: 80ch; }
+dl.terms dt { font-weight: 600; }
+dl.terms dd { margin: 0; color: var(--ink-2); }
+@media (max-width: 560px) { dl.terms { grid-template-columns: minmax(0, 1fr); } dl.terms dd { margin-bottom: 8px; } }
+.endnote { margin-top: 64px; border-top: 3px solid var(--ink); padding-top: 14px; font-family: var(--f-mono); font-size: 12.5px; color: var(--ink-2); }
+</style>
+
+<div class="shell">
+<nav class="toc" aria-label="Índice">
+  <h2>Índice</h2>
+  <ol>
+    <li><a href="#sistema"><span>1</span><span>O sistema</span></a></li>
+    <li><a href="#inicio"><span>2</span><span>Iniciar uma sessão</span></a></li>
+    <li><a href="#bancada"><span>3</span><span>Bancada de dinamômetro</span></a></li>
+    <li><a href="#ecu"><span>4</span><span>Workspace da ECU</span></a></li>
+    <li><a href="#perfis-ecu"><span>5</span><span>Perfis de ECU: diferenças</span></a></li>
+    <li><a href="#troca"><span>6</span><span>Trocar ECU e configuração base</span></a></li>
+    <li><a href="#tabelas"><span>7</span><span>Tabelas: o que cada uma faz</span></a></li>
+    <li><a href="#estrategias"><span>8</span><span>Estratégias: o que cada uma faz</span></a></li>
+    <li><a href="#pecas"><span>9</span><span>Peças e combustíveis</span></a></li>
+    <li><a href="#aluno"><span>10</span><span>Cenários de treino <span class="aud">aluno</span></span></a></li>
+    <li><a href="#instrutor"><span>11</span><span>Painel do instrutor <span class="aud">instrutor</span></span></a></li>
+    <li><a href="#carreira"><span>12</span><span>Oficina (Carreira)</span></a></li>
+    <li><a href="#problemas"><span>13</span><span>Mensagens e soluções</span></a></li>
+    <li><a href="#limites"><span>14</span><span>Limitações desta versão</span></a></li>
+    <li><a href="#glossario"><span>15</span><span>Glossário</span></a></li>
+  </ol>
+</nav>
+
+<main>
+<header class="cover">
+  <div class="docid"><span>MANUAL DO UTILIZADOR</span><span>SimuladorRemap v0.1.0</span><span>Edição 1 · outubro de 2026</span><span>Público: aluno e instrutor</span></div>
+  <h1>Manual do <em>SimuladorRemap</em></h1>
+  <p>Este manual explica todas as funções do simulador. Use-o para calibrar ECUs no dinamômetro virtual, treinar com cenários e avaliar uma turma.</p>
+  <div class="cover-img"><img src="img/dyno-resultado.jpg" alt="Bancada de dinamômetro depois de uma puxada base, com curvas de potência e torque, lambda, EGT e espectrograma de knock" loading="eager"></div>
+</header>
+
+
+<!-- 1 -->
+<section class="chap" id="sistema">
+  <header><span class="num">1</span><h2>O sistema</h2><span class="who">Todos</span></header>
+  <p>O SimuladorRemap é um simulador de calibração de ECU. O motor é um modelo físico. A ECU tem tabelas e estratégias editáveis. O dinamômetro mede o resultado. Um motor pode quebrar, e o sistema explica a causa.</p>
+  <p>O ciclo de trabalho normal é:</p>
+  <div class="flow" aria-label="Ciclo de trabalho">
+    <span>Criar sessão</span><i>→</i><span>Puxada base</span><i>→</i><span>Editar a ECU</span><i>→</i><span>Nova puxada</span><i>→</i><span>Comparar</span><i>→</i><span>Gravar versão</span>
+  </div>
+  <h3>Áreas da aplicação</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Menu</th><th>Função</th><th>Capítulo</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Início</span></td><td>Cria uma sessão. Escolha o carro, a ECU, o cenário e as peças.</td><td>2</td></tr>
+      <tr><td><span class="ui">Bancada</span></td><td>Executa puxadas e mostra os instrumentos e os gráficos.</td><td>3</td></tr>
+      <tr><td><span class="ui">ECU</span></td><td>Edita as tabelas e as estratégias da calibração.</td><td>4 a 8</td></tr>
+      <tr><td><span class="ui">Upgrades</span></td><td>Instala peças no carro da sessão ativa.</td><td>9</td></tr>
+      <tr><td><span class="ui">Cenários</span></td><td>Lista os exercícios, os perfis de jogador e o painel do instrutor.</td><td>10 e 11</td></tr>
+      <tr><td><span class="ui">Oficina (Carreira)</span></td><td>Modo carreira com ordens de serviço, saldo e reputação.</td><td>12</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout note"><strong>Nota</strong><p>Os menus <span class="ui">Bancada</span>, <span class="ui">ECU</span> e <span class="ui">Upgrades</span> só aparecem com uma sessão ativa. O canto superior direito mostra <span class="ui">Sessão</span> e os 8 primeiros caracteres do identificador.</p></div>
+  <h3>Abrir a aplicação</h3>
+  <ol class="steps">
+    <li>Peça ao responsável da estação para ligar o servidor. O comando é <code>make up</code>.</li>
+    <li>Abra o navegador no endereço <code>http://127.0.0.1:8000</code>.</li>
+    <li>Aguarde a mensagem <span class="ui">A iniciar o simulador</span> desaparecer.</li>
+    <li>Se aparecer <span class="ui">Servidor indisponível</span>, clique em <span class="ui">Tentar de novo</span>.</li>
+  </ol>
+</section>
+
+<!-- 2 -->
+<section class="chap" id="inicio">
+  <header><span class="num">2</span><h2>Iniciar uma sessão</h2><span class="who">Todos</span></header>
+  <figure><a href="img/home.jpg" target="_blank" rel="noopener"><img src="img/home.jpg" alt="Tela Nova sessão com os quatro carros, o perfil de ECU, o cenário opcional e as peças da oficina" loading="lazy"></a>
+  <figcaption><b>Figura 2-1</b>Tela <span class="ui">Nova sessão</span>. Escolha o carro, o perfil de ECU, o cenário e as peças.</figcaption></figure>
+  <h3>Procedimento</h3>
+  <ol class="steps">
+    <li>Clique em <span class="ui">Início</span>.</li>
+    <li>Em <span class="ui">Carro</span>, clique no cartão de um carro.</li>
+    <li>Em <span class="ui">Perfil de ECU</span>, selecione a ECU. Para uma sessão normal, selecione <span class="ui">OEM-Stage</span>.</li>
+    <li>Em <span class="ui">Cenário (opcional)</span>, deixe <span class="ui">Nenhum (sessão livre)</span>. Para um exercício, selecione o cenário.</li>
+    <li>Em <span class="ui">Oficina: peças e combustível</span>, selecione as peças. Deixe <span class="ui">Série</span> para o carro original.</li>
+    <li>Clique em <span class="ui">Criar sessão</span>. Com um cenário, o botão diz <span class="ui">Iniciar tentativa</span>.</li>
+    <li>A aplicação abre a <span class="ui">Bancada</span>.</li>
+  </ol>
+  <h3>Os carros</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Carro</th><th>Motor</th><th>Potência de série</th><th>Marchas</th><th>Combustíveis</th><th>Uso típico</th></tr></thead>
+    <tbody>
+      <tr><td>Hatch 2.0 turbo GDI</td><td>4 cil. · 2,0 L · turbo · injeção direta</td><td class="num">220 whp</td><td class="num">6</td><td>E27, Podium, E0</td><td>Stage 1 e Stage 2 na ECU de série. Cenários de diagnóstico.</td></tr>
+      <tr><td>Coupé 3.0 turbo 6 em linha</td><td>6 cil. · 3,0 L · turbo</td><td class="num">340 whp</td><td class="num">8</td><td>E27, Podium, E0</td><td>Carro preparado. Desafio de 400 whp.</td></tr>
+      <tr><td>Clássico 2.0 turbo de swap</td><td>4 cil. · 2,0 L · turbo · internos forjados</td><td class="num">319 whp</td><td class="num">5</td><td>E100, E27, Podium</td><td>Troca para ECU standalone. Único carro com Flex Fuel.</td></tr>
+      <tr><td>Muscle V8 5,0 sobrealimentado</td><td>8 cil. · 5,0 L · compressor volumétrico</td><td class="num">460 whp</td><td class="num">6</td><td>E27, Podium, E0</td><td>V8 com compressor.</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Limite de sessões</h3>
+  <p>A estação aceita 1 sessão ativa por padrão. Se já existe uma sessão ativa, a tela mostra o erro <code>SIM_CAPACITY_EXCEEDED</code>.</p>
+  <figure><a href="img/home-limite.jpg" target="_blank" rel="noopener"><img src="img/home-limite.jpg" alt="Mensagem de limite de sessões atingido com os botões Retomar sessão ativa e Encerrar sessão ativa" loading="lazy"></a>
+  <figcaption><b>Figura 2-2</b>Limite de sessões atingido.</figcaption></figure>
+  <ol class="steps">
+    <li>Para continuar o trabalho anterior, clique em <span class="ui">Retomar sessão ativa</span>.</li>
+    <li>Para começar outra sessão, clique em <span class="ui">Encerrar sessão ativa</span>. Depois, clique em <span class="ui">Criar sessão</span>.</li>
+  </ol>
+  <div class="callout caution"><strong>Cuidado</strong><p>Grave uma versão da calibração antes de encerrar uma sessão. Consulte <a href="#versoes">4.6</a>.</p></div>
+  <div class="callout note"><strong>Nota</strong><p>Com um cenário selecionado, o carro entra de série. O cenário define o perfil de ECU, o combustível e a calibração. As peças da oficina só valem em sessões livres.</p></div>
+</section>
+
+<!-- 3 -->
+<section class="chap" id="bancada">
+  <header><span class="num">3</span><h2>Bancada de dinamômetro</h2><span class="who">Todos</span></header>
+  <p>A bancada executa puxadas e mostra os dados do motor em tempo real. O cabeçalho mostra o veículo, a ECU, o combustível e o estado da ligação (<span class="ui">conectado</span>).</p>
+  <figure><a href="img/dyno.jpg" target="_blank" rel="noopener"><img src="img/dyno.jpg" alt="Bancada antes da primeira puxada, com painéis vazios" loading="lazy"></a>
+  <figcaption><b>Figura 3-1</b>Bancada antes da primeira puxada. Painéis: Dinamômetro, Lambda e EGT, Bancada, Instrumentos, Puxada e abas inferiores.</figcaption></figure>
+
+  <h3><span class="n">3.1</span>Executar uma puxada</h3>
+  <ol class="steps">
+    <li>No painel <span class="ui">Puxada</span>, selecione o <span class="ui">Tipo</span>.</li>
+    <li>Preencha a <span class="ui">Marcha</span>, a <span class="ui">RPM inicial</span>, a <span class="ui">RPM final</span> e a <span class="ui">Rampa (rpm/s)</span>.</li>
+    <li>Clique em <span class="ui">Iniciar</span>. Também pode pressionar <kbd>Enter</kbd> com o foco nos campos.</li>
+    <li>Aguarde o estado <span class="ui">puxada concluída</span>.</li>
+    <li>Leia o resumo verde. Exemplo: <span class="ui">Puxada concluída: pico 213.1 whp a 5575 rpm</span>.</li>
+    <li>Para parar a puxada, clique em <span class="ui">Abortar</span> ou pressione <kbd>Esc</kbd>.</li>
+  </ol>
+  <div class="tbl"><table>
+    <thead><tr><th>Tipo</th><th>O que faz</th><th>Parâmetros (padrão; limites)</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Puxada base</span></td><td>Mede o motor como está. Serve de referência para comparar.</td><td>Marcha (4; 1–10), RPM inicial (2000; 1000–10000), RPM final (corte − 200; 1500–12000), Rampa (300; 50–1000 rpm/s)</td></tr>
+      <tr><td><span class="ui">Varredura (sweep)</span></td><td>Acelera a plena carga da RPM inicial até a RPM final. É o tipo padrão.</td><td>Os mesmos da puxada base.</td></tr>
+      <tr><td><span class="ui">Múltiplas puxadas</span></td><td>Repete a varredura várias vezes. Mede a repetibilidade e o aquecimento.</td><td>Os mesmos, mais <span class="ui">Puxadas</span> (3; 2–10).</td></tr>
+      <tr><td><span class="ui">Carga estacionária</span></td><td>Mantém o motor numa RPM fixa durante 5 s. Use para afinar uma célula.</td><td>Marcha e <span class="ui">RPM alvo</span> (3500; 500–12000). A borboleta define a carga.</td></tr>
+    </tbody>
+  </table></div>
+  <h4>Borboleta</h4>
+  <p>O controle <span class="ui">Borboleta</span> define a abertura do acelerador fora de uma puxada.</p>
+  <ul>
+    <li>Pressione <kbd>W</kbd> ou <kbd>S</kbd> para mudar ±5 %. Com <kbd>Shift</kbd>, a mudança é ±1 %.</li>
+    <li>Segure <kbd>Espaço</kbd> para um acelerador com mola. O pedal sobe até 100 %. Solte para voltar a 0 %.</li>
+    <li>Com o foco no controle, use também <kbd>←</kbd> <kbd>→</kbd> <kbd>Home</kbd> <kbd>End</kbd>.</li>
+  </ul>
+  <div class="callout note"><strong>Nota</strong><p>A borboleta fica bloqueada durante uma puxada. Os campos do painel também ficam bloqueados.</p></div>
+
+  <h3><span class="n">3.2</span>Instrumentos</h3>
+  <p>O painel <span class="ui">Instrumentos</span> tem 7 mostradores. Cada um tem uma zona verde, amarela e vermelha.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Mostrador</th><th>Mede</th><th><span class="zone" style="background:var(--ok)"></span>Verde</th><th><span class="zone" style="background:var(--caution)"></span>Amarelo</th><th><span class="zone" style="background:var(--warn)"></span>Vermelho</th></tr></thead>
+    <tbody>
+      <tr><td>RPM</td><td>Rotação do motor</td><td>até corte − 500</td><td>até o corte</td><td>acima do corte</td></tr>
+      <tr><td>Boost</td><td>Pressão do turbo ou do compressor</td><td>até 90 % do máximo</td><td>até o máximo</td><td>acima do máximo</td></tr>
+      <tr><td>Lambda</td><td>Mistura ar/combustível (escala 0,6–1,3)</td><td>0,75–1,02</td><td>0,70–0,75 e 1,02–1,10</td><td>abaixo de 0,70 e acima de 1,10</td></tr>
+      <tr><td>EGT</td><td>Temperatura dos gases de escape</td><td>até máx. − 50 °C</td><td>até o máximo</td><td>acima do máximo</td></tr>
+      <tr><td>IAT</td><td>Temperatura do ar de admissão</td><td>até 50 °C</td><td>até 65 °C</td><td>acima de 65 °C</td></tr>
+      <tr><td>ECT</td><td>Temperatura do motor</td><td>até 105 °C</td><td>até 112 °C</td><td>acima de 112 °C</td></tr>
+      <tr><td>Knock retard</td><td>Atraso de ignição aplicado por detonação</td><td>até 2°</td><td>até 5°</td><td>acima de 5°</td></tr>
+    </tbody>
+  </table></div>
+  <p>O boost máximo do mostrador é 2,0 bar no turbo e 1,0 bar no compressor.</p>
+
+  <h3><span class="n">3.3</span>Carro no rolo e visão térmica</h3>
+  <p>O painel <span class="ui">Bancada</span> mostra o carro no rolo e a velocidade do rolo. Clique em <span class="ui">Visão Térmica / Raio-X</span> ou pressione <kbd>T</kbd>. O coletor e a turbina mudam de cor conforme a EGT.</p>
+  <figure><a href="img/dyno-termica.jpg" target="_blank" rel="noopener"><img src="img/dyno-termica.jpg" alt="Carro no rolo com a visão térmica ligada" loading="lazy"></a>
+  <figcaption><b>Figura 3-2</b>Visão térmica ligada.</figcaption></figure>
+
+  <h3><span class="n">3.4</span>Gráfico do dinamômetro e comparação</h3>
+  <p>O gráfico mostra potência e torque por RPM. A linha contínua é a puxada atual. A linha tracejada é a comparação. A linha pontilhada é a curva de referência de série.</p>
+  <ul>
+    <li><span class="ui">Puxada Atual</span> mostra o pico de potência e de torque.</li>
+    <li><span class="ui">Comparação</span> mostra os picos da puxada escolhida para comparar.</li>
+    <li><span class="ui">Diferencial de Ganho</span> mostra Δ potência e Δ torque no ponto de pico.</li>
+    <li><span class="ui">Exibir:</span> filtra as curvas: <span class="ui">Todas as Curvas</span>, <span class="ui">Só Potência</span> ou <span class="ui">Só Torque</span>.</li>
+  </ul>
+  <ol class="steps">
+    <li>Execute uma puxada base.</li>
+    <li>Edite a calibração e execute outra puxada.</li>
+    <li>Em <span class="ui">Comparar passagens:</span>, clique na etiqueta da puxada anterior. Também pode usar <span class="ui">Selecionar:</span>.</li>
+    <li>Leia o ganho em <span class="ui">Diferencial de Ganho</span>.</li>
+    <li>Para remover a comparação, clique em <span class="ui">Sem comparação</span>.</li>
+  </ol>
+  <p>O gráfico <span class="ui">Lambda e EGT</span> mostra a mistura e a EGT por RPM. A faixa vermelha marca o limite de EGT.</p>
+
+  <h3><span class="n">3.5</span>Abas inferiores</h3>
+  <p>Pressione <kbd>1</kbd> a <kbd>4</kbd> para abrir uma aba.</p>
+  <div class="figrow">
+    <figure><a href="img/tab-1.jpg" target="_blank" rel="noopener"><img src="img/tab-1.jpg" alt="Aba Espectrograma de knock" loading="lazy"></a><figcaption><b>Figura 3-3</b><span class="ui">1. Espectrograma</span>: frequências do sensor de knock (0–20 kHz, 10 s) e intensidade por cilindro.</figcaption></figure>
+    <figure><a href="img/tab-2.jpg" target="_blank" rel="noopener"><img src="img/tab-2.jpg" alt="Aba Pressão no cilindro" loading="lazy"></a><figcaption><b>Figura 3-4</b><span class="ui">2. Pressão no cilindro</span>: curva de pressão do cilindro escolhido e posição do pico.</figcaption></figure>
+    <figure><a href="img/tab-3.jpg" target="_blank" rel="noopener"><img src="img/tab-3.jpg" alt="Aba Eventos" loading="lazy"></a><figcaption><b>Figura 3-5</b><span class="ui">3. Eventos</span>: knock, limitador, falha e puxada, com gravidade. Clique num evento para mover o cursor.</figcaption></figure>
+  </div>
+  <figure><a href="img/tab-4.jpg" target="_blank" rel="noopener"><img src="img/tab-4.jpg" alt="Aba Datalogger com canais selecionados e gráfico por tempo" loading="lazy"></a>
+  <figcaption><b>Figura 3-6</b><span class="ui">4. Datalogger</span>: todos os canais gravados da puxada.</figcaption></figure>
+  <h4>Usar o datalogger</h4>
+  <ol class="steps">
+    <li>Em <span class="ui">Puxada</span>, selecione a puxada.</li>
+    <li>Em <span class="ui">Canais</span>, marque até 8 canais. O padrão é <code>rpm</code>, <code>power_kw</code>, <code>torque_nm</code> e <code>lambda</code>.</li>
+    <li>Mova o <span class="ui">Cursor</span> para ler os valores num instante.</li>
+    <li>Para comparar duas puxadas, selecione em <span class="ui">Comparar com</span> e clique em <span class="ui">Comparar</span>.</li>
+    <li>Para guardar os dados, clique em <span class="ui">Exportar CSV</span> ou <span class="ui">Exportar JSON</span>.</li>
+    <li>Para abrir um log JSON guardado, clique em <span class="ui">Importar log</span>.</li>
+  </ol>
+
+  <h3><span class="n">3.6</span>Alarmes</h3>
+  <p>Uma faixa vermelha no topo mostra os alarmes.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Alarme</th><th>Causa</th><th>Ação recomendada</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Knock severo, cilindro N, X° de retardo</span></td><td>Detonação forte num cilindro.</td><td>Retire avanço ou pressão nas células de carga alta.</td></tr>
+      <tr><td><span class="ui">… ativo (N rpm)</span></td><td>Um limitador ligou: rotação, two-step, sobrepressão, antilag ou overrun.</td><td>Confira os limites da estratégia correspondente.</td></tr>
+      <tr><td><span class="ui">EGT alta: X (limite Y)</span></td><td>A EGT passou o limite. Apaga 20 °C abaixo do limite.</td><td>Enriqueça o lambda alvo ou baixe a pressão.</td></tr>
+      <tr><td><span class="ui">Dano: modo em componente</span></td><td>Dano parcial num componente.</td><td>Pare a puxada. Corrija a calibração.</td></tr>
+      <tr><td><span class="ui">Motor destruído: modo</span></td><td>Falha catastrófica.</td><td>Leia o laudo forense. Restaure o motor.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3><span class="n">3.7</span>Motor destruído e laudo forense</h3>
+  <p>Um motor pode quebrar por knock, pré-ignição, EGT excessiva, biela, pistão ou fusão da turbina. Quando isso acontece, a tela mostra <span class="ui">Motor destruído</span> e os instrumentos param.</p>
+  <figure><a href="img/laudo-forense.jpg" target="_blank" rel="noopener"><img src="img/laudo-forense.jpg" alt="Laudo forense de uma falha de biela, com diagrama do motor, cadeia causal e recomendações" loading="lazy"></a>
+  <figcaption><b>Figura 3-7</b><span class="ui">Laudo forense</span>: diagrama do motor, cadeia causal e recomendações.</figcaption></figure>
+  <ol class="steps">
+    <li>Clique em <span class="ui">Ver laudo</span>.</li>
+    <li>Leia o <span class="ui">Diagrama do motor</span>. Cada componente tem o estado destruído, danificado ou íntegro.</li>
+    <li>Leia a <span class="ui">Cadeia causal</span>. Cada linha mostra o instante, a variável, o valor e o limiar.</li>
+    <li>Leia as <span class="ui">Recomendações</span>. Aplique-as na ECU.</li>
+    <li>Clique em <span class="ui">Restaurar motor</span>.</li>
+  </ol>
+  <div class="callout warn"><strong>Advertência</strong><p>Numa tentativa de cenário, cada restauração do motor fica registada. Na carreira, um motor quebrado custa dinheiro e reputação. Observe os alarmes antes da falha.</p></div>
+
+  <h3><span class="n">3.8</span>Unidades, som e diagnóstico</h3>
+  <ul>
+    <li><span class="ui">Unidades</span> (<kbd>U</kbd>): selecione a potência em whp, cv ou kW, e o boost em bar ou psi. A temperatura fica em °C. O torque fica em N·m.</li>
+    <li>Som: clique em <span class="ui">Ativar som</span> na primeira vez. Depois, use <span class="ui">Som ligado</span> / <span class="ui">Som desligado</span> (<kbd>M</kbd>) e o <span class="ui">Volume</span>. O som do motor segue a rotação, a carga e as falhas.</li>
+    <li>Diagnóstico (<kbd>D</kbd>): mostra FPS, superfície gráfica, perda de quadros e reconexões. Use-o se a tela ficar lenta.</li>
+    <li><span class="ui">Recolher</span> / <span class="ui">Expandir</span>: esconde ou mostra um painel. O navegador guarda a escolha.</li>
+  </ul>
+
+  <h3><span class="n">3.9</span>Tela Dividida (Live Tuning)</h3>
+  <p>Clique em <span class="ui">Tela Dividida (Live Tuning)</span> ou pressione <kbd>L</kbd>. A bancada fica de um lado. O editor de tabela fica do outro. A célula onde o motor opera pisca. As alterações vão para a sessão de imediato.</p>
+  <figure><a href="img/dyno-live-tuning.jpg" target="_blank" rel="noopener"><img src="img/dyno-live-tuning.jpg" alt="Tela dividida com a bancada à esquerda e o editor da tabela Avanço base à direita" loading="lazy"></a>
+  <figcaption><b>Figura 3-8</b>Live Tuning. Os botões no topo escolhem a tabela ao vivo: VE, avanço ou lambda alvo.</figcaption></figure>
+  <div class="callout note"><strong>Nota</strong><p>Durante uma puxada, só as tabelas "live-tunable" aceitam edição. As outras ficam bloqueadas até ao fim da puxada.</p></div>
+
+  <h3><span class="n">3.10</span>Atalhos da bancada</h3>
+  <p>Pressione <kbd>?</kbd> ou clique em <span class="ui">Atalhos (?)</span> para ver a lista. Os atalhos não funcionam enquanto escreve num campo.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Tecla</th><th>Ação</th></tr></thead>
+    <tbody>
+      <tr><td><kbd>Enter</kbd></td><td>Iniciar puxada (foco nos campos da puxada)</td></tr>
+      <tr><td><kbd>Esc</kbd></td><td>Abortar a puxada ativa. Fechar um diálogo.</td></tr>
+      <tr><td><kbd>W</kbd> / <kbd>S</kbd> ou <kbd>↑</kbd> / <kbd>↓</kbd></td><td>Borboleta ±5 % (com <kbd>Shift</kbd>: ±1 %)</td></tr>
+      <tr><td><kbd>Espaço</kbd> (segurar)</td><td>Acelerador com mola</td></tr>
+      <tr><td><kbd>M</kbd></td><td>Silenciar ou reativar o som</td></tr>
+      <tr><td><kbd>U</kbd></td><td>Abrir o menu de unidades</td></tr>
+      <tr><td><kbd>1</kbd>–<kbd>4</kbd></td><td>Abrir uma aba inferior</td></tr>
+      <tr><td><kbd>D</kbd></td><td>Painel de diagnóstico</td></tr>
+      <tr><td><kbd>L</kbd></td><td>Tela Dividida (Live Tuning)</td></tr>
+      <tr><td><kbd>T</kbd></td><td>Visão Térmica / Raio-X</td></tr>
+      <tr><td><kbd>?</kbd></td><td>Lista de atalhos</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- 4 -->
+<section class="chap" id="ecu">
+  <header><span class="num">4</span><h2>Workspace da ECU</h2><span class="who">Todos</span></header>
+  <p>O workspace edita a calibração da ECU instalada. Clique em <span class="ui">ECU</span> no menu.</p>
+  <figure><a href="img/ecu.jpg" target="_blank" rel="noopener"><img src="img/ecu.jpg" alt="Workspace da ECU com o navegador de tabelas, o editor da tabela Pedido de torque do pedal e o painel de avisos" loading="lazy"></a>
+  <figcaption><b>Figura 4-1</b>Workspace da ECU (perfil OEM-Stage). Esquerda: navegador. Centro: editor. Direita: avisos, live-tune e propriedades. Baixo: barra de estado.</figcaption></figure>
+  <h3><span class="n">4.1</span>Partes da tela</h3>
+  <ul>
+    <li><b>Cabeçalho:</b> perfil de ECU, carro e nome da calibração. Botões <span class="ui">Carro</span>, <span class="ui">Trocar ECU</span>, <span class="ui">Versões</span> e <span class="ui">?</span>.</li>
+    <li><b>Navegador (esquerda):</b> lista as tabelas e as estratégias por secção. Escreva em <span class="ui">Pesquisar tabela</span> para filtrar. Um item cinzento com <span class="ui">não disponível nesta calibração</span> não existe nesta calibração.</li>
+    <li><b>Editor (centro):</b> a tabela, a estratégia ou o assistente escolhido.</li>
+    <li><b>Avisos:</b> problemas prováveis na calibração. Consulte <a href="#avisos">4.5</a>.</li>
+    <li><b>Live-tune:</b> indica que tabelas aceitam edição durante a puxada.</li>
+    <li><b>Propriedades:</b> unidade, limites, eixos e se a tabela é live-tune.</li>
+    <li><b>Barra de estado:</b> revisão, estado da gravação, <span class="ui">Nome da versão</span>, <span class="ui">Salvar versão</span>, <span class="ui">Aplicar automaticamente</span> e leituras de RPM, carga e λ.</li>
+  </ul>
+  <div class="callout note"><strong>Nota</strong><p>Uma calibração de série é só de leitura. Se a faixa <span class="ui">Calibração de série (somente leitura)</span> aparecer, clique em <span class="ui">Clonar e editar</span>. A cópia fica aplicada à sessão e a edição fica livre.</p></div>
+  <div class="callout note"><strong>Nota</strong><p>O seletor <span class="ui">Carro</span> cria uma sessão nova com o carro escolhido e a ECU de série.</p></div>
+
+  <h3><span class="n">4.2</span>Editar uma tabela</h3>
+  <ol class="steps">
+    <li>No navegador, clique numa tabela.</li>
+    <li>Selecione células. Clique numa célula. Arraste ou use <kbd>Shift</kbd> + clique para uma área. Clique no cabeçalho de uma linha ou coluna para a selecionar inteira.</li>
+    <li>Em <span class="ui">Operação</span>, selecione a operação.</li>
+    <li>Escreva o número em <span class="ui">Valor</span>. Use vírgula ou ponto.</li>
+    <li>Clique em <span class="ui">Aplicar</span>.</li>
+    <li>Para editar uma só célula, escreva um dígito ou pressione <kbd>Enter</kbd>. Pressione <kbd>Enter</kbd> para confirmar. Pressione <kbd>Esc</kbd> para cancelar.</li>
+  </ol>
+  <figure><a href="img/ecu-selecao.jpg" target="_blank" rel="noopener"><img src="img/ecu-selecao.jpg" alt="Tabela Avanço base com um bloco de células selecionado" loading="lazy"></a>
+  <figcaption><b>Figura 4-2</b>Bloco selecionado na tabela <span class="ui">Avanço base</span>. O heatmap colore os valores. O círculo mostra o ponto de operação do motor.</figcaption></figure>
+  <div class="tbl"><table>
+    <thead><tr><th>Ferramenta</th><th>Tecla</th><th>O que faz</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">= Definir</span></td><td><kbd>=</kbd></td><td>Substitui o valor das células pelo número.</td></tr>
+      <tr><td><span class="ui">+ Somar</span> / <span class="ui">− Subtrair</span></td><td><kbd>+</kbd> <kbd>−</kbd></td><td>Soma ou subtrai o número. É a operação padrão.</td></tr>
+      <tr><td><span class="ui">% Ajustar</span></td><td><kbd>*</kbd></td><td>Multiplica por (1 + número/100). Exemplo: 5 dá +5 %.</td></tr>
+      <tr><td><span class="ui">Interpolar linha</span> / <span class="ui">coluna</span></td><td><kbd>I</kbd></td><td>Cria uma rampa linear entre a primeira e a última célula, conforme os eixos.</td></tr>
+      <tr><td><span class="ui">Interpolar bloco</span></td><td><kbd>Shift</kbd>+<kbd>I</kbd></td><td>Interpolação bilinear a partir dos 4 cantos do bloco.</td></tr>
+      <tr><td><span class="ui">Interpolar H</span> / <span class="ui">Interpolar V</span></td><td><kbd>H</kbd> <kbd>V</kbd></td><td>Interpolação horizontal ou vertical da seleção.</td></tr>
+      <tr><td><span class="ui">Suavizar</span> / <span class="ui">Suavizar bloco</span></td><td><kbd>S</kbd> <kbd>B</kbd></td><td>Filtro 3×3 que reduz degraus entre células vizinhas.</td></tr>
+      <tr><td><span class="ui">Quick Tune</span></td><td><kbd>Q</kbd></td><td>Corrige a tabela VE com o lambda medido. Consulte <a href="#quicktune">4.3</a>.</td></tr>
+      <tr><td><span class="ui">🤖 Tunar com IA</span></td><td>—</td><td>Ajuste automático pela LAYA.ai. Consulte <a href="#ia">4.4</a>.</td></tr>
+      <tr><td><span class="ui">Copiar</span> / <span class="ui">Colar</span></td><td><kbd>Ctrl</kbd>+<kbd>C</kbd> / <kbd>V</kbd></td><td>Copia e cola em TSV. Funciona com folhas de cálculo.</td></tr>
+      <tr><td><span class="ui">Desfazer</span> / <span class="ui">Refazer</span></td><td><kbd>Ctrl</kbd>+<kbd>Z</kbd> / <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Z</kbd></td><td>Desfaz ou refaz a última alteração. <kbd>Ctrl</kbd>+<kbd>Y</kbd> também refaz.</td></tr>
+      <tr><td><span class="ui">Heatmap</span></td><td>—</td><td>Liga ou desliga as cores por valor.</td></tr>
+      <tr><td><span class="ui">Exibir em AFR</span> / <span class="ui">em λ</span></td><td>—</td><td>Só nas tabelas de lambda. Mostra em AFR com o combustível ativo.</td></tr>
+      <tr><td><span class="ui">Vista 3D</span></td><td><kbd>F3</kbd></td><td>Mostra a tabela como superfície. Arraste para orbitar. Use a roda para zoom. Duplo clique para repor.</td></tr>
+    </tbody>
+  </table></div>
+  <p>Os resultados ficam sempre dentro dos limites da tabela. O cabeçalho do editor mostra o tamanho, a unidade e os limites.</p>
+  <figure><a href="img/ecu-3d.jpg" target="_blank" rel="noopener"><img src="img/ecu-3d.jpg" alt="Vista 3D da tabela Avanço base ao lado da grade" loading="lazy"></a>
+  <figcaption><b>Figura 4-3</b>Vista 3D. Um degrau abrupto aparece como uma quebra na superfície.</figcaption></figure>
+
+  <h3 id="quicktune"><span class="n">4.3</span>Quick Tune</h3>
+  <p>O Quick Tune corrige a eficiência volumétrica (VE) com a fórmula VE × λ medido / λ alvo. A correção máxima é ±25 % por célula.</p>
+  <ol class="steps">
+    <li>Execute uma puxada ou uma carga estacionária. A bancada precisa de lambda medido.</li>
+    <li>Abra a tabela VE do perfil.</li>
+    <li>Selecione as células. Com uma só célula, o Quick Tune usa a célula onde o motor opera.</li>
+    <li>Clique em <span class="ui">Quick Tune</span> ou pressione <kbd>Q</kbd>.</li>
+  </ol>
+  <div class="callout note"><strong>Nota</strong><p>O Quick Tune só atua na tabela VE. No OEM-Stage a VE está escondida. Por isso, a mensagem <span class="ui">Quick Tune só atua na tabela VE</span> aparece nesse perfil.</p></div>
+
+  <h3 id="ia"><span class="n">4.4</span>Tunar com IA (LAYA.ai)</h3>
+  <p>A LAYA.ai propõe um ajuste para as tabelas principais da calibração. Ela analisa VE, injeção, lambda alvo, avanço, pressão alvo e torque, se a calibração os tiver.</p>
+  <figure><a href="img/ecu-ia.jpg" target="_blank" rel="noopener"><img src="img/ecu-ia.jpg" alt="Barra de ferramentas com o seletor Modo e o botão Tunar com IA a trabalhar" loading="lazy"></a>
+  <figcaption><b>Figura 4-4</b>Seletor <span class="ui">Modo</span> e botão <span class="ui">Tunar com IA</span> (estado <span class="ui">Tunando...</span>).</figcaption></figure>
+  <ol class="steps">
+    <li>Em <span class="ui">Modo</span>, selecione o perfil de tunagem.</li>
+    <li>Clique em <span class="ui">🤖 Tunar com IA</span>.</li>
+    <li>Leia a mensagem. Exemplo: <span class="ui">🤖 LAYA.ai: … (+X% torque estimado)</span>.</li>
+    <li>Execute uma puxada para medir o resultado.</li>
+    <li>Compare com a puxada anterior.</li>
+  </ol>
+  <div class="tbl"><table>
+    <thead><tr><th>Modo</th><th>Objetivo</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">🛡️ Safe (Seguro)</span></td><td>Prioriza a confiabilidade. Menos EGT e mais margem contra knock.</td></tr>
+      <tr><td><span class="ui">⚖️ Balanced (Equilibrado)</span></td><td>Equilibra ganho de torque e segurança. É o modo padrão.</td></tr>
+      <tr><td><span class="ui">⚡ Race (Máx. Potência)</span></td><td>Busca o limite seguro de avanço e pressão.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout warn"><strong>Advertência</strong><p>A IA altera várias tabelas ao mesmo tempo, não só a tabela aberta. Se a mensagem aparecer como aviso, a IA detetou risco. Confira lambda, EGT e knock na próxima puxada.</p></div>
+  <div class="callout note"><strong>Nota</strong><p>A IA não funciona numa calibração de série. Clone-a primeiro. Numa ECU standalone, complete a configuração base antes.</p></div>
+
+  <h3 id="avisos"><span class="n">4.5</span>Avisos W-01 a W-06</h3>
+  <p>O painel <span class="ui">Avisos</span> indica problemas prováveis. Os avisos não impedem a gravação. Clique na ligação de uma célula para a selecionar. Clique em <span class="ui">ajuda</span> para ler a explicação.</p>
+  <figure><a href="img/ecu-lambda-avisos.jpg" target="_blank" rel="noopener"><img src="img/ecu-lambda-avisos.jpg" alt="Tabela Lambda alvo com o painel de avisos W-02" loading="lazy"></a>
+  <figcaption><b>Figura 4-5</b>Avisos W-02 na tabela <span class="ui">Lambda alvo</span>. As células com aviso têm uma marca âmbar.</figcaption></figure>
+  <div class="tbl"><table>
+    <thead><tr><th>Código</th><th>Título</th><th>Quando aparece</th></tr></thead>
+    <tbody>
+      <tr><td>W-01</td><td>Avanço acima do MBT estimado</td><td>Uma célula de avanço passa o MBT estimado em mais de 2°.</td></tr>
+      <tr><td>W-02</td><td>Mistura pobre em alta carga</td><td>Lambda alvo acima de 0,90 com carga ≥ 80 % ou MAP ≥ 152 kPa.</td></tr>
+      <tr><td>W-03</td><td>Boost acima da capacidade</td><td>A pressão alvo passa a capacidade do turbo.</td></tr>
+      <tr><td>W-04</td><td>Limitador acima da rotação segura</td><td>O corte de rotação passa a rotação máxima segura do motor.</td></tr>
+      <tr><td>W-05</td><td>Pops &amp; bangs agressivos</td><td>Avanço dos pops abaixo de −20° ou atraso de corte acima de 1,5 s.</td></tr>
+      <tr><td>W-06</td><td>Degrau abrupto entre células</td><td>Células vizinhas diferem mais de 15 % (VE) ou 6° (avanço).</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 id="versoes"><span class="n">4.6</span>Gravar, aplicar e versões</h3>
+  <p>Cada alteração grava uma revisão nova. Com <span class="ui">Aplicar automaticamente</span> marcado, cada revisão vai para a sessão. Este é o padrão.</p>
+  <ol class="steps">
+    <li>Para guardar um marco, escreva um nome em <span class="ui">Nome da versão</span>. O máximo é 60 caracteres.</li>
+    <li>Clique em <span class="ui">Salvar versão</span> ou pressione <kbd>Ctrl</kbd>+<kbd>S</kbd>.</li>
+    <li>Sem aplicação automática, clique em <span class="ui">Aplicar à sessão</span> (<kbd>Ctrl</kbd>+<kbd>Enter</kbd>). Depois, clique em <span class="ui">Confirmar</span>.</li>
+  </ol>
+  <figure><a href="img/ecu-versoes.jpg" target="_blank" rel="noopener"><img src="img/ecu-versoes.jpg" alt="Vista Versões da calibração" loading="lazy"></a>
+  <figcaption><b>Figura 4-6</b>Vista <span class="ui">Versões</span>.</figcaption></figure>
+  <h4>Comparar e reverter</h4>
+  <ol class="steps">
+    <li>Clique em <span class="ui">Versões</span>.</li>
+    <li>Marque uma versão na coluna A e outra na coluna B.</li>
+    <li>Clique em <span class="ui">Comparar A × B</span>. A lista mostra cada célula alterada como valor antigo → valor novo.</li>
+    <li>Para voltar atrás, clique em <span class="ui">Reverter para N</span>. O sistema cria uma versão nova com o conteúdo de N.</li>
+    <li>Clique em <span class="ui">Aplicar à sessão</span>.</li>
+  </ol>
+  <div class="callout caution"><strong>Cuidado</strong><p>Se aparecer <span class="ui">Conflito de versão</span>, outra janela alterou a calibração. Clique em <span class="ui">Recarregar</span> para manter a versão gravada. Clique em <span class="ui">Sobrescrever com as minhas alterações</span> só se tiver a certeza.</p></div>
+
+  <h3><span class="n">4.7</span>Correções por cilindro</h3>
+  <p>Nas ECUs standalone, as tabelas <span class="ui">Combustível cil. N</span> e <span class="ui">Avanço cil. N</span> corrigem um cilindro. O painel <span class="ui">Correções por cilindro</span> aceita combustível ±25 % e ignição ±10°. Clique em <span class="ui">Gravar correções</span>.</p>
+
+  <h3><span class="n">4.8</span>Atalhos do editor</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Tecla</th><th>Ação</th></tr></thead>
+    <tbody>
+      <tr><td>Setas / <kbd>Shift</kbd> + setas</td><td>Mover ou estender a seleção</td></tr>
+      <tr><td><kbd>Tab</kbd> / <kbd>Shift</kbd>+<kbd>Tab</kbd></td><td>Célula seguinte ou anterior na linha</td></tr>
+      <tr><td><kbd>Home</kbd> / <kbd>End</kbd></td><td>Início ou fim da linha (com <kbd>Ctrl</kbd>: da tabela)</td></tr>
+      <tr><td><kbd>PageUp</kbd> / <kbd>PageDown</kbd></td><td>Subir ou descer uma página</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>A</kbd></td><td>Selecionar a tabela inteira</td></tr>
+      <tr><td><kbd>Enter</kbd>, <kbd>F2</kbd> ou um dígito</td><td>Editar a célula ativa</td></tr>
+      <tr><td><kbd>=</kbd> <kbd>+</kbd> <kbd>−</kbd> <kbd>*</kbd></td><td>Definir, somar, subtrair, ajustar %</td></tr>
+      <tr><td><kbd>I</kbd> / <kbd>Shift</kbd>+<kbd>I</kbd></td><td>Interpolar linha ou coluna / bloco</td></tr>
+      <tr><td><kbd>S</kbd> <kbd>B</kbd> <kbd>H</kbd> <kbd>V</kbd> <kbd>Q</kbd></td><td>Suavizar, suavizar bloco, interpolar H, interpolar V, Quick Tune</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>C</kbd> / <kbd>V</kbd></td><td>Copiar / colar TSV</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>Z</kbd> / <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Z</kbd></td><td>Desfazer / refazer</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>S</kbd></td><td>Salvar versão</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>Enter</kbd></td><td>Aplicar à sessão</td></tr>
+      <tr><td><kbd>F3</kbd></td><td>Vista 3D</td></tr>
+      <tr><td><kbd>Esc</kbd></td><td>Reduzir a seleção à célula ativa. Fechar um diálogo.</td></tr>
+      <tr><td><kbd>?</kbd></td><td>Lista de atalhos</td></tr>
+    </tbody>
+  </table></div>
+  <p>No macOS, use <kbd>Cmd</kbd> no lugar de <kbd>Ctrl</kbd>.</p>
+</section>
+
+<!-- 5 -->
+<section class="chap" id="perfis-ecu">
+  <header><span class="num">5</span><h2>Perfis de ECU: diferenças</h2><span class="who">Todos</span></header>
+  <p>O simulador tem 4 perfis de ECU. Um é a ECU original (OEM). Três são ECUs programáveis (standalone). Os perfis são genéricos e inspirados em famílias reais. Os 4 carros aceitam os 4 perfis.</p>
+  <div class="ecus">
+    <div class="ecu" style="--c:#6B7A8F">
+      <span class="kind">OEM · ECU original</span><h4>OEM-Stage</h4>
+      <p>ECU moderna de fábrica com estrutura de torque.</p>
+      <ul><li>O motorista pede torque. A ECU calcula a carga, a pressão e o avanço.</li><li>Sem two-step, antilag e powershift.</li><li>Checksum e modo de emergência.</li><li>Uso: Stage 1 e Stage 2.</li></ul>
+    </div>
+    <div class="ecu" style="--c:#7A6F5A">
+      <span class="kind">Standalone · arrancada</span><h4>FT-Pro</h4>
+      <p>Injeção programável de arrancada.</p>
+      <ul><li>Mapa principal em milissegundos (ms) ou VE.</li><li>Two-step, powershift e boost por marcha.</li><li>Antilag só por botão.</li><li>Foco em etanol E100.</li></ul>
+    </div>
+    <div class="ecu" style="--c:#5E6B5E">
+      <span class="kind">Standalone · competição</span><h4>M1-Race</h4>
+      <p>ECU de competição organizada por canais e funções.</p>
+      <ul><li>Só VE e lambda alvo.</li><li>Modelo físico do bico injetor.</li><li>Funções de competição exigem o <b>pacote race</b>.</li><li>Unidades em kPa absoluto.</li></ul>
+    </div>
+    <div class="ecu" style="--c:#6A5F73">
+      <span class="kind">Standalone · VE e assistente</span><h4>HT-Elite</h4>
+      <p>ECU programável com VE e lambda alvo.</p>
+      <ul><li>Assistente de mapa base em primeiro lugar.</li><li>Secção própria de correções por cilindro.</li><li>Antilag por botão ou em rolamento.</li><li>Mistura declarada em AFR.</li></ul>
+    </div>
+  </div>
+
+  <h3><span class="n">5.1</span>Tabela comparativa</h3>
+  <div class="tbl"><table class="cmp">
+    <thead><tr><th>Característica</th><th>OEM-Stage</th><th>FT-Pro</th><th>M1-Race</th><th>HT-Elite</th></tr></thead>
+    <tbody>
+      <tr><td>Tipo</td><td>OEM</td><td>Standalone</td><td>Standalone</td><td>Standalone</td></tr>
+      <tr><td>Como obter</td><td>Padrão da sessão</td><td>Trocar ECU</td><td>Trocar ECU</td><td>Trocar ECU</td></tr>
+      <tr><td>Modelo de combustível</td><td>Modelo de torque e ar da ECU</td><td>ms (padrão) ou VE</td><td>Só VE</td><td>Só VE</td></tr>
+      <tr><td>Tabela principal</td><td>VE de série (escondida)</td><td>Mapa principal (ms) / (VE)</td><td>Eficiência do motor</td><td>Tabela de VE</td></tr>
+      <tr><td>Eixo de carga</td><td>Carga relativa (%)</td><td>MAP (kPa)</td><td>MAP (kPa)</td><td>MAP (kPa)</td></tr>
+      <tr><td>Unidades (pressão · mistura · injeção)</td><td>bar rel. · λ · mg</td><td>bar rel. · λ · ms</td><td>kPa abs. · λ · VE %</td><td>kPa abs. · AFR · VE %</td></tr>
+      <tr><td>Tabelas de torque</td><td class="yes">Sim</td><td class="no">Não</td><td class="no">Não</td><td class="no">Não</td></tr>
+      <tr><td>Configuração base</td><td>De fábrica, só leitura</td><td>Assistente de 6 passos</td><td>Passos na secção Canais</td><td>Assistente primeiro</td></tr>
+      <tr><td>Malha fechada, detonação, boost, limitador, overrun, failsafe, VVT</td><td class="yes">Sim</td><td class="yes">Sim</td><td class="yes">Sim</td><td class="yes">Sim</td></tr>
+      <tr><td>Two-step (largada)</td><td class="no">Não</td><td class="yes">Sim</td><td class="part">Pacote race</td><td class="yes">Sim</td></tr>
+      <tr><td>Antilag</td><td class="no">Não</td><td class="part">Só botão</td><td class="part">Pacote race</td><td class="yes">Botão ou rolamento</td></tr>
+      <tr><td>Powershift</td><td class="no">Não</td><td class="yes">Sim</td><td class="part">Pacote race</td><td class="yes">Sim</td></tr>
+      <tr><td>Correções por cilindro</td><td class="no">Não no navegador</td><td class="yes">Combustível e avanço</td><td class="yes">Combustível e avanço</td><td class="yes">Secção própria</td></tr>
+      <tr><td>Flex (teor de etanol)</td><td class="yes">Sim</td><td class="yes">Sim</td><td class="yes">Sim</td><td class="yes">Sim</td></tr>
+      <tr><td>Checksum</td><td class="yes">Sim (corrigido pela aplicação)</td><td class="no">Não</td><td class="no">Não</td><td class="no">Não</td></tr>
+      <tr><td>Monitor de torque e modo de emergência</td><td class="yes">Sim</td><td class="no">Não</td><td class="no">Não</td><td class="no">Não</td></tr>
+      <tr><td>Tamanho da grade</td><td>16×16</td><td>12, 16 ou 20</td><td>12, 16 ou 20</td><td>12, 16 ou 20</td></tr>
+      <tr><td>Particularidade</td><td>Caminho de torque, proteção de componentes</td><td>Troca ms ↔ VE</td><td>Temperatura de carga combinada (0,25), modelo do bico</td><td>Antilag em rolamento</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3><span class="n">5.2</span>OEM-Stage</h3>
+  <p>A ECU OEM não usa um mapa de VE para injetar. Ela trabalha por torque. Em cada ciclo, a ECU faz isto:</p>
+  <ol class="steps">
+    <li>Lê o <span class="ui">Pedido de torque do pedal</span>.</li>
+    <li>Limita o torque com o <span class="ui">Limite por rotação</span>, o <span class="ui">Limite por marcha</span> e as proteções.</li>
+    <li>Soma o torque de atrito.</li>
+    <li>Calcula a carga alvo com o <span class="ui">Torque ótimo por carga</span> e a <span class="ui">Eficiência de ignição</span>.</li>
+    <li>Calcula a pressão do turbo com a <span class="ui">Pressão alvo</span>.</li>
+    <li>Se sobra torque, atrasa a ignição a partir do <span class="ui">Avanço ótimo</span> (máximo 20°).</li>
+  </ol>
+  <ul>
+    <li><b>Modo de emergência:</b> se o torque estimado passa 1,10 × o limite durante 0,5 s, a ECU corta o torque para 50 % e corta o boost. O modo termina na próxima aplicação de calibração.</li>
+    <li><b>Proteção de componentes:</b> a ECU usa o lambda mais rico entre <span class="ui">Lambda alvo</span> e <span class="ui">Lambda de proteção</span> (por EGT).</li>
+    <li><b>Validação:</b> o <span class="ui">Torque ótimo por carga</span> tem de subir com a carga. A <span class="ui">Eficiência de ignição</span> não pode subir com o atraso. Se não, a aplicação recusa a calibração.</li>
+    <li><b>Checksum:</b> a aplicação corrige o checksum de forma automática.</li>
+  </ul>
+  <figure><a href="img/ecu-estrategia-oem.jpg" target="_blank" rel="noopener"><img src="img/ecu-estrategia-oem.jpg" alt="Formulário da estratégia Proteção contra detonação no OEM-Stage" loading="lazy"></a>
+  <figcaption><b>Figura 5-1</b>Estratégia <span class="ui">Proteção contra detonação</span> no OEM-Stage.</figcaption></figure>
+
+  <h3><span class="n">5.3</span>FT-Pro</h3>
+  <p>A FT-Pro é a ECU de arrancada. O mapa principal é o tempo de injeção em ms, por RPM e MAP. O nome da estratégia de boost é <span class="ui">Boost por marcha</span>. O antilag só aceita ativação por botão (<span class="ui">Antilag por botão</span>). A opção <span class="ui">Rolante</span> fica cinzenta.</p>
+  <figure><a href="img/ecu-FT-Pro.jpg" target="_blank" rel="noopener"><img src="img/ecu-FT-Pro.jpg" alt="Workspace FT-Pro com a configuração base no passo 1 e a checklist incompleta" loading="lazy"></a>
+  <figcaption><b>Figura 5-2</b>FT-Pro no Clássico 2.0 turbo. A checklist mostra os itens em falta.</figcaption></figure>
+
+  <h3><span class="n">5.4</span>M1-Race</h3>
+  <p>A M1-Race organiza a calibração por canais e funções. Secções: <span class="ui">Canais</span>, <span class="ui">Funções: combustível</span>, <span class="ui">Funções: ignição</span>, <span class="ui">Funções: sobrealimentação</span>, <span class="ui">Funções: competição</span>, <span class="ui">Modelo do bico</span> e <span class="ui">Proteções</span>.</p>
+  <ul>
+    <li>A temperatura do ar usada é IAT + 0,25 × (ECT − IAT). Os outros perfis usam só a IAT.</li>
+    <li>O <span class="ui">Modelo do bico</span> considera vazão, tempo morto, pulso curto e pressão diferencial.</li>
+    <li><span class="ui">Controle de largada</span>, <span class="ui">Antilag</span> e <span class="ui">Troca sem levantar o pé</span> têm a etiqueta <span class="ui">(pacote race)</span>. Sem esse pacote, a gravação devolve <span class="ui">Exige o pacote race deste perfil.</span></li>
+  </ul>
+  <figure><a href="img/ecu-m1-assistente.jpg" target="_blank" rel="noopener"><img src="img/ecu-m1-assistente.jpg" alt="Workspace M1-Race com as secções Canais e Funções" loading="lazy"></a>
+  <figcaption><b>Figura 5-3</b>M1-Race depois da troca. O assistente abre no passo 1.</figcaption></figure>
+
+  <h3><span class="n">5.5</span>HT-Elite</h3>
+  <p>A HT-Elite coloca o <span class="ui">Assistente de mapa base</span> no topo do navegador. A tabela principal é a <span class="ui">Tabela de VE</span>. O antilag aceita botão e rolamento. É a única standalone sem restrição de estratégias.</p>
+  <div class="figrow">
+    <figure><a href="img/ecu-ht-ve.jpg" target="_blank" rel="noopener"><img src="img/ecu-ht-ve.jpg" alt="Tabela de VE na HT-Elite" loading="lazy"></a><figcaption><b>Figura 5-4</b><span class="ui">Tabela de VE</span> gerada pelo assistente.</figcaption></figure>
+    <figure><a href="img/ecu-ht-antilag.jpg" target="_blank" rel="noopener"><img src="img/ecu-ht-antilag.jpg" alt="Formulário da estratégia Antilag na HT-Elite" loading="lazy"></a><figcaption><b>Figura 5-5</b>Estratégia <span class="ui">Antilag</span> com ativação em rolamento.</figcaption></figure>
+  </div>
+
+  <h3><span class="n">5.6</span>Qual perfil escolher</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Objetivo</th><th>Perfil</th></tr></thead>
+    <tbody>
+      <tr><td>Aprender remap de carro de rua (Stage 1, Stage 2, pops)</td><td>OEM-Stage</td></tr>
+      <tr><td>Aprender a primeira standalone, injeção em ms, arrancada com etanol</td><td>FT-Pro</td></tr>
+      <tr><td>Aprender calibração por VE e modelo físico do bico</td><td>M1-Race</td></tr>
+      <tr><td>Gerar um mapa base guiado e afinar cilindro a cilindro</td><td>HT-Elite</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- 6 -->
+<section class="chap" id="troca">
+  <header><span class="num">6</span><h2>Trocar ECU e configuração base</h2><span class="who">Todos</span></header>
+  <h3><span class="n">6.1</span>Trocar para uma ECU standalone</h3>
+  <ol class="steps">
+    <li>Confirme que nenhuma puxada está em curso. Durante uma puxada, o botão fica bloqueado.</li>
+    <li>No workspace da ECU, clique em <span class="ui">Trocar ECU</span>.</li>
+    <li>Em <span class="ui">Perfil de destino</span>, selecione FT-Pro, M1-Race ou HT-Elite.</li>
+    <li>Para a M1-Race, selecione o <span class="ui">Pacote</span>: <code>base</code> ou <code>race</code>.</li>
+    <li>Saindo do OEM, marque <span class="ui">Guardar um snapshot da calibração OEM antes da troca</span>. Sem esta marca, o botão fica bloqueado.</li>
+    <li>Clique em <span class="ui">Trocar e abrir o assistente</span>.</li>
+    <li>Complete a configuração base (6.2).</li>
+  </ol>
+  <figure><a href="img/ecu-trocar-m1.jpg" target="_blank" rel="noopener"><img src="img/ecu-trocar-m1.jpg" alt="Diálogo Trocar ECU com os três perfis standalone e o seletor Pacote" loading="lazy"></a>
+  <figcaption><b>Figura 6-1</b>Diálogo <span class="ui">Trocar ECU</span>. A M1-Race mostra o seletor <span class="ui">Pacote</span>.</figcaption></figure>
+  <div class="callout warn"><strong>Advertência</strong><p>Depois da troca, a bancada recusa puxadas até a checklist mínima ficar completa. O erro é <code>ECU_SETUP_INCOMPLETE</code>.</p></div>
+  <div class="callout note"><strong>Nota</strong><p>A primeira troca preenche a configuração com a ficha do carro: roda fônica, ordem de ignição, bicos, combustível e MAP. Confira cada valor. Entre duas standalones, a configuração base passa para a nova ECU.</p></div>
+
+  <h3><span class="n">6.2</span>Assistente de configuração base</h3>
+  <p>O assistente tem 6 passos. Clique em <span class="ui">Avançar</span> para validar cada passo. Clique em <span class="ui">Voltar</span> para corrigir. Os dados ficam guardados.</p>
+  <h4>Passo 1: Roda fônica</h4>
+  <div class="tbl"><table>
+    <thead><tr><th>Campo</th><th>Significado</th><th>Valores</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Roda fônica</span></td><td>Padrão de dentes do sensor de rotação.</td><td>60-2, 36-1, 36-2, 24-1, 12-1, 4-0</td></tr>
+      <tr><td><span class="ui">Ângulo da falha ao PMS do cil. 1</span></td><td>Ângulo entre a falha de dentes e o PMS do cilindro 1. Confirme com a pistola de ponto.</td><td>0–359,9°</td></tr>
+      <tr><td><span class="ui">Sensor de fase</span></td><td>Sensor no comando de válvulas.</td><td>Sem sensor, Hall no comando</td></tr>
+      <tr><td><span class="ui">Borda do sensor de fase</span></td><td>Ângulo do sinal de fase.</td><td>0–719,9°</td></tr>
+      <tr><td><span class="ui">Injeção</span></td><td>Modo de disparo dos bicos.</td><td>Sequencial, Semissequencial, Em grupo</td></tr>
+      <tr><td><span class="ui">Ignição</span></td><td>Modo de disparo das bobinas.</td><td>Sequencial, Centelha perdida</td></tr>
+      <tr><td><span class="ui">Ordem de ignição</span></td><td>Sequência de disparo. Separe com vírgula e espaço.</td><td>Ex.: 1, 3, 4, 2</td></tr>
+      <tr><td><span class="ui">Trava de ponto</span></td><td>Fixa o avanço para conferir com a pistola. Vazio = livre.</td><td>−5 a 30° BTDC</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout warn"><strong>Advertência</strong><p>O modo sequencial exige sensor de fase. Uma ordem de ignição errada é recusada.</p></div>
+  <h4>Passo 2: Bicos injetores</h4>
+  <ul>
+    <li><span class="ui">Vazão do bico</span> (cc/min) e <span class="ui">Pressão de referência</span> (kPa, 200–600).</li>
+    <li><span class="ui">Tensões do tempo morto</span> (V, em ordem crescente) e <span class="ui">Tempo morto</span> (ms, 0–5). As duas listas têm o mesmo tamanho.</li>
+    <li><span class="ui">Regulador</span>: <span class="ui">Referenciado ao MAP</span> ou <span class="ui">Linha fixa</span>. <span class="ui">Pressão da linha</span> (kPa, 200–800).</li>
+  </ul>
+  <h4>Passo 3: Combustível</h4>
+  <ul>
+    <li><span class="ui">Combustível</span>: E0, E27, E100 ou alta octanagem.</li>
+    <li><span class="ui">AFR estequiométrico</span>: E0 14,7 · E27 13,2 · E100 9,0. Um valor errado desloca toda a mistura.</li>
+    <li><span class="ui">Densidade</span> (g/cc, 0,68–0,82).</li>
+  </ul>
+  <h4>Passo 4: Sensores</h4>
+  <ul>
+    <li><span class="ui">MAP a 0,5 V</span> e <span class="ui">MAP a 4,5 V</span>: faixa do sensor de pressão.</li>
+    <li><span class="ui">Curva do sensor de ar</span> e <span class="ui">Curva do sensor do motor</span>: NTC A, B ou C.</li>
+    <li><span class="ui">Sonda lambda de banda larga (malha fechada)</span>: marque se existe wideband. Preencha <span class="ui">Lambda a 0 V</span> e <span class="ui">Lambda a 5 V</span>.</li>
+  </ul>
+  <div class="callout caution"><strong>Cuidado</strong><p>Sem wideband, a malha fechada fica desligada. Um sensor mal declarado dá leituras erradas na bancada.</p></div>
+  <h4>Passo 5: Failsafe e limites</h4>
+  <figure><a href="img/ecu-wizard-failsafe.jpg" target="_blank" rel="noopener"><img src="img/ecu-wizard-failsafe.jpg" alt="Passo Failsafe e limites do assistente" loading="lazy"></a>
+  <figcaption><b>Figura 6-2</b>Passo 5 do assistente.</figcaption></figure>
+  <div class="tbl"><table>
+    <thead><tr><th>Campo</th><th class="num">Padrão</th><th>Limites</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Corte de rotação</span></td><td class="num">7000 rpm</td><td>2000–12000</td></tr>
+      <tr><td><span class="ui">Sobre-rotação (failsafe)</span> — tem de ser maior que o corte</td><td class="num">7500 rpm</td><td>2000–13000</td></tr>
+      <tr><td><span class="ui">Sobrepressão</span></td><td class="num">260 kPa abs.</td><td>100–500</td></tr>
+      <tr><td><span class="ui">EGT máxima</span></td><td class="num">950 °C</td><td>600–1100</td></tr>
+      <tr><td><span class="ui">Temperatura máxima do motor</span></td><td class="num">110 °C</td><td>80–130</td></tr>
+      <tr><td><span class="ui">Pressão mínima de óleo</span></td><td class="num">100 kPa</td><td>0–600</td></tr>
+      <tr><td><span class="ui">Desvio pobre tolerado</span></td><td class="num">Δλ 0,10</td><td>0,03–0,30</td></tr>
+    </tbody>
+  </table></div>
+  <p>Estes valores preenchem os limiares do failsafe, o limitador de rotação e a sobrepressão do boost.</p>
+  <h4>Passo 6: Revisão</h4>
+  <ul>
+    <li>Confira o resumo.</li>
+    <li><span class="ui">MAP máximo do mapa base</span> (kPa abs., padrão 200).</li>
+    <li><span class="ui">Marcha lenta alvo</span> (rpm, padrão 900). O corte tem de ficar 500 rpm acima.</li>
+    <li><span class="ui">Tamanho da grade</span>: 12×12, 16×16 ou 20×20.</li>
+    <li>Clique em <span class="ui">Gravar e gerar mapa base</span>.</li>
+  </ul>
+  <figure><a href="img/ecu-wizard-gravado.jpg" target="_blank" rel="noopener"><img src="img/ecu-wizard-gravado.jpg" alt="Assistente com a checklist mínima completa e a mensagem Configuração base gravada" loading="lazy"></a>
+  <figcaption><b>Figura 6-3</b><span class="ui">Checklist (mínimo completo)</span>. Todos os itens estão em verde. A bancada aceita puxadas.</figcaption></figure>
+  <div class="callout note"><strong>Nota</strong><p>O mapa base é intencionalmente impreciso. Afine a VE e o avanço na bancada. Two-step, antilag, powershift e pops começam desligados.</p></div>
+</section>
+
+<!-- 7 -->
+<section class="chap" id="tabelas">
+  <header><span class="num">7</span><h2>Tabelas: o que cada uma faz</h2><span class="who">Todos</span></header>
+  <p>O nome de uma tabela muda com o perfil de ECU. A coluna "Live" indica se a tabela aceita edição durante a puxada.</p>
+  <h3><span class="n">7.1</span>Tabelas comuns às standalones</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Tabela</th><th>Eixos</th><th>Unidade e limites</th><th>Live</th><th>O que controla</th></tr></thead>
+    <tbody>
+      <tr><td>VE (<span class="ui">Tabela de VE</span>, <span class="ui">Eficiência do motor</span>, <span class="ui">Mapa principal (VE)</span>)</td><td>RPM × MAP</td><td>% · 0–150</td><td class="yes">Sim</td><td>Quanto ar entra em cada cilindro. A ECU calcula o combustível a partir dela.</td></tr>
+      <tr><td><span class="ui">Mapa principal (ms)</span> (FT-Pro)</td><td>RPM × MAP</td><td>ms · 0–50</td><td class="yes">Sim</td><td>Tempo de abertura do bico, definido de forma direta.</td></tr>
+      <tr><td><span class="ui">Lambda alvo</span></td><td>RPM × MAP</td><td>λ · 0,65–1,30</td><td class="yes">Sim</td><td>Mistura desejada. 1,0 = estequiométrica. Menor = mais rica.</td></tr>
+      <tr><td><span class="ui">Avanço de ignição</span></td><td>RPM × MAP</td><td>°BTDC · −20 a 60</td><td class="yes">Sim</td><td>Ponto da faísca.</td></tr>
+      <tr><td><span class="ui">Avanço cil. N</span></td><td>RPM × MAP</td><td>° · ±15</td><td class="yes">Sim</td><td>Correção de avanço de um cilindro.</td></tr>
+      <tr><td><span class="ui">Combustível cil. N</span></td><td>RPM × MAP</td><td>% · ±25</td><td class="yes">Sim</td><td>Correção de combustível de um cilindro.</td></tr>
+      <tr><td><span class="ui">Correção pela temperatura do ar / do motor</span> (ignição)</td><td>IAT ou ECT</td><td>° · −15 a 10</td><td class="yes">Sim</td><td>Muda o avanço conforme a temperatura.</td></tr>
+      <tr><td><span class="ui">Mistura pela temperatura do motor</span></td><td>ECT</td><td>% · −20 a 100</td><td class="no">Não</td><td>Enriquece o motor frio.</td></tr>
+      <tr><td><span class="ui">Mistura pela temperatura do ar</span></td><td>IAT</td><td>% · ±30</td><td class="no">Não</td><td>Corrige o combustível pela temperatura do ar.</td></tr>
+      <tr><td><span class="ui">Aceleração rápida</span> / <span class="ui">Transiente</span></td><td>Taxa do TPS</td><td>% · 0–200</td><td class="no">Não</td><td>Combustível extra quando o acelerador abre depressa.</td></tr>
+      <tr><td><span class="ui">Partida</span></td><td>ECT</td><td>ms · 0–50</td><td class="no">Não</td><td>Pulso de injeção durante a partida.</td></tr>
+      <tr><td><span class="ui">Pós-partida</span></td><td>ECT</td><td>% · 0–100</td><td class="no">Não</td><td>Combustível extra logo depois da partida.</td></tr>
+      <tr><td><span class="ui">Tempo morto do bico</span></td><td>Tensão da bateria</td><td>ms · 0–5</td><td class="no">Não</td><td>Atraso de abertura do bico, somado a cada pulso.</td></tr>
+      <tr><td><span class="ui">Pressão alvo</span></td><td>RPM × TPS</td><td>kPa · 80–400</td><td class="yes">Sim</td><td>Pressão do turbo desejada.</td></tr>
+      <tr><td><span class="ui">Pressão máxima por marcha</span></td><td>Marcha</td><td>kPa · 80–400</td><td class="yes">Sim</td><td>Teto de pressão em cada marcha. Exige <span class="ui">Alvo por marcha</span>.</td></tr>
+      <tr><td><span class="ui">Duty base da wastegate</span></td><td>RPM × pressão alvo</td><td>% · 0–100</td><td class="no">Não</td><td>Abertura inicial da válvula de controle da wastegate.</td></tr>
+      <tr><td><span class="ui">Limiar de detonação</span></td><td>RPM</td><td>0–1</td><td class="no">Não</td><td>Intensidade de knock que conta como evento.</td></tr>
+      <tr><td><span class="ui">Pressão mínima de óleo</span></td><td>RPM</td><td>kPa · 0–1000</td><td class="no">Não</td><td>Limiar do failsafe de pressão de óleo.</td></tr>
+      <tr><td><span class="ui">Comando de admissão / escape alvo</span></td><td>RPM × MAP</td><td>° · ±60</td><td class="yes">Sim</td><td>Posição alvo dos comandos variáveis (VVT).</td></tr>
+      <tr><td><span class="ui">Avanço adicional por etanol</span></td><td>% de etanol</td><td>° · −10 a 15</td><td class="yes">Sim</td><td>Avanço extra com sensor Flex.</td></tr>
+      <tr><td><span class="ui">Pressão adicional por etanol</span></td><td>% de etanol</td><td>kPa · −50 a 100</td><td class="yes">Sim</td><td>Pressão extra com sensor Flex. Sem sensor, não muda nada.</td></tr>
+    </tbody>
+  </table></div>
+  <h3><span class="n">7.2</span>Tabelas exclusivas do OEM-Stage</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Tabela</th><th>Eixos</th><th>Unidade</th><th>Live</th><th>O que controla</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Pedido de torque do pedal</span></td><td>RPM × pedal</td><td>N·m · 0–1500</td><td class="yes">Sim</td><td>Torque que o motorista pede com o pedal.</td></tr>
+      <tr><td><span class="ui">Limite por rotação</span></td><td>RPM</td><td>N·m · 0–1500</td><td class="yes">Sim</td><td>Teto de torque por rotação.</td></tr>
+      <tr><td><span class="ui">Limite por marcha</span></td><td>Marcha</td><td>N·m · 0–1500</td><td class="yes">Sim</td><td>Teto de torque por marcha.</td></tr>
+      <tr><td><span class="ui">Avanço base</span></td><td>RPM × carga</td><td>°BTDC · −20 a 60</td><td class="yes">Sim</td><td>Avanço de ignição.</td></tr>
+      <tr><td><span class="ui">Avanço ótimo</span></td><td>RPM × carga</td><td>°BTDC</td><td class="yes">Sim</td><td>Avanço de melhor torque (MBT). Referência para a intervenção de torque.</td></tr>
+      <tr><td><span class="ui">Eficiência de ignição</span></td><td>Atraso 0–45°</td><td>0–1</td><td class="no">Não</td><td>Fração de torque que fica para cada grau de atraso. Não pode subir.</td></tr>
+      <tr><td><span class="ui">Torque ótimo por carga</span></td><td>RPM × carga</td><td>N·m · 0–1500</td><td class="no">Não</td><td>Torque com avanço ótimo em cada carga. Tem de subir com a carga.</td></tr>
+      <tr><td><span class="ui">Pressão alvo</span></td><td>RPM × carga</td><td>kPa · 80–400</td><td class="yes">Sim</td><td>Pressão do turbo para chegar à carga alvo.</td></tr>
+      <tr><td><span class="ui">Lambda de proteção</span></td><td>EGT</td><td>λ</td><td class="yes">Sim</td><td>Limite rico para proteger o escape quando a EGT sobe.</td></tr>
+      <tr><td><span class="ui">Correção pela temperatura do ar</span></td><td>IAT</td><td>°</td><td class="yes">Sim</td><td>Muda o avanço com a temperatura do ar.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- 8 -->
+<section class="chap" id="estrategias">
+  <header><span class="num">8</span><h2>Estratégias: o que cada uma faz</h2><span class="who">Todos</span></header>
+  <p>Uma estratégia é uma função lógica da ECU. Abra-a no navegador. Altere os campos. Clique em <span class="ui">Gravar estratégia</span>. Cada formulário tem a caixa <span class="ui">Ativa</span>.</p>
+  <p>Ordem de prioridade: failsafe &gt; limitador de rotação &gt; two-step, antilag e powershift &gt; overrun &gt; funcionamento normal.</p>
+
+  <h3><span class="n">8.1</span>Malha fechada (lambda)</h3>
+  <p>Corrige o combustível em tempo real. Compara a leitura da wideband com o <span class="ui">Lambda alvo</span>. A correção de longo prazo aprende por célula e reinicia em cada sessão.</p>
+  <p>Campos principais: <span class="ui">Ganho proporcional</span> (0,5), <span class="ui">Ganho integral</span> (2/s), <span class="ui">Limite de correção</span> (25 %), <span class="ui">Temperatura mínima do motor</span> (60 °C), <span class="ui">Rotação mínima / máxima</span>, <span class="ui">MAP máximo</span>, <span class="ui">Atraso após a partida</span> (10 s), <span class="ui">Correção de longo prazo</span>.</p>
+
+  <h3><span class="n">8.2</span>Controle de detonação</h3>
+  <p>Atua por cilindro. Cada evento acima do <span class="ui">Limiar de detonação</span> atrasa a ignição um passo. Depois de uma espera, o avanço volta devagar. Se o atraso máximo dura muito, a ECU baixa o boost.</p>
+  <p>Campos: <span class="ui">Passo de atraso</span> (2°), <span class="ui">Atraso máximo</span> (8°), <span class="ui">Espera antes de recuperar</span> (0,5 s), <span class="ui">Taxa de recuperação</span> (1°/s), <span class="ui">Rotação mínima</span> (1500), <span class="ui">MAP mínimo</span> (80 kPa), <span class="ui">Redução de boost no atraso máximo</span> (20 kPa), <span class="ui">Tempo no atraso máximo</span> (2 s).</p>
+
+  <h3><span class="n">8.3</span>Controle de boost (PID e por marcha)</h3>
+  <p>Calcula a abertura da wastegate. O alvo vem da <span class="ui">Pressão alvo</span>. O duty é o <span class="ui">Duty base da wastegate</span> mais a correção PID. 0 % deixa a wastegate na mola. 100 % fecha-a.</p>
+  <ul>
+    <li><span class="ui">Modo</span>: <span class="ui">Malha aberta (duty base)</span> ou <span class="ui">Malha fechada (PID)</span>.</li>
+    <li><span class="ui">PID: Kp</span>, <span class="ui">Ki</span>, <span class="ui">Kd</span>, <span class="ui">Filtro do termo D</span>, <span class="ui">Janela de ativação do PID</span>, <span class="ui">Limite do integrador</span>.</li>
+    <li><span class="ui">Alvo por marcha</span>: liga a tabela <span class="ui">Pressão máxima por marcha</span>.</li>
+    <li><span class="ui">Sobrepressão (corte)</span> (260 kPa), <span class="ui">Tempo de sobrepressão</span>, <span class="ui">Histerese da sobrepressão</span>.</li>
+    <li><span class="ui">Ação na sobrepressão</span>: <span class="ui">Abrir a wastegate</span>, <span class="ui">Corte de combustível</span> ou <span class="ui">Corte de ignição</span>.</li>
+  </ul>
+
+  <h3><span class="n">8.4</span>Limitador de rotação</h3>
+  <p>Protege o motor contra rotação excessiva. Perto do limite, a fase suave atrasa a ignição. No limite, a fase dura corta todos os cilindros. O corte termina abaixo de limite − histerese.</p>
+  <p>Campos: <span class="ui">Corte (rpm)</span> (7000), <span class="ui">Tipo de corte</span> (<span class="ui">Corte de combustível</span>, <span class="ui">Corte de ignição</span>, <span class="ui">Corte rotativo</span>), <span class="ui">Limitador suave</span>, <span class="ui">Janela suave</span> (200 rpm), <span class="ui">Atraso máximo na janela suave</span> (10°), <span class="ui">Histerese</span> (100 rpm).</p>
+
+  <h3><span class="n">8.5</span>Two-step (largada)</h3>
+  <p>Controle de largada. Com o carro parado e o acelerador a fundo, a ECU segura uma rotação fixa. Ela atrasa a ignição e enriquece a mistura para encher o turbo. Um tempo máximo protege o motor.</p>
+  <p>Campos: <span class="ui">Rotação de largada</span> (4000), <span class="ui">Tipo de corte</span>, <span class="ui">Avanço na largada</span> (−5°), <span class="ui">Lambda alvo</span> (0,85), <span class="ui">Ativação</span> (<span class="ui">Embreagem</span> ou <span class="ui">Botão de largada</span>), <span class="ui">Velocidade máxima</span> (5 km/h), <span class="ui">Borboleta mínima</span> (80 %), <span class="ui">Tempo máximo ativo</span> (10 s), <span class="ui">Rampa de saída</span> (0,2 s).</p>
+
+  <h3><span class="n">8.6</span>Antilag</h3>
+  <p>Mantém o turbo a girar com o acelerador fechado. Usa atraso forte, mistura rica, uma válvula de ar e corte parcial de cilindros. Desliga com EGT alta ou por tempo. Depois, espera o arrefecimento.</p>
+  <p>Campos: <span class="ui">Ativação</span> (<span class="ui">Botão</span> ou <span class="ui">Rolante (entre rotações)</span>), <span class="ui">Rotação mínima / máxima</span>, <span class="ui">Borboleta máxima</span> (20 %), <span class="ui">Avanço</span> (−15°), <span class="ui">Lambda alvo</span> (0,80), <span class="ui">Válvula de ar</span> (15 %), <span class="ui">Tipo de corte</span>, <span class="ui">Fração de corte</span> (0,25), <span class="ui">EGT máxima</span> (1000 °C), <span class="ui">Tempo máximo ativo</span> (3 s), <span class="ui">Arrefecimento</span> (5 s).</p>
+  <div class="callout warn"><strong>Advertência</strong><p>O antilag aquece muito o escape e a turbina. Observe a EGT. Uma fusão da turbina destrói o motor.</p></div>
+
+  <h3><span class="n">8.7</span>Powershift (troca sem tirar o pé)</h3>
+  <p>Permite trocar de marcha com o acelerador a fundo. No pedido de troca, a ECU corta todos os cilindros durante um tempo curto. Depois, devolve o avanço numa rampa.</p>
+  <p>Campos: <span class="ui">Gatilho</span> (<span class="ui">Pedido de troca</span> ou <span class="ui">Embreagem</span>), <span class="ui">Borboleta mínima</span> (80 %), <span class="ui">Rotação mínima</span> (3000), <span class="ui">Tipo de corte</span>, <span class="ui">Tempo de corte</span> (120 ms), <span class="ui">Atraso na retomada</span> (5°), <span class="ui">Rampa de retomada</span> (0,15 s).</p>
+
+  <h3><span class="n">8.8</span>Overrun / pops &amp; bangs</h3>
+  <p>Atua com o pedal fechado. O DFCO corta o combustível na desaceleração. Os pops, opcionais, usam ignição muito atrasada e mistura rica. O combustível queima no escape e faz estalos.</p>
+  <ul>
+    <li>DFCO: <span class="ui">Corte em desaceleração (DFCO)</span>, <span class="ui">borboleta máxima</span> (2 %), <span class="ui">rotação mínima</span> (1500), <span class="ui">rotação de retomada</span> (1200), <span class="ui">atraso</span> (0,5 s).</li>
+    <li>Pops: <span class="ui">Pops &amp; bangs</span>, <span class="ui">rotação mínima / máxima</span> (2500 / 6500), <span class="ui">borboleta máxima</span> (5 %), <span class="ui">Janela de corte atrasado</span> (1,5 s), <span class="ui">Avanço (negativo = ATDC)</span> (−15°), <span class="ui">Lambda alvo</span> (0,9), <span class="ui">Intensidade</span> (60 %), <span class="ui">Duração máxima</span> (2 s), <span class="ui">EGT máxima pré-turbina</span> (950 °C).</li>
+    <li><span class="ui">Catalisador presente</span>: com catalisador, a intensidade fica até 30 % e a duração até 0,5 s.</li>
+  </ul>
+
+  <h3><span class="n">8.9</span>Failsafe (proteções)</h3>
+  <p>Uma tabela de regras de proteção. Uma regra dispara quando a condição dura o tempo de confirmação. A regra aplica as ações. A regra liberta depois do tempo de liberação.</p>
+  <figure><a href="img/ecu-failsafe.jpg" target="_blank" rel="noopener"><img src="img/ecu-failsafe.jpg" alt="Formulário Proteções do motor com a tabela de regras do failsafe" loading="lazy"></a>
+  <figcaption><b>Figura 8-1</b>Regras do failsafe (<span class="ui">Proteções do motor</span>).</figcaption></figure>
+  <div class="tbl"><table>
+    <thead><tr><th>Regra padrão</th><th>Disparo</th><th>Ações</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">EGT alta</span></td><td>EGT máxima</td><td>Reduzir boost 30 kPa. Enriquecer.</td></tr>
+      <tr><td><span class="ui">EGT crítica</span></td><td>EGT máxima + 30 °C</td><td>Cortar boost. Baixar limitador para 4000 rpm.</td></tr>
+      <tr><td><span class="ui">Pobre em carga</span></td><td>Δλ 0,10 acima de 150 kPa</td><td>Cortar boost.</td></tr>
+      <tr><td><span class="ui">Motor quente</span></td><td>110 °C</td><td>Baixar limitador para 4500 rpm. Reduzir boost.</td></tr>
+      <tr><td><span class="ui">Pressão de óleo baixa</span></td><td>Abaixo da tabela de óleo</td><td>Cortar combustível. Liberta só com o motor parado.</td></tr>
+      <tr><td><span class="ui">Sobre-rotação</span></td><td>RPM de sobre-rotação</td><td>Cortar combustível.</td></tr>
+      <tr><td><span class="ui">Falha de sensor</span></td><td>Sensor fora da faixa</td><td>Cortar boost. Limitar a 3000 rpm.</td></tr>
+    </tbody>
+  </table></div>
+  <p>Use <span class="ui">Acrescentar regra</span> e <span class="ui">Remover</span> para alterar a lista. A coluna <span class="ui">Valor da ação</span> vale só para a primeira ação com parâmetro.</p>
+
+  <h3><span class="n">8.10</span>Comando variável (VVT)</h3>
+  <p>Os comandos seguem as tabelas <span class="ui">Comando de admissão alvo</span> e <span class="ui">Comando de escape alvo</span>. Abaixo de 40 °C de ECT, os comandos ficam na posição 0. Edite as tabelas. O item <span class="ui">Controle do comando variável</span> não tem formulário nesta versão.</p>
+</section>
+
+<!-- 9 -->
+<section class="chap" id="pecas">
+  <header><span class="num">9</span><h2>Peças e combustíveis</h2><span class="who">Todos</span></header>
+  <h3><span class="n">9.1</span>Peças</h3>
+  <p>Escolha as peças na tela <span class="ui">Início</span>, antes de criar a sessão. Para mudar as peças numa sessão ativa, use <span class="ui">Upgrades</span>.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Categoria</th><th>Opção</th><th>Efeito</th></tr></thead>
+    <tbody>
+      <tr><td rowspan="3">Turbina</td><td>Turbina upgraded (Stage 1)</td><td>Área da turbina ×1,25 · vazão do compressor ×1,3 · inércia ×1,45 (mais lag)</td></tr>
+      <tr><td>Turbina Stage 2</td><td>Área ×1,45 · vazão ×1,6 · inércia ×1,9 · wastegate ×1,15</td></tr>
+      <tr><td>Turbina Stage 3</td><td>Área ×1,7 · vazão ×2 · inércia ×2,6 · wastegate ×1,3</td></tr>
+      <tr><td>Bicos injetores</td><td>Bicos de alta vazão</td><td>Vazão ×1,5</td></tr>
+      <tr><td>Bomba de combustível</td><td>Bomba de alta vazão</td><td>Capacidade ×1,8</td></tr>
+      <tr><td>Intercooler</td><td>Intercooler esportivo</td><td>Efetividade +0,08</td></tr>
+      <tr><td>Downpipe</td><td>Downpipe de alto fluxo</td><td>Contrapressão do escape ×0,6</td></tr>
+      <tr><td>Internos do motor</td><td>Internos forjados</td><td>Biela ×1,35 · pressão no cilindro ×1,25 · pistão +40 °C</td></tr>
+    </tbody>
+  </table></div>
+  <figure><a href="img/upgrades.jpg" target="_blank" rel="noopener"><img src="img/upgrades.jpg" alt="Página Upgrades com as categorias de peças" loading="lazy"></a>
+  <figcaption><b>Figura 9-1</b>Página <span class="ui">Upgrades</span>.</figcaption></figure>
+  <h4>Instalar peças numa sessão</h4>
+  <ol class="steps">
+    <li>Aguarde o fim de qualquer puxada.</li>
+    <li>Clique em <span class="ui">Upgrades</span>.</li>
+    <li>Selecione as peças novas. Leia a lista <span class="ui">Alterações pendentes</span>.</li>
+    <li>Clique em <span class="ui">Instalar peças</span>. Para cancelar, clique em <span class="ui">Descartar</span>.</li>
+    <li>Clique em <span class="ui">Acertar na ECU</span> para ajustar a calibração.</li>
+    <li>Clique em <span class="ui">Medir na bancada</span> para medir o ganho.</li>
+  </ol>
+  <div class="callout warn"><strong>Advertência</strong><p>A calibração não muda com as peças. Uma turbina maior com a mesma calibração pode deixar a mistura pobre. Numa standalone, declare a vazão dos bicos novos no assistente.</p></div>
+  <div class="callout note"><strong>Nota</strong><p>A instalação põe o motor em marcha lenta e repõe o dano. Numa tentativa de cenário, as peças são fixas.</p></div>
+  <h3><span class="n">9.2</span>Combustíveis</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Combustível</th><th class="num">AFR estequiométrico</th><th class="num">RON</th><th class="num">Etanol</th></tr></thead>
+    <tbody>
+      <tr><td>Gasolina pura (E0)</td><td class="num">14,7</td><td class="num">95</td><td class="num">0 %</td></tr>
+      <tr><td>Gasolina comum (E27)</td><td class="num">13,2</td><td class="num">94</td><td class="num">28 %</td></tr>
+      <tr><td>Etanol hidratado (E100)</td><td class="num">9,0</td><td class="num">109</td><td class="num">100 %</td></tr>
+      <tr><td>Gasolina de competição (Podium)</td><td class="num">14,4</td><td class="num">102</td><td class="num">0 %</td></tr>
+    </tbody>
+  </table></div>
+  <p>Mais octanas dão mais margem contra knock. O E100 precisa de muito mais combustível em massa. Por isso, calibre em lambda e não em AFR.</p>
+  <h4>Flex Fuel</h4>
+  <p>Marque <span class="ui">Flex Fuel</span> e mova <span class="ui">Teor de etanol</span> (E27 a E100). Só o Clássico 2.0 turbo de swap aceita Flex Fuel. Use as tabelas <span class="ui">Avanço adicional por etanol</span> e <span class="ui">Pressão adicional por etanol</span>.</p>
+</section>
+
+<!-- 10 -->
+<section class="chap" id="aluno">
+  <header><span class="num">10</span><h2>Cenários de treino</h2><span class="who">Aluno</span></header>
+  <h3><span class="n">10.1</span>Criar o perfil de aluno</h3>
+  <p>O perfil guarda as tentativas e a carreira. Não tem senha. Não guarda dados pessoais.</p>
+  <ol class="steps">
+    <li>Clique em <span class="ui">Cenários</span>. Depois, clique em <span class="ui">Perfis</span>.</li>
+    <li>Clique em <span class="ui">Novo perfil</span>.</li>
+    <li>Escreva o <span class="ui">Nickname</span>: 3 a 24 caracteres. Use letras, números, "-" ou "_". Não use espaços nem "@".</li>
+    <li>Em <span class="ui">Papel</span>, selecione <span class="ui">Aluno</span>.</li>
+    <li>Clique em <span class="ui">Criar perfil</span>. O perfil fica ativo.</li>
+  </ol>
+  <div class="figrow">
+    <figure><a href="img/perfil-novo.jpg" target="_blank" rel="noopener"><img src="img/perfil-novo.jpg" alt="Diálogo Novo perfil com Nickname e Papel" loading="lazy"></a><figcaption><b>Figura 10-1</b>Diálogo <span class="ui">Novo perfil</span>.</figcaption></figure>
+    <figure><a href="img/perfis.jpg" target="_blank" rel="noopener"><img src="img/perfis.jpg" alt="Lista Perfis desta estação" loading="lazy"></a><figcaption><b>Figura 10-2</b><span class="ui">Perfis desta estação</span>. Clique num cartão para trocar de perfil.</figcaption></figure>
+  </div>
+  <div class="callout note"><strong>Nota</strong><p>O navegador guarda o perfil ativo. Numa estação partilhada, confirme o perfil em <span class="ui">Perfil ativo</span> antes de começar.</p></div>
+
+  <h3><span class="n">10.2</span>Escolher um cenário</h3>
+  <figure><a href="img/cenarios.jpg" target="_blank" rel="noopener"><img src="img/cenarios.jpg" alt="Lista Cenários de treino com filtros e etiquetas" loading="lazy"></a>
+  <figcaption><b>Figura 10-3</b><span class="ui">Cenários de treino</span>. Filtre por tipo, veículo e combustível.</figcaption></figure>
+  <ul>
+    <li><span class="ui">Base</span>: cenário incluído no sistema. <span class="ui">Desafio</span>: cenário criado pelo instrutor.</li>
+    <li><span class="ui">⚠ Defeito oculto</span>: o carro tem uma avaria. Descubra-a.</li>
+    <li><span class="ui">✓ Aprovado</span> / <span class="ui">✗ Reprovado</span>: resultado da última avaliação.</li>
+  </ul>
+  <div class="tbl"><table>
+    <thead><tr><th>Cenário</th><th>Carro · combustível</th><th>Objetivo principal</th></tr></thead>
+    <tbody>
+      <tr><td>Stage 1 na ECU de série</td><td>Hatch · E27</td><td>+40 whp sobre a puxada base. Knock ≤ 3°, EGT ≤ 950 °C, λ 0,75–0,90.</td></tr>
+      <tr><td>Stage 2 com pops &amp; bangs</td><td>Hatch · E27</td><td>+65 whp e pelo menos 5 pops por puxada. EGT no overrun ≤ 950 °C.</td></tr>
+      <tr><td>Swap standalone até o limite seguro de knock</td><td>Clássico · E100</td><td>Trocar para standalone. ≥ 300 whp. Margem de knock ≥ 2°. 3 puxadas válidas.</td></tr>
+      <tr><td>Diagnóstico: bomba de combustível fraca</td><td>Hatch · E27</td><td>Identificar a bomba fraca e acertar com segurança.</td></tr>
+      <tr><td>Diagnóstico: vazamento no circuito de pressão</td><td>Hatch · E27</td><td>Identificar o vazamento. ≥ 200 whp.</td></tr>
+      <tr><td>Diagnóstico: bico injetor entupido</td><td>Hatch · E27</td><td>Identificar o cilindro pobre.</td></tr>
+      <tr><td>Diagnóstico: wastegate travada aberta</td><td>Hatch · E27</td><td>Identificar a wastegate presa. Só aparece se a estação ativar este cenário.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3><span class="n">10.3</span>Ler o briefing</h3>
+  <figure><a href="img/briefing.jpg" target="_blank" rel="noopener"><img src="img/briefing.jpg" alt="Briefing do cenário com objetivos, critérios e restrições" loading="lazy"></a>
+  <figcaption><b>Figura 10-4</b>Briefing com <span class="ui">Objetivos</span>, <span class="ui">Critérios de aprovação</span> e <span class="ui">Restrições e condições</span>.</figcaption></figure>
+  <ol class="steps">
+    <li>Clique no título do cenário.</li>
+    <li>Leia o texto do cliente. Ele descreve o problema.</li>
+    <li>Leia os <span class="ui">Critérios de aprovação</span>. Todos os critérios obrigatórios têm de passar.</li>
+    <li>Leia as <span class="ui">Restrições e condições</span>: marcha, tipos de puxada, submissões máximas e perfil de ECU final.</li>
+    <li>Clique em <span class="ui">Iniciar tentativa</span>.</li>
+  </ol>
+
+  <h3><span class="n">10.4</span>Fazer a tentativa</h3>
+  <p>O sistema clona a calibração, cria a sessão e executa uma puxada base automática. Aguarde o estado <span class="ui">Em curso</span>.</p>
+  <figure><a href="img/tentativa-bancada.jpg" target="_blank" rel="noopener"><img src="img/tentativa-bancada.jpg" alt="Bancada com o painel lateral da tentativa, critérios provisórios e dicas" loading="lazy"></a>
+  <figcaption><b>Figura 10-5</b>Bancada durante a tentativa. O painel lateral mostra o estado, os critérios provisórios, as puxadas e as dicas.</figcaption></figure>
+  <ol class="steps">
+    <li>Leia a <span class="ui">Puxada base</span>. É o ponto de partida.</li>
+    <li>Clique em <span class="ui">Abrir ECU</span>. Altere a calibração.</li>
+    <li>Clique em <span class="ui">Abrir bancada</span>. Execute uma puxada de um tipo permitido.</li>
+    <li>Leia os <span class="ui">Critérios (provisório)</span>. Cada linha diz <span class="ui">✓ cumpre</span> ou <span class="ui">✗ não cumpre</span>.</li>
+    <li>Leia a lista <span class="ui">Puxadas</span>. Cada puxada é <span class="ui">✓ válida</span> ou <span class="ui">✗ inválida</span> com o motivo.</li>
+    <li>Repita até todos os critérios cumprirem.</li>
+    <li>Faça o número de puxadas válidas pedido com a calibração final.</li>
+    <li>Num cenário com defeito oculto, selecione o defeito em <span class="ui">Defeito diagnosticado</span>.</li>
+    <li>Clique em <span class="ui">Submeter</span>.</li>
+  </ol>
+  <div class="callout warn"><strong>Advertência</strong><p>Uma puxada só conta se a calibração não mudar durante ela. Não altere a ECU com uma puxada em curso. Não altere a ECU entre as puxadas válidas e a submissão.</p></div>
+  <h4>Motivos de puxada inválida</h4>
+  <div class="tbl"><table>
+    <thead><tr><th>Motivo</th><th>Causa</th></tr></thead>
+    <tbody>
+      <tr><td>Puxada não concluída / motor falhou</td><td>A puxada foi abortada ou o motor quebrou.</td></tr>
+      <tr><td>Tipo de puxada não permitido</td><td>O cenário não aceita este tipo.</td></tr>
+      <tr><td>Calibração alterada durante a puxada</td><td>Houve uma edição com a puxada em curso.</td></tr>
+      <tr><td>Calibração diferente da submetida</td><td>A calibração mudou depois da puxada.</td></tr>
+      <tr><td>Condições da sessão diferentes</td><td>Combustível ou ambiente diferentes do cenário.</td></tr>
+      <tr><td>RPM final baixa</td><td>A puxada parou antes de corte − 500 rpm.</td></tr>
+      <tr><td>Marcha errada</td><td>A marcha não é a do cenário.</td></tr>
+      <tr><td>Perfil de ECU não permitido</td><td>A ECU instalada não é a pedida.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3><span class="n">10.5</span>Dicas</h3>
+  <p>Clique em <span class="ui">Revelar próxima dica</span>. As dicas aparecem por ordem. Algumas ficam bloqueadas até uma reprovação, um evento ou um tempo de simulação. Revelar uma dica não altera a nota. O resultado mostra quantas dicas revelou.</p>
+
+  <h3><span class="n">10.6</span>Ler o resultado</h3>
+  <figure><a href="img/avaliacao.jpg" target="_blank" rel="noopener"><img src="img/avaliacao.jpg" alt="Resultado da submissão com pontuação, critérios e evidências" loading="lazy"></a>
+  <figcaption><b>Figura 10-6</b><span class="ui">Resultado da submissão</span>. Cada critério mostra o valor medido, o limiar, o estado, a pontuação e as evidências.</figcaption></figure>
+  <ul>
+    <li><span class="ui">✓ Aprovado</span> exige todos os critérios obrigatórios. A <span class="ui">Pontuação total</span> não decide a aprovação.</li>
+    <li>Pontuação de um critério: 100 se cumpre. Se não cumpre, a pontuação baixa conforme a distância ao limiar.</li>
+    <li>Clique em <span class="ui">Abrir puxada … na bancada</span>. A bancada abre o datalogger no instante da evidência.</li>
+    <li>Clique em <span class="ui">Ver log</span> para ler o log JSON.</li>
+    <li>Num cenário com defeito oculto, o resultado mostra o <span class="ui">Defeito oculto revelado</span>.</li>
+  </ul>
+  <h4>Repetir</h4>
+  <p>Se reprovar e tiver submissões, a tentativa volta a <span class="ui">Em curso</span>. Corrija e submeta de novo. O máximo é 5 submissões nos cenários incluídos. Para começar do zero, abra o briefing e clique em <span class="ui">Iniciar tentativa</span>. A tentativa aberta fica abandonada.</p>
+  <h4>Entregar ao instrutor</h4>
+  <ol class="steps">
+    <li>No resultado, clique em <span class="ui">Exportar pacote</span>.</li>
+    <li>Guarde o ficheiro <code>.simremap.json</code>.</li>
+    <li>Entregue o ficheiro ao instrutor. Não edite o ficheiro.</li>
+  </ol>
+  <div class="callout caution"><strong>Cuidado</strong><p>O pacote tem uma assinatura SHA-256. Uma alteração ao ficheiro faz o instrutor recusar o pacote.</p></div>
+</section>
+
+<!-- 11 -->
+<section class="chap" id="instrutor">
+  <header><span class="num">11</span><h2>Painel do instrutor</h2><span class="who">Instrutor</span></header>
+  <p>O painel cria desafios, importa os pacotes dos alunos e avalia a turma. Crie um perfil com o papel <span class="ui">Instrutor</span> (procedimento 10.1). A etiqueta <span class="ui">Painel do instrutor</span> só aparece com esse papel.</p>
+  <div class="callout note"><strong>Nota</strong><p>O papel não é um controle de segurança. Qualquer pessoa na estação pode criar um perfil de instrutor. Controle o acesso à estação.</p></div>
+  <h3><span class="n">11.1</span>Diferenças para o instrutor</h3>
+  <ul>
+    <li>O briefing mostra o defeito oculto: <span class="ui">(Instrutor: defeito)</span>. O aluno só vê que existe um defeito.</li>
+    <li>Só o instrutor cria desafios e importa pacotes de tentativas.</li>
+    <li>Só o instrutor executa o replay de uma tentativa importada.</li>
+  </ul>
+
+  <h3><span class="n">11.2</span>Criar um desafio</h3>
+  <figure><a href="img/instrutor-desafios.jpg" target="_blank" rel="noopener"><img src="img/instrutor-desafios.jpg" alt="Formulário de desafio do painel do instrutor" loading="lazy"></a>
+  <figcaption><b>Figura 11-1</b>Aba <span class="ui">Desafios</span>. O formulário abre com um exemplo de 400 whp.</figcaption></figure>
+  <ol class="steps">
+    <li>Clique em <span class="ui">Cenários</span> e depois em <span class="ui">Painel do instrutor</span>.</li>
+    <li>Na aba <span class="ui">Desafios</span>, escreva o <span class="ui">Identificador (slug)</span>: minúsculas, números e hífen, 3 a 64 caracteres.</li>
+    <li>Escreva o <span class="ui">Título</span> (3 a 80 caracteres).</li>
+    <li>Selecione o <span class="ui">Veículo</span> e o <span class="ui">Combustível</span>. O combustível tem de ser aceite pelo carro.</li>
+    <li>Escreva o <span class="ui">Briefing</span> (até 4000 caracteres). Descreva o cliente e o problema.</li>
+    <li>Escreva os <span class="ui">Objetivos</span>, um por linha (1 a 10).</li>
+    <li>Defina as <span class="ui">Puxadas válidas exigidas</span> (1 a 10).</li>
+    <li>Ajuste os critérios. Use <span class="ui">Adicionar critério</span> e <span class="ui">Remover</span>.</li>
+    <li>Se quiser, selecione um <span class="ui">Defeito oculto</span> e os parâmetros. Marque <span class="ui">Exigir diagnóstico do defeito</span>.</li>
+    <li>Se quiser, adicione até 5 dicas. Em <span class="ui">Após reprovações</span>, defina quando a dica desbloqueia.</li>
+    <li>Clique em <span class="ui">Criar desafio</span>. A mensagem é <span class="ui">✓ Desafio … criado.</span></li>
+  </ol>
+  <div class="callout caution"><strong>Cuidado</strong><p>Não use dois critérios do mesmo tipo. O sistema recusa o desafio. Cada tipo de critério aceita só um comparador.</p></div>
+  <h4>Tipos de critério</h4>
+  <div class="tbl"><table>
+    <thead><tr><th>Critério</th><th>Comparador</th><th>Unidade</th><th>Como mede</th></tr></thead>
+    <tbody>
+      <tr><td>Potência na roda mínima</td><td>≥</td><td>whp</td><td>Menor pico entre as puxadas de evidência</td></tr>
+      <tr><td>Ganho sobre a puxada base</td><td>≥</td><td>whp</td><td>Menor pico − puxada base</td></tr>
+      <tr><td>Torque mínimo</td><td>≥</td><td>N·m</td><td>Menor pico de torque</td></tr>
+      <tr><td>Retardo de knock máximo</td><td>≤</td><td>°</td><td>Maior atraso por knock</td></tr>
+      <tr><td>Margem de knock (sonda)</td><td>≥</td><td>° (0,5–6)</td><td>Uma puxada de teste com avanço extra tem de terminar sem knock</td></tr>
+      <tr><td>Integridade do motor</td><td>≥</td><td>%</td><td>Saúde mínima. Passa só sem falha.</td></tr>
+      <tr><td>EGT pré-turbina máxima</td><td>≤</td><td>°C</td><td>Maior EGT</td></tr>
+      <tr><td>EGT máxima no overrun</td><td>≤</td><td>°C</td><td>Maior EGT com overrun ativo</td></tr>
+      <tr><td>Lambda máximo / mínimo em plena carga</td><td>≤ / ≥</td><td>λ</td><td>Pedal ≥ 90 % e RPM acima da janela</td></tr>
+      <tr><td>Pops &amp; bangs no coastdown</td><td>≥</td><td>eventos</td><td>Menor número por puxada</td></tr>
+      <tr><td>Puxadas válidas</td><td>≥</td><td>puxadas</td><td>Número de puxadas válidas</td></tr>
+      <tr><td>Dispersão entre puxadas</td><td>≤</td><td>%</td><td>100 × (máx − mín) / média dos picos</td></tr>
+      <tr><td>Perfil de ECU final</td><td>sim/não</td><td>—</td><td>Todas as puxadas com um perfil permitido</td></tr>
+      <tr><td>Tabelas bloqueadas intactas</td><td>sim/não</td><td>—</td><td>As tabelas bloqueadas não mudaram</td></tr>
+      <tr><td>Diagnóstico do defeito</td><td>sim/não</td><td>—</td><td>O defeito declarado é igual ao defeito oculto</td></tr>
+    </tbody>
+  </table></div>
+  <h4>Defeitos ocultos</h4>
+  <div class="tbl"><table>
+    <thead><tr><th>Defeito</th><th>Parâmetro</th><th>Sintoma típico</th></tr></thead>
+    <tbody>
+      <tr><td>Bomba de combustível fraca</td><td>Vazão máxima (60–250 L/h)</td><td>Lambda empobrece em alta rotação. O duty dos bicos sobe sem enriquecer.</td></tr>
+      <tr><td>Injetor entupido</td><td>Cilindro e fator de vazão (0,5–0,95)</td><td>Um cilindro com EGT e lambda diferentes dos outros.</td></tr>
+      <tr><td>Sensor IAT descalibrado</td><td>Desvio (−30 a 30 °C)</td><td>Correções de temperatura erradas.</td></tr>
+      <tr><td>Wastegate travada</td><td>Posição travada (0–100 %)</td><td>A pressão não segue o alvo. O duty não muda nada.</td></tr>
+      <tr><td>Vazamento no circuito de pressão</td><td>Área (5–200 mm²)</td><td>Turbo mais rápido e wastegate mais fechada para a mesma pressão.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout note"><strong>Nota</strong><p>O formulário não altera a marcha (4ª), os tipos de puxada, o máximo de submissões (5) nem o perfil de ECU final. Estes valores ficam no padrão.</p></div>
+
+  <h3><span class="n">11.3</span>Distribuir um desafio</h3>
+  <ol class="steps">
+    <li>Em <span class="ui">Desafios desta estação</span>, clique em <span class="ui">Exportar desafio</span>.</li>
+    <li>Copie o ficheiro <code>.simremap.json</code> para cada estação de aluno.</li>
+    <li>Na estação do aluno, importe o desafio. Depois, o aluno faz a tentativa.</li>
+  </ol>
+  <div class="callout caution"><strong>Cuidado</strong><p>Importe o desafio na sua estação antes de importar as tentativas. Sem o desafio, o pacote é recusado com <span class="ui">importe primeiro o desafio</span>.</p></div>
+
+  <h3><span class="n">11.4</span>Importar os pacotes da turma</h3>
+  <figure><a href="img/instrutor-turma.jpg" target="_blank" rel="noopener"><img src="img/instrutor-turma.jpg" alt="Aba Turma com a área de importação de pacotes" loading="lazy"></a>
+  <figcaption><b>Figura 11-2</b>Aba <span class="ui">Turma</span>.</figcaption></figure>
+  <ol class="steps">
+    <li>Clique na aba <span class="ui">Turma</span>.</li>
+    <li>Arraste até 50 pacotes para a área. Também pode clicar em <span class="ui">escolha os ficheiros</span>.</li>
+    <li>Leia o estado de cada ficheiro: <span class="ui">Na fila</span>, <span class="ui">A enviar…</span>, <span class="ui">Importado</span>, <span class="ui">Já importado</span> ou <span class="ui">Recusado</span>.</li>
+    <li>Para um ficheiro recusado, leia o motivo (tabela abaixo).</li>
+  </ol>
+  <div class="tbl"><table>
+    <thead><tr><th>Motivo</th><th>Ação</th></tr></thead>
+    <tbody>
+      <tr><td>pacote adulterado ou corrompido</td><td>Peça ao aluno para exportar de novo.</td></tr>
+      <tr><td>cenário diferente do original</td><td>O aluno usou outra versão do desafio. Distribua a versão certa.</td></tr>
+      <tr><td>formato mais novo que esta versão</td><td>Atualize o SimuladorRemap desta estação.</td></tr>
+      <tr><td>ficheiro truncado ou não é JSON</td><td>Copie o ficheiro de novo.</td></tr>
+      <tr><td>conteúdo fora do formato / valores NaN ou Infinity</td><td>Peça um pacote novo.</td></tr>
+      <tr><td>acima de 64 MiB</td><td>Peça um pacote sem logs completos.</td></tr>
+      <tr><td>importe primeiro o desafio</td><td>Importe o desafio. Depois, importe a tentativa.</td></tr>
+    </tbody>
+  </table></div>
+  <p>A estação recalcula a nota com as evidências do pacote. Se a nota difere da do aluno, a linha mostra <span class="ui">avaliação recalculada</span>.</p>
+
+  <h3><span class="n">11.5</span>Avaliação da turma e CSV</h3>
+  <p>A tabela <span class="ui">Avaliação da turma</span> mostra a última submissão de cada tentativa importada.</p>
+  <ul>
+    <li>Filtre por <span class="ui">Cenário</span> e por <span class="ui">Resultado</span> (<span class="ui">Aprovados</span>, <span class="ui">Reprovados</span>).</li>
+    <li>Clique num cabeçalho para ordenar.</li>
+    <li><span class="ui">Avaliação divergente</span>: <span class="ui">⚠ Sim (recalculada)</span> indica uma nota diferente da do aluno. Investigue.</li>
+    <li><span class="ui">Replay</span>: executa de novo a tentativa para verificar. Estados: <span class="ui">verificado</span>, <span class="ui">replay divergente</span>, <span class="ui">versão incompatível</span>. O replay exige a mesma versão da aplicação.</li>
+  </ul>
+  <ol class="steps">
+    <li>Para uma folha de cálculo em português, clique em <span class="ui">Exportar CSV</span>. O separador é ";" e a vírgula é decimal.</li>
+    <li>Para outras ferramentas, clique em <span class="ui">Exportar CSV (RFC 4180)</span>. O separador é ",".</li>
+  </ol>
+  <p>Colunas: <code>nickname</code>, <code>station</code>, <code>scenario_id</code>, <code>attempt_id</code>, <code>submission</code>, <code>passed</code>, <code>total_score</code>, <code>evaluation_mismatch</code>, <code>replay_status</code>, <code>package_sha256</code>, <code>imported_at</code>. Com um filtro de cenário, o ficheiro tem também uma coluna <code>score_…</code> por critério.</p>
+
+  <h3><span class="n">11.6</span>Laudo forense para o instrutor</h3>
+  <p>O sistema gera o laudo em 3 níveis. A tela mostra só o nível iniciante.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Nível</th><th>Conteúdo</th></tr></thead>
+    <tbody>
+      <tr><td>Iniciante</td><td>Causa em linguagem simples. Até 3 ações. Exemplo: "Baixe o boost em 20 a 40 kPa."</td></tr>
+      <tr><td>Intermediário</td><td>Modo, mecanismo, avisos antecipados, cilindros com knock, tabelas afetadas e diferença de calibração.</td></tr>
+      <tr><td>Instrutor</td><td>Ciclo crítico, equações de autoignição (Douaud-Eyzat, Livengood-Wu), MAPO, cadeia causal e 4 perguntas para discussão em aula.</td></tr>
+    </tbody>
+  </table></div>
+  <p>Para obter o nível instrutor, peça ao responsável técnico a chamada <code>GET /api/v1/runs/{id}/forensic-report?audience=instructor</code>.</p>
+</section>
+
+<!-- 12 -->
+<section class="chap" id="carreira">
+  <header><span class="num">12</span><h2>Oficina (Carreira)</h2><span class="who">Aluno</span></header>
+  <p>Na carreira, a oficina aceita ordens de serviço de clientes. Cada ordem é um cenário. O resultado muda o saldo e a reputação. A carreira pertence ao perfil de jogador ativo.</p>
+  <figure><a href="img/carreira.jpg" target="_blank" rel="noopener"><img src="img/carreira.jpg" alt="Oficina (Carreira) com saldo, reputação, serviços em andamento e ordens de serviço" loading="lazy"></a>
+  <figcaption><b>Figura 12-1</b><span class="ui">Oficina (Carreira)</span>.</figcaption></figure>
+  <ol class="steps">
+    <li>Clique em <span class="ui">Oficina (Carreira)</span>. Sem perfil, clique em <span class="ui">Escolher perfil</span>.</li>
+    <li>Leia o <span class="ui">Saldo</span> e a <span class="ui">Reputação</span>. O início é R$ 5.000,00 e reputação 50.</li>
+    <li>Em <span class="ui">Ordens de serviço</span>, leia o <span class="ui">Pagamento</span>, o <span class="ui">Custo se quebrar</span> e a <span class="ui">Reputação mínima</span>.</li>
+    <li>Clique em <span class="ui">Aceitar</span>. A bancada abre.</li>
+    <li>Faça a tentativa como no capítulo 10.</li>
+    <li>Depois do resultado final, volte à oficina. Clique em <span class="ui">Liquidar</span>.</li>
+    <li>Leia o resultado no <span class="ui">Histórico</span>.</li>
+  </ol>
+  <div class="tbl"><table>
+    <thead><tr><th>Ordem</th><th>Cliente</th><th>Cenário</th><th class="num">Pagamento</th><th class="num">Custo se quebrar</th><th class="num">Reputação mín.</th></tr></thead>
+    <tbody>
+      <tr><td>Stage 1 diário seguro</td><td>Marina</td><td>Stage 1</td><td class="num">R$ 1.200</td><td class="num">R$ 9.000</td><td class="num">0</td></tr>
+      <tr><td>Diagnóstico: turbo que não enche</td><td>Dona Cida</td><td>Wastegate travada</td><td class="num">R$ 700</td><td class="num">R$ 9.000</td><td class="num">20</td></tr>
+      <tr><td>Diagnóstico: falta de combustível em alta</td><td>Rafael</td><td>Bomba fraca</td><td class="num">R$ 800</td><td class="num">R$ 9.000</td><td class="num">20</td></tr>
+      <tr><td>Diagnóstico: turbo trabalhando demais</td><td>Bruno</td><td>Vazamento de pressão</td><td class="num">R$ 900</td><td class="num">R$ 9.000</td><td class="num">30</td></tr>
+      <tr><td>Acerto de pista com Two-Step</td><td>Equipe Track Day</td><td>Stage 2 com pops</td><td class="num">R$ 1.800</td><td class="num">R$ 9.000</td><td class="num">40</td></tr>
+      <tr><td>Diagnóstico: um cilindro quente</td><td>Locadora Frota Sul</td><td>Bico entupido</td><td class="num">R$ 1.000</td><td class="num">R$ 9.000</td><td class="num">40</td></tr>
+      <tr><td>Swap standalone</td><td>Oficina Clássicos do Vale</td><td>Swap standalone</td><td class="num">R$ 4.500</td><td class="num">R$ 15.000</td><td class="num">60</td></tr>
+    </tbody>
+  </table></div>
+  <div class="tbl"><table>
+    <thead><tr><th>Resultado da liquidação</th><th>Saldo</th><th class="num">Reputação</th></tr></thead>
+    <tbody>
+      <tr><td>Pago (aprovado)</td><td>+ pagamento</td><td class="num">+5</td></tr>
+      <tr><td>Reprovado (submissões esgotadas ou tempo expirado)</td><td>0</td><td class="num">−5</td></tr>
+      <tr><td>Motor quebrado (qualquer falha ou restauração)</td><td>pagamento se aprovado − custo do motor</td><td class="num">−10</td></tr>
+      <tr><td>Abandonado</td><td>0</td><td class="num">−3</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout warn"><strong>Advertência</strong><p>Na carreira, uma só restauração do motor conta como motor quebrado. O saldo pode ficar negativo. Trabalhe com margem de segurança.</p></div>
+  <div class="callout note"><strong>Nota</strong><p>A oficina aceita só um serviço de cada vez. Liquide o serviço aberto antes de aceitar outro. As peças não têm preço nesta versão.</p></div>
+</section>
+
+<!-- 13 -->
+<section class="chap" id="problemas">
+  <header><span class="num">13</span><h2>Mensagens e soluções</h2><span class="who">Todos</span></header>
+  <div class="tbl"><table>
+    <thead><tr><th>Mensagem ou código</th><th>Causa</th><th>Solução</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Servidor indisponível</span></td><td>O servidor não responde.</td><td>Clique em <span class="ui">Tentar de novo</span>. Peça para ligar o servidor.</td></tr>
+      <tr><td><code>SIM_CAPACITY_EXCEEDED</code></td><td>Já existe uma sessão ativa.</td><td>Clique em <span class="ui">Retomar sessão ativa</span> ou <span class="ui">Encerrar sessão ativa</span>.</td></tr>
+      <tr><td><span class="ui">telemetria indisponível</span> / <span class="ui">reconectando</span></td><td>Ligação WebSocket perdida.</td><td>Aguarde. Clique em <span class="ui">Tentar de novo</span>.</td></tr>
+      <tr><td><span class="ui">Já existe uma puxada em curso</span></td><td>Uma puxada não terminou.</td><td>Aguarde ou clique em <span class="ui">Abortar</span>.</td></tr>
+      <tr><td><span class="ui">Motor destruído. Restaurar motor para continuar.</span></td><td>O motor quebrou.</td><td>Leia o laudo. Clique em <span class="ui">Restaurar motor</span>.</td></tr>
+      <tr><td><code>ECU_SETUP_INCOMPLETE</code></td><td>A configuração base da standalone tem pendências.</td><td>Complete a checklist no assistente.</td></tr>
+      <tr><td><span class="ui">A calibração de série não pode ser alterada</span></td><td>A calibração é só de leitura.</td><td>Clique em <span class="ui">Clonar e editar</span>.</td></tr>
+      <tr><td><span class="ui">não gravado (bloqueada durante a puxada)</span></td><td>Tabela não live-tunable editada durante a puxada.</td><td>Aguarde o fim da puxada. Edite de novo.</td></tr>
+      <tr><td><span class="ui">Estratégia não suportada neste perfil.</span></td><td>O perfil não tem esta estratégia.</td><td>Troque de ECU. Consulte a tabela 5.1.</td></tr>
+      <tr><td><span class="ui">Exige o pacote race deste perfil.</span></td><td>M1-Race com pacote base.</td><td>Troque para M1-Race com o pacote race.</td></tr>
+      <tr><td><span class="ui">Quick Tune precisa de λ medido…</span></td><td>Sem dados de lambda da bancada.</td><td>Execute uma puxada ou carga estacionária primeiro.</td></tr>
+      <tr><td><span class="ui">Área de transferência indisponível</span></td><td>O navegador bloqueou a área de transferência.</td><td>Clique na grade. Use <kbd>Ctrl</kbd>+<kbd>C</kbd> / <kbd>V</kbd>.</td></tr>
+      <tr><td><span class="ui">Conflito de versão</span></td><td>Outra janela gravou a calibração.</td><td>Clique em <span class="ui">Recarregar</span>.</td></tr>
+      <tr><td><span class="ui">As peças desta tentativa de cenário são fixas.</span></td><td>Tentativa de cenário ativa.</td><td>Use uma sessão livre para testar peças.</td></tr>
+      <tr><td><code>SUBMISSION_LIMIT_REACHED</code></td><td>Submissões esgotadas.</td><td>Inicie uma tentativa nova no briefing.</td></tr>
+      <tr><td><span class="ui">A sonda de knock falhou; submeta de novo</span></td><td>Falha da puxada de teste.</td><td>Submeta de novo. Esta submissão não conta.</td></tr>
+      <tr><td><code>INSTRUCTOR_ROLE_REQUIRED</code></td><td>Função de instrutor com perfil de aluno.</td><td>Troque para um perfil de instrutor.</td></tr>
+      <tr><td><span class="ui">Requer reputação N</span></td><td>Reputação baixa para esta ordem.</td><td>Faça ordens mais simples primeiro.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- 14 -->
+<section class="chap" id="limites">
+  <header><span class="num">14</span><h2>Limitações desta versão</h2><span class="who">Instrutor</span></header>
+  <p>A versão 0.1.0 tem estas limitações conhecidas. Planeie as aulas com elas.</p>
+  <ul>
+    <li>O diálogo <span class="ui">Trocar ECU</span> não volta para o OEM-Stage. Para voltar ao OEM, crie uma sessão nova.</li>
+    <li>M1-Race e HT-Elite não têm calibração de fábrica. Crie a sessão com OEM-Stage e use <span class="ui">Trocar ECU</span>. Só o Clássico 2.0 turbo aceita FT-Pro na criação da sessão.</li>
+    <li>Na M1-Race, confirme o pacote race depois do assistente. Se as funções de competição forem recusadas, repita a troca.</li>
+    <li>Não há formulário para o VVT, as flags de proteção do OEM, o modelo do bico da M1-Race nem o modo ms/VE da FT-Pro.</li>
+    <li>A tela do laudo forense mostra só o nível iniciante.</li>
+    <li>O formulário de desafio só desbloqueia dicas por reprovações. Não define marcha, tipos de puxada nem perfil final.</li>
+    <li>Alguns motivos de puxada inválida aparecem como código interno, sem tradução.</li>
+    <li>O resultado mostra o defeito oculto também ao aluno, depois da submissão.</li>
+    <li>As estatísticas por cenário existem na API, mas não aparecem na tela.</li>
+  </ul>
+</section>
+
+<!-- 15 -->
+<section class="chap" id="glossario">
+  <header><span class="num">15</span><h2>Glossário</h2><span class="who">Todos</span></header>
+  <dl class="terms">
+    <dt>AFR</dt><dd>Relação ar/combustível em massa. Depende do combustível.</dd>
+    <dt>ATDC / BTDC</dt><dd>Depois / antes do ponto morto superior. Avanço positivo é BTDC.</dd>
+    <dt>Boost</dt><dd>Pressão acima da atmosférica criada pelo turbo ou pelo compressor.</dd>
+    <dt>DFCO</dt><dd>Corte de combustível na desaceleração.</dd>
+    <dt>Duty</dt><dd>Percentagem de tempo em que uma válvula fica aberta.</dd>
+    <dt>ECT</dt><dd>Temperatura do líquido de arrefecimento do motor.</dd>
+    <dt>EGT</dt><dd>Temperatura dos gases de escape, antes da turbina.</dd>
+    <dt>Failsafe</dt><dd>Proteção automática da ECU quando um limite é ultrapassado.</dd>
+    <dt>IAT</dt><dd>Temperatura do ar de admissão.</dd>
+    <dt>Knock (detonação)</dt><dd>Combustão espontânea fora de tempo. Danifica pistões e bielas.</dd>
+    <dt>Lambda (λ)</dt><dd>Mistura real dividida pela estequiométrica. 1,0 é ideal. Abaixo de 1 é rica.</dd>
+    <dt>Live-tunable</dt><dd>Tabela que aceita edição durante a puxada.</dd>
+    <dt>MAP</dt><dd>Pressão absoluta no coletor de admissão (kPa).</dd>
+    <dt>MBT</dt><dd>Avanço de ignição de melhor torque.</dd>
+    <dt>OEM</dt><dd>ECU original de fábrica.</dd>
+    <dt>PMS</dt><dd>Ponto morto superior do pistão.</dd>
+    <dt>Standalone</dt><dd>ECU programável que substitui a original.</dd>
+    <dt>TPS</dt><dd>Posição da borboleta do acelerador.</dd>
+    <dt>VE</dt><dd>Eficiência volumétrica. Percentagem de enchimento do cilindro.</dd>
+    <dt>VVT</dt><dd>Comando de válvulas variável.</dd>
+    <dt>Wastegate</dt><dd>Válvula que desvia o escape da turbina e limita a pressão.</dd>
+    <dt>Wideband</dt><dd>Sonda lambda de banda larga. Mede a mistura em toda a faixa.</dd>
+    <dt>whp</dt><dd>Potência medida na roda, em cavalos.</dd>
+  </dl>
+  <p class="endnote">Manual do SimuladorRemap · v0.1.0 · Edição 1 · Outubro de 2026 · Capturas feitas na aplicação em funcionamento.</p>
+</section>
+</main>
+</div>
