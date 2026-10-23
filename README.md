@@ -14,6 +14,7 @@ O SimuladorRemap junta as duas coisas:
 - **ECU editável** com tabelas 2D/3D de torque, ignição, pressão alvo, lambda, malha fechada, overrun e proteções.
 - **Dinamômetro virtual** com puxada base, varredura, carga estacionária e comparação antes × depois.
 - **Falhas mecânicas** (knock, pré-ignição, EGT excessiva, biela, pistão, turbina) com laudo forense da causa.
+- **Tunagem assistida por IA (LAYA.ai)**: calibração autônoma não-autorregressiva com 3 setups (`safe`, `balanced`, `race`), treinada com Hone (MLX) e dados sintéticos do simulador.
 - **Cenários de treino** avaliados automaticamente, incluindo diagnóstico de defeitos ocultos.
 - **Oficina (carreira)** com perfis de jogador, peças e combustíveis.
 
@@ -54,6 +55,18 @@ Filtre por tipo, veículo e combustível. Cenários com defeito oculto treinam o
 
 ![Lista de cenários de treino](docs/images/cenarios.png)
 
+### Tunagem com IA (LAYA.ai)
+
+Ajuste autônomo e seguro de tabelas de Eficiência Volumétrica (VE) e Ponto de Ignição através do modelo de decisão não-autorregressivo LAYA.ai (~35 ms de inferência por passada):
+
+- **3 Perfis de Tunagem**:
+  - `safe`: prioriza confiabilidade mecânica, menor EGT e margem ampla contra detonação (knock).
+  - `balanced`: busca a relação ideal entre ganho de torque e segurança em regime contínuo.
+  - `race`: extrai o limite seguro de avanço e pressão, ideal para voltas rápidas e bancadas de dyno.
+- **Treinamento e Dataset**: treinado via **Hone (MLX)** em Apple Silicon utilizando dados sintéticos gerados pelo próprio simulador e auditados com **Sintetica** (`@sandeco/itsfine`).
+- **Clusterização de Células**: agrupamento dinâmico de zonas operacionais que reduz a dimensionalidade e elimina sobrecarga de CPU/memória no container.
+- **Troca de ECU (ECU Swap)**: suporte completo a ECUs OEM e Standalone (FT-Pro), com validação do assistente de mapa base antes de liberar a calibração com IA.
+
 ## Arquitetura
 
 Monólito modular servido por um único processo.
@@ -63,6 +76,7 @@ frontend/  React 18 + Vite + TypeScript + Tailwind 4 (SPA; uPlot, Three.js, zod)
 backend/   FastAPI + SQLModel/Alembic + NumPy (Python 3.12)
   src/simremap/
     api/        REST /api/v1 + WebSocket de telemetria; serve o SPA
+    ai/         inferência LAYA.ai, clusterização de células e presets de tunagem
     physics/    modelo termodinâmico do motor
     ecu/        núcleo da ECU e estratégias
     profiles/   perfis de ECU (OEM, standalone)
@@ -164,6 +178,7 @@ Todas as variáveis usam o prefixo `SIMREMAP_`. As principais:
 |---|---|---|
 | `SIMREMAP_ENV` | `prod` | `dev`, `test`, `staging` ou `prod` |
 | `SIMREMAP_DATA_DIR` | `/data` | Diretório de dados (SQLite, logs de puxada) |
+| `SIMREMAP_LOG_FILE` | `/data/logs/simremap.log` | Arquivo para persistência de logs estruturados (JSON) |
 | `SIMREMAP_STATIC_DIR` | `/app/static` | Build do frontend servido pelo backend |
 | `SIMREMAP_DATABASE_URL` / `DATABASE_URL` | SQLite em `DATA_DIR` | URL de PostgreSQL, se usado |
 | `SIMREMAP_REDIS_URL` | — | Cache Redis opcional |
@@ -199,6 +214,7 @@ make api-types
 ## API
 
 - REST em `/api/v1` (ex.: `/api/v1/health`, `/api/v1/version`, `/api/v1/sessions`).
+- Assistente de IA: `POST /api/v1/tuning/ai-tune` (modos `safe`, `balanced`, `race`).
 - Erros no formato `application/problem+json`.
 - Contrato OpenAPI exportado em [`frontend/openapi.json`](frontend/openapi.json).
 
@@ -210,3 +226,4 @@ make api-types
 | [`_reversa_sdd/sdd/`](_reversa_sdd/sdd/) | Especificações por módulo |
 | [`_reversa_forward/`](_reversa_forward/) | Histórico das features implementadas |
 | [`_reversa_docs/`](_reversa_docs/) | Mini-site visual (arquitetura, métricas, glossário) |
+| [`apresentacao/decks/simulador-remap-overview/index.html`](apresentacao/decks/simulador-remap-overview/index.html) | Apresentação animada Mira (como o sistema funciona) |

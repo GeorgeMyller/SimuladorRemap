@@ -59,6 +59,8 @@ _reversa_docs/.backup-*/
 # --- Temporários ---
 temp/
 *.log
+data/logs/*
+!data/logs/.gitkeep
 
 # --- Model weights & Training Runs (evitar exceder limite de 100MB do GitHub) ---
 *.safetensors

@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>SimuladorRemap — Como o Sistema Funciona</title>
+    <script src="assets/vendor/tailwind.js"></script>
+    <link href="assets/vendor/aos.css" rel="stylesheet">
+    <script src="assets/vendor/aos.js"></script>
+    <script src="assets/vendor/lucide.js"></script>
+    <script src="assets/vendor/d3.v7.min.js"></script>
+    <link href="assets/vendor/inter.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* @MIRA:THEME:START */
+/* MIRA THEME: mira-dark (padrão)
+   Identidade clássica do canal: fundo preto, laranja vibrante,
+   glassmorphism no estilo clássico do canal. */
+:root {
+    --mira-primary: #FF904D;
+    --mira-crop: #35D07F;
+    --mira-bg: #000000;
+    --mira-text: #ffffff;
+    --mira-text-soft: rgba(255, 255, 255, 0.70);
+    --mira-text-softer: rgba(255, 255, 255, 0.50);
+    --mira-card-bg: rgba(255, 255, 255, 0.05);
+    --mira-card-border: rgba(255, 255, 255, 0.10);
+    --mira-glow-soft: rgba(255, 144, 77, 0.15);
+    --mira-glow-strong: rgba(255, 144, 77, 0.25);
+    --mira-icon-bg: rgba(255, 144, 77, 0.15);
+    --mira-icon-border: rgba(255, 144, 77, 0.30);
+    --mira-pill-bg: rgba(255, 255, 255, 0.04);
+    --mira-pill-border: rgba(255, 255, 255, 0.08);
+    --mira-stage-glow: rgba(255, 144, 77, 0.06);
+    --mira-accent-2: #FFC766;
+    --mira-cyan: #00E5FF;
+}
+
+body {
+    background: var(--mira-bg);
+    min-height: 100vh;
+    color: var(--mira-text);
+    font-family: 'Inter', sans-serif;
+}
+
+.primary-color { color: var(--mira-primary); }
+.primary-bg { background: var(--mira-primary); }
+.cyan-color { color: var(--mira-cyan); }
+.crop-color { color: var(--mira-crop); }
+
+.glass-card {
+    background: var(--mira-card-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--mira-card-border);
+    box-shadow: 0 10px 30px var(--mira-glow-soft);
+    transition: all 0.3s ease;
+    border-radius: 0.75rem;
+}
+
+.glass-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px var(--mira-glow-strong);
+}
+
+.icon-hero {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    background: var(--mira-icon-bg);
+    border: 1px solid var(--mira-icon-border);
+}
+
+.attribute-pill {
+    background: var(--mira-pill-bg);
+    border: 1px solid var(--mira-pill-border);
+    transition: all 0.25s ease;
+    border-radius: 9999px;
+}
+
+.attribute-pill:hover {
+    background: var(--mira-icon-bg);
+    border-color: var(--mira-icon-border);
+    transform: translateY(-2px);
+}
+
+.anim-stage {
+    width: 100%;
+    height: clamp(380px, 55vh, 560px);
+    background: radial-gradient(circle at 50% 50%, var(--mira-stage-glow), transparent 70%);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+}
+
+.anim-stage svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.text-soft { color: var(--mira-text-soft); }
+.text-softer { color: var(--mira-text-softer); }
+
+@keyframes mira-pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.06); opacity: 0.85; }
+}
+
+@keyframes mira-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+/* @MIRA:THEME:END */
+
+/* === CONTROLES DE SLIDE === */
+html { scroll-behavior: smooth; }
+html { scrollbar-width: thin; scrollbar-color: #2e2e2e #0d0d0d; }
+::-webkit-scrollbar { width: 6px; height: 6px; background: #0d0d0d; }
+::-webkit-scrollbar-thumb { background: #2e2e2e; border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: #4a4a4a; }
+
+#mira-progress {
+    position: fixed; top: 0; left: 0; height: 3px; width: 0%;
+    background: linear-gradient(90deg, var(--mira-primary), var(--mira-accent-2), var(--mira-primary));
+    background-size: 200% 100%;
+    animation: mira-shimmer 2s linear infinite;
+    z-index: 9999; transition: width 0.1s linear;
+    box-shadow: 0 0 10px var(--mira-glow-strong);
+}
+
+@keyframes mira-shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+}
+
+#mira-next {
+    position: fixed; bottom: 32px; right: 32px;
+    width: 48px; height: 48px; border-radius: 50%;
+    background: var(--mira-primary); color: #000;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; border: none;
+    opacity: 0; transform: translateY(20px);
+    transition: all 0.3s ease; z-index: 9998;
+    box-shadow: 0 4px 20px var(--mira-glow-strong);
+}
+#mira-next.visible { opacity: 1; transform: translateY(0); }
+#mira-next:hover { transform: translateY(-3px) scale(1.08); }
+
+.code-block {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    background: rgba(0, 0, 0, 0.65);
+    border: 1px solid var(--mira-card-border);
+    border-radius: 12px;
+}
+
+.code-cursor {
+    display: inline-block;
+    width: 8px;
+    height: 16px;
+    background: var(--mira-primary);
+    vertical-align: middle;
+    animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+/* @MIRA:RESPONSIVE:START */
+html, body { max-width: 100%; overflow-x: hidden; }
+img, svg, video, canvas, iframe, table, pre { max-width: 100%; }
+
+@media (max-width: 640px) {
+  .text-6xl { font-size: clamp(2rem, 9vw, 3rem) !important; line-height: 1.1 !important; }
+  .text-5xl { font-size: clamp(1.75rem, 8vw, 2.5rem) !important; line-height: 1.12 !important; }
+  .text-4xl { font-size: clamp(1.5rem, 7vw, 2rem) !important; line-height: 1.15 !important; }
+  h1, h2, h3 { overflow-wrap: break-word; }
+  .p-10, .p-8 { padding: 1.1rem !important; }
+  .min-h-screen {
+    min-height: 100dvh !important;
+    height: auto !important;
+    padding-top: 2.5rem !important;
+    padding-bottom: 2.5rem !important;
+  }
+  .grid-cols-2, .grid-cols-3, .grid-cols-4 { grid-template-columns: 1fr !important; }
+  .anim-stage { height: auto !important; aspect-ratio: 16 / 9; }
+}
+/* @MIRA:RESPONSIVE:END */
+</style>
+</head>
+
+<body>
+    <!-- Barra de progresso + botão de navegação -->
+    <div id="mira-progress"></div>
+    <button id="mira-next" aria-label="Próximo slide">
+        <i data-lucide="chevron-down" class="w-6 h-6" id="mira-next-icon"></i>
+    </button>
+
+    <!-- ============ SLIDE 1: CAPA ============ -->
+    <section class="min-h-screen flex flex-col items-center justify-center relative overflow-hidden px-6" id="slide-1">
+        <div id="capa-stage" class="absolute inset-0 pointer-events-none"></div>
+        <div class="relative z-10 text-center max-w-4xl" data-aos="fade-up">
+            <div class="inline-flex items-center gap-2 attribute-pill px-5 py-2 text-xs tracking-widest uppercase text-soft mb-8">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                Apresentação Técnica Interativa · SimuladorRemap
+            </div>
+            <h1 class="text-6xl md:text-7xl font-black leading-tight mb-6">
+                Como o Simulador<br>
+                <span class="primary-color">de Remap Funciona</span>
+            </h1>
+            <p class="text-xl text-soft max-w-2xl mx-auto mb-10">
+                O laboratório virtual de calibração de ECU: física 0D/1D em 1000 Hz, dinamômetro em tempo real e tunagem autônoma por IA com LAYA.ai.
+            </p>
+            <div class="flex flex-wrap items-center justify-center gap-4 text-softer text-sm">
+                <span class="attribute-pill px-4 py-2"><i data-lucide="cpu" class="w-4 h-4 inline mr-2 primary-color"></i>Física a 1000 Hz</span>
+                <span class="attribute-pill px-4 py-2"><i data-lucide="activity" class="w-4 h-4 inline mr-2 cyan-color"></i>Telemetria 50 FPS</span>
+                <span class="attribute-pill px-4 py-2"><i data-lucide="sparkles" class="w-4 h-4 inline mr-2 crop-color"></i>LAYA.ai ModernBERT</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ SLIDE 2: O PROBLEMA & A METÁFORA ============ -->
+    <section class="min-h-screen flex flex-col items-center justify-center px-6 py-16" id="slide-2">
+        <div class="text-center mb-12 max-w-3xl" data-aos="fade-up">
+            <p class="text-xs uppercase tracking-widest primary-color font-bold mb-2">A Metáfora Central</p>
+            <h2 class="text-5xl font-black">O Laboratório Seguro</h2>
+            <p class="text-soft text-lg mt-3">
+                No mundo real, calibrar uma ECU no limite arrisca quebra catastrófica: pistão furado, biela torta ou detonação violenta. O Simulador é a bancada digital à prova de falhas.
+            </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl">
+            <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="icon-hero mb-4"><i data-lucide="gauge" class="w-6 h-6 primary-color"></i></div>
+                <h3 class="text-xl font-bold mb-2">Física Termodinâmica</h3>
+                <p class="text-soft text-sm leading-relaxed">
+                    Modelo de combustão de ciclo Otto 0D/1D. Simula pressão no cilindro, eficiência volumétrica, atraso de ignição, lambda e EGT a 1000 vezes por segundo.
+                </p>
+            </div>
+            <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="icon-hero mb-4"><i data-lucide="sliders" class="w-6 h-6 primary-color"></i></div>
+                <h3 class="text-xl font-bold mb-2">ECU Editável 2D/3D</h3>
+                <p class="text-soft text-sm leading-relaxed">
+                    Mapas completos de avanço de ignição, injeção de combustível, pressão alvo de turbo e enriquecimento em malha fechada, com superfícies 3D interativas.
+                </p>
+            </div>
+            <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="icon-hero mb-4"><i data-lucide="shield-alert" class="w-6 h-6 primary-color"></i></div>
+                <h3 class="text-xl font-bold mb-2">Laudo Pericial & Dano</h3>
+                <p class="text-soft text-sm leading-relaxed">
+                    Se você avançar a ignição além da conta, o motor sofre knock. A bancada gera um laudo forense detalhando o milissegundo e a causa exata da quebra.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ SLIDE 3: ARQUITETURA ORBITAL ============ -->
+    <section class="min-h-screen flex flex-col items-center justify-center px-6 py-16" id="slide-3">
+        <div class="text-center mb-10" data-aos="fade-up">
+            <p class="text-xs uppercase tracking-widest primary-color font-bold mb-2">Arquitetura Monolítica Modular</p>
+            <h2 class="text-5xl font-black">O Hub de Simulação</h2>
+            <p class="text-soft text-lg mt-3">O núcleo físico termodinâmico processa o motor enquanto os subsistemas gravitam em sincronia.</p>
+        </div>
+        <div class="glass-card w-full max-w-5xl p-6 relative" data-aos="fade-up">
+            <div id="orbital-stage" class="anim-stage"></div>
+        </div>
+    </section>
+
+    <!-- ============ SLIDE 4: DINAMÔMETRO EM AÇÃO ============ -->
+    <section class="min-h-screen flex flex-col items-center justify-center px-6 py-16" id="slide-4">
+        <div class="text-center mb-8" data-aos="fade-up">
+            <p class="text-xs uppercase tracking-widest primary-color font-bold mb-2">Bancada Virtual</p>
+            <h2 class="text-5xl font-black">Puxada no Dinamômetro</h2>
+            <p class="text-soft text-lg mt-3">Curvas dinâmicas de torque e potência comparando a calibração de fábrica com o mapa calibrado.</p>
+        </div>
+        <div class="glass-card w-full max-w-5xl p-6 relative" data-aos="fade-up">
+            <div class="flex items-center justify-between border-b border-white/10 pb-4 mb-4">
+                <div class="flex items-center gap-4 text-sm font-semibold">
+                    <span class="flex items-center gap-2 text-zinc-400">
+                        <span class="w-3 h-3 rounded-full bg-zinc-500"></span> OEM Base: 250 cv / 35.0 kgfm
+                    </span>
+                    <span class="flex items-center gap-2 primary-color">
+                        <span class="w-3 h-3 rounded-full bg-orange-500"></span> Remap LAYA: 298 cv / 41.5 kgfm (+18.5%)
+                    </span>
+                </div>
+                <div class="text-xs text-soft font-mono">Hatch 2.0 Turbo GDI · 1000–6500 RPM</div>
+            </div>
+            <div id="dyno-stage" class="anim-stage"></div>
+        </div>
+    </section>
+
+    <!-- ============ SLIDE 5: TUNAGEM POR IA (LAYA.AI) ============ -->
+    <section class="min-h-screen flex flex-col items-center justify-center px-6 py-16" id="slide-5">
+        <div class="text-center mb-10 max-w-3xl" data-aos="fade-up">
+            <p class="text-xs uppercase tracking-widest crop-color font-bold mb-2">Inovação Recente</p>
+            <h2 class="text-5xl font-black">Tunagem Assistida por IA</h2>
+            <p class="text-soft text-lg mt-3">
+                O LAYA.ai é um modelo de decisão não-autorregressivo (421M) que atua como copiloto do calibrador, ajustando as matrizes em ~35 ms sem risco de alucinação.
+            </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl">
+            <div class="glass-card p-6 border-emerald-500/30" data-aos="zoom-in" data-aos-delay="100">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-xs uppercase tracking-wider font-bold crop-color">Modo Safe</span>
+                    <i data-lucide="shield-check" class="w-5 h-5 crop-color"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Máxima Durabilidade</h3>
+                <p class="text-soft text-sm leading-relaxed mb-4">
+                    Prioriza margem térmica ampla, enriquecimento de mistura e recuo de ponto nas zonas de alta carga. Zero risco de detonação ou superaquecimento de escape.
+                </p>
+                <div class="text-xs text-soft font-mono bg-white/5 p-2 rounded">Ganho: +8% a 10% Torque</div>
+            </div>
+            <div class="glass-card p-6 border-amber-500/30" data-aos="zoom-in" data-aos-delay="200">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-xs uppercase tracking-wider font-bold text-amber-400">Modo Balanced</span>
+                    <i data-lucide="scale" class="w-5 h-5 text-amber-400"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Equilíbrio Ideal</h3>
+                <p class="text-soft text-sm leading-relaxed mb-4">
+                    Ajusta o ponto de ignição no limiar ótimo de torque (MBT) mantendo margem segura de 2° contra knock. Excelente para uso misto de rua e pista.
+                </p>
+                <div class="text-xs text-soft font-mono bg-white/5 p-2 rounded">Ganho: +14% a 16% Torque</div>
+            </div>
+            <div class="glass-card p-6 border-orange-500/30" data-aos="zoom-in" data-aos-delay="300">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-xs uppercase tracking-wider font-bold primary-color">Modo Race</span>
+                    <i data-lucide="flame" class="w-5 h-5 primary-color"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Performance Extrema</h3>
+                <p class="text-soft text-sm leading-relaxed mb-4">
+                    Explora o limite do turbo compressor e avanço agressivo de ignição. Exige combustível de alta octanagem e monitoramento ativo do knock sensor.
+                </p>
+                <div class="text-xs text-soft font-mono bg-white/5 p-2 rounded">Ganho: +18% a 22% Torque</div>
+            </div>
+        </div>
+        <div class="mt-8 text-center" data-aos="fade-up">
+            <p class="text-softer text-sm">
+                Treinado via <strong class="text-white">Hone (MLX)</strong> com dados sintéticos do próprio simulador e auditado por <strong class="text-white">Sintetica</strong> (<code class="text-orange-300">@sandeco/itsfine</code>).
+            </p>
+        </div>
+    </section>
+
+    <!-- ============ SLIDE 6: O CORAÇÃO DO CÓDIGO ============ -->
+    <section class="min-h-screen flex flex-col items-center justify-center px-6 py-16" id="slide-6">
+        <div class="text-center mb-8" data-aos="fade-up">
+            <div class="flex items-center justify-center gap-3">
+                <div class="icon-hero"><i data-lucide="code-2" class="primary-color w-6 h-6"></i></div>
+                <h2 class="text-5xl font-black">O Coração da Inferência</h2>
+            </div>
+            <p class="text-soft text-lg mt-3">Clusterização de células operacionais e inferência com limitação estrita de concorrência.</p>
+        </div>
+        <div class="glass-card w-full max-w-4xl p-6" data-aos="fade-up">
+            <div class="flex items-center justify-between mb-4 border-b border-white/10 pb-3">
+                <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 rounded-full bg-red-400/80"></span>
+                    <span class="w-3 h-3 rounded-full bg-yellow-400/80"></span>
+                    <span class="w-3 h-3 rounded-full bg-green-400/80"></span>
+                    <span class="text-softer text-xs ml-3 font-mono">backend/src/simremap/ai/service.py</span>
+                </div>
+                <span class="text-xs text-emerald-400 font-mono">torch.set_num_threads(2)</span>
+            </div>
+            <pre class="code-block p-6 overflow-x-auto"><code id="typed-code"></code><span class="code-cursor"></span></pre>
+        </div>
+        <p class="text-softer mt-6 text-center max-w-2xl text-sm" data-aos="fade-up">
+            O agrupamento reduz de 373 para ~40 os estados únicos avaliados pelo modelo, eliminando travamentos de CPU e quedas por esgotamento de memória.
+        </p>
+    </section>
+
+    <!-- ============ SLIDE 7: BENCHMARKS & QUALIDADE ============ -->
+    <section class="min-h-screen flex flex-col items-center justify-center px-6 py-16" id="slide-7">
+        <div class="text-center mb-12" data-aos="fade-up">
+            <p class="text-xs uppercase tracking-widest primary-color font-bold mb-2">Rigor e Engenharia</p>
+            <h2 class="text-5xl font-black">Métricas do Sistema</h2>
+            <p class="text-soft text-lg mt-3">Testes automatizados, simulação determinística e conformidade estrita de tipos.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 w-full max-w-5xl">
+            <div class="glass-card p-6 text-center relative overflow-hidden" data-aos="zoom-in" data-aos-delay="100">
+                <svg class="metric-ring absolute -top-10 -right-10 w-28 h-28 opacity-25" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="42" fill="none" stroke="var(--mira-primary)" stroke-width="2" stroke-dasharray="60 200" stroke-linecap="round"></circle>
+                </svg>
+                <p class="metric-value text-5xl font-black primary-color" data-target="1000" data-suffix="Hz">0</p>
+                <p class="text-soft text-sm mt-3">Laço Físico do Motor</p>
+            </div>
+            <div class="glass-card p-6 text-center relative overflow-hidden" data-aos="zoom-in" data-aos-delay="200">
+                <svg class="metric-ring absolute -top-10 -right-10 w-28 h-28 opacity-25" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="42" fill="none" stroke="var(--mira-cyan)" stroke-width="2" stroke-dasharray="60 200" stroke-linecap="round"></circle>
+                </svg>
+                <p class="metric-value text-5xl font-black cyan-color" data-target="35" data-suffix="ms">0</p>
+                <p class="text-soft text-sm mt-3">Inferência do LAYA.ai</p>
+            </div>
+            <div class="glass-card p-6 text-center relative overflow-hidden" data-aos="zoom-in" data-aos-delay="300">
+                <svg class="metric-ring absolute -top-10 -right-10 w-28 h-28 opacity-25" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="42" fill="none" stroke="var(--mira-crop)" stroke-width="2" stroke-dasharray="60 200" stroke-linecap="round"></circle>
+                </svg>
+                <p class="metric-value text-5xl font-black crop-color" data-target="378" data-suffix=" testes">0</p>
+                <p class="text-soft text-sm mt-3">PyTest Suite 100% Verde</p>
+            </div>
+            <div class="glass-card p-6 text-center relative overflow-hidden" data-aos="zoom-in" data-aos-delay="400">
+                <svg class="metric-ring absolute -top-10 -right-10 w-28 h-28 opacity-25" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="42" fill="none" stroke="#FFC766" stroke-width="2" stroke-dasharray="60 200" stroke-linecap="round"></circle>
+                </svg>
+                <p class="metric-value text-5xl font-black text-amber-300" data-target="234" data-suffix=" arqs">0</p>
+                <p class="text-soft text-sm mt-3">MyPy Strict Zero Erros</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ SLIDE 8: ENCERRAMENTO ============ -->
+    <section class="min-h-screen flex flex-col items-center justify-center relative overflow-hidden px-6" id="slide-8">
+        <div class="cta-breathe absolute inset-0 pointer-events-none"></div>
+        <div class="relative z-10 text-center max-w-3xl" data-aos="zoom-in">
+            <div class="icon-hero mx-auto mb-6" style="width:68px;height:68px;border-radius:20px;">
+                <i data-lucide="play" class="primary-color w-8 h-8 ml-1"></i>
+            </div>
+            <h2 class="text-5xl font-black mb-4">Execute o Simulador Agora</h2>
+            <p class="text-lg text-soft mb-8">
+                Pronto para uso em container Docker isolado, com interface web reativa e observabilidade completa via logs estruturados.
+            </p>
+            <div class="bg-black/40 border border-white/10 rounded-xl p-4 max-w-md mx-auto mb-8 font-mono text-xs text-left">
+                <div class="text-zinc-500 mb-1"># Inicialização rápida</div>
+                <div class="text-orange-400">make up</div>
+                <div class="text-zinc-500 mt-2 mb-1"># Acompanhe os logs de tunagem e telemetria</div>
+                <div class="text-emerald-400">tail -f data/logs/simremap.log</div>
+            </div>
+            <div class="flex flex-wrap items-center justify-center gap-4">
+                <a href="http://localhost:8000" target="_blank" class="attribute-pill px-6 py-3 text-sm font-semibold primary-color hover:bg-orange-500/20">
+                    <i data-lucide="external-link" class="inline w-4 h-4 mr-2"></i>Abrir Dinamômetro (Porta 8000)
+                </a>
+            </div>
+            <p class="text-softer mt-10 text-xs tracking-widest uppercase">SimuladorRemap · Criado com Mira Animator</p>
+        </div>
+        <style>
+            .cta-breathe {
+                background: radial-gradient(ellipse at 50% 60%, var(--mira-glow-strong), transparent 65%);
+                animation: mira-pulse 4s ease-in-out infinite;
+            }
+        </style>
+    </section>
+
+    <script>
+        AOS.init({ duration: 800, once: true });
+        lucide.createIcons();
+        const PRIMARY = '#FF904D';
+        const CYAN = '#00E5FF';
+        const CROP = '#35D07F';
+
+        // 1. CAPA: Partículas de Fluxo Térmico e Rotação
+        (function () {
+            const container = document.getElementById('capa-stage');
+            if (!container) return;
+            const W = window.innerWidth, H = window.innerHeight;
+            const svg = d3.select('#capa-stage').append('svg').attr('viewBox', `0 0 ${W} ${H}`);
+            const cx = W / 2, cy = H / 2;
+            const particles = d3.range(32).map(() => ({
+                r: 160 + Math.random() * Math.min(W, H) * 0.35,
+                angle: Math.random() * Math.PI * 2,
+                speed: 0.002 + Math.random() * 0.004,
+                size: 1.5 + Math.random() * 3,
+                color: Math.random() > 0.4 ? PRIMARY : CYAN
+            }));
+            const dots = svg.selectAll('circle').data(particles).join('circle')
+                .attr('r', d => d.size).attr('fill', d => d.color).attr('opacity', 0.4);
+            d3.timer(() => {
+                dots.attr('cx', d => { d.angle += d.speed; return cx + Math.cos(d.angle) * d.r; })
+                    .attr('cy', d => cy + Math.sin(d.angle) * d.r * 0.55);
+            });
+        })();
+
+        // 2. ARQUITETURA ORBITAL
+        (function () {
+            const el = document.getElementById('orbital-stage');
+            if (!el) return;
+            const CENTRO = 'FÍSICA 0D/1D\n(1000 Hz)';
+            const SATELITES = [
+                { label: 'ECU 2D/3D', color: PRIMARY },
+                { label: 'LAYA.ai (IA)', color: CROP },
+                { label: 'Telemetria 50FPS', color: CYAN },
+                { label: 'Detecção Knock', color: '#FF5252' },
+                { label: 'Oficina / Swaps', color: '#FFC766' }
+            ];
+            const W = 960, H = 500;
+            const svg = d3.select('#orbital-stage').append('svg').attr('viewBox', `0 0 ${W} ${H}`);
+            const cx = W / 2, cy = H / 2, R = 185;
+            
+            // Órbitas elípticas
+            svg.append('ellipse').attr('cx', cx).attr('cy', cy).attr('rx', R).attr('ry', R * 0.58)
+                .attr('fill', 'none').attr('stroke', 'rgba(255,255,255,0.12)').attr('stroke-dasharray', '5 6');
+            svg.append('ellipse').attr('cx', cx).attr('cy', cy).attr('rx', R * 0.65).attr('ry', R * 0.38)
+                .attr('fill', 'none').attr('stroke', 'rgba(255,144,77,0.15)').attr('stroke-dasharray', '3 4');
+
+            // Núcleo
+            const core = svg.append('g').attr('transform', `translate(${cx},${cy})`);
+            core.append('circle').attr('r', 65).attr('fill', 'rgba(255,255,255,0.04)')
+                .attr('stroke', PRIMARY).attr('stroke-width', 2.5);
+            
+            const lines = CENTRO.split('\n');
+            core.append('text').text(lines[0]).attr('text-anchor', 'middle').attr('dy', -4)
+                .attr('fill', PRIMARY).attr('font-size', 13).attr('font-weight', 800);
+            core.append('text').text(lines[1]).attr('text-anchor', 'middle').attr('dy', 16)
+                .attr('fill', 'rgba(255,255,255,0.7)').attr('font-size', 11).attr('font-weight', 600);
+
+            // Pulso do núcleo
+            const pulse = core.append('circle').attr('r', 65).attr('fill', 'none').attr('stroke', PRIMARY).attr('opacity', 0);
+            d3.interval(() => {
+                pulse.attr('r', 65).attr('opacity', 0.7)
+                    .transition().duration(1600).ease(d3.easeCubicOut).attr('r', 115).attr('opacity', 0);
+            }, 1800);
+
+            // Satélites orbitando
+            const sats = svg.selectAll('g.sat')
+                .data(SATELITES.map((s, i) => ({ ...s, angle: (i / SATELITES.length) * Math.PI * 2 })))
+                .join('g').attr('class', 'sat');
+
+            sats.append('circle').attr('r', 32).attr('fill', 'rgba(10,10,12,0.85)')
+                .attr('stroke', d => d.color).attr('stroke-width', 1.8);
+            sats.append('text').text(d => d.label).attr('text-anchor', 'middle').attr('dy', 4)
+                .attr('fill', 'white').attr('font-size', 10).attr('font-weight', 700);
+
+            d3.timer(() => {
+                sats.attr('transform', d => {
+                    d.angle += 0.0035;
+                    const x = cx + Math.cos(d.angle) * R;
+                    const y = cy + Math.sin(d.angle) * R * 0.58;
+                    return `translate(${x},${y})`;
+                });
+            });
+        })();
+
+        // 3. DINAMÔMETRO EM TEMPO REAL (D3 CURVES)
+        (function () {
+            const el = document.getElementById('dyno-stage');
+            if (!el) return;
+            const W = 960, H = 480;
+            const svg = d3.select('#dyno-stage').append('svg').attr('viewBox', `0 0 ${W} ${H}`);
+            const margin = { top: 30, right: 50, bottom: 45, left: 60 };
+            const innerW = W - margin.left - margin.right;
+            const innerH = H - margin.top - margin.bottom;
+
+            const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+            // Dados da puxada (RPM x Potência x Torque)
+            const points = [
+                { rpm: 1200, hpOem: 75,  hpTune: 78,  tqOem: 22, tqTune: 23 },
+                { rpm: 2000, hpOem: 125, hpTune: 145, tqOem: 31, tqTune: 36 },
+                { rpm: 2800, hpOem: 180, hpTune: 215, tqOem: 35, tqTune: 42 },
+                { rpm: 3600, hpOem: 220, hpTune: 265, tqOem: 35, tqTune: 41.5 },
+                { rpm: 4500, hpOem: 245, hpTune: 295, tqOem: 33, tqTune: 38.5 },
+                { rpm: 5500, hpOem: 250, hpTune: 298, tqOem: 29, tqTune: 34 },
+                { rpm: 6400, hpOem: 235, hpTune: 280, tqOem: 24, tqTune: 28 }
+            ];
+
+            const x = d3.scaleLinear().domain([1000, 6800]).range([0, innerW]);
+            const yHp = d3.scaleLinear().domain([0, 340]).range([innerH, 0]);
+
+            // Grid linhas horizontais
+            [100, 200, 300].forEach(val => {
+                g.append('line').attr('x1', 0).attr('x2', innerW)
+                    .attr('y1', yHp(val)).attr('y2', yHp(val))
+                    .attr('stroke', 'rgba(255,255,255,0.06)').attr('stroke-dasharray', '4 4');
+                g.append('text').attr('x', -10).attr('y', yHp(val) + 4)
+                    .attr('text-anchor', 'end').attr('fill', 'rgba(255,255,255,0.4)')
+                    .attr('font-size', 11).text(val + ' cv');
+            });
+
+            // Linha OEM
+            const lineOem = d3.line().curve(d3.curveMonotoneX)
+                .x(d => x(d.rpm)).y(d => yHp(d.hpOem));
+            g.append('path').datum(points).attr('fill', 'none')
+                .attr('stroke', 'rgba(255,255,255,0.3)').attr('stroke-width', 2.5)
+                .attr('stroke-dasharray', '5 4').attr('d', lineOem);
+
+            // Linha Remap LAYA (Laranja brilhante com gradiente)
+            const lineTune = d3.line().curve(d3.curveMonotoneX)
+                .x(d => x(d.rpm)).y(d => yHp(d.hpTune));
+            
+            const pathTune = g.append('path').datum(points).attr('fill', 'none')
+                .attr('stroke', PRIMARY).attr('stroke-width', 3.5).attr('d', lineTune);
+
+            // Área preenchida sob a curva
+            const areaTune = d3.area().curve(d3.curveMonotoneX)
+                .x(d => x(d.rpm)).y0(innerH).y1(d => yHp(d.hpTune));
+            g.append('path').datum(points).attr('fill', 'rgba(255,144,77,0.08)').attr('d', areaTune);
+
+            // Cursor animado correndo na curva (simulando puxada viva)
+            const cursor = g.append('circle').attr('r', 6).attr('fill', PRIMARY)
+                .attr('stroke', '#fff').attr('stroke-width', 2);
+            const cursorLabel = g.append('text').attr('fill', '#fff')
+                .attr('font-size', 11).attr('font-weight', 700).attr('dy', -12);
+
+            let tProgress = 0;
+            d3.timer(() => {
+                tProgress = (tProgress + 0.005) % 1;
+                const currentRpm = 1200 + tProgress * (6400 - 1200);
+                const i = points.findIndex(p => p.rpm >= currentRpm);
+                if (i > 0) {
+                    const p0 = points[i-1], p1 = points[i];
+                    const ratio = (currentRpm - p0.rpm) / (p1.rpm - p0.rpm);
+                    const curHp = p0.hpTune + ratio * (p1.hpTune - p0.hpTune);
+                    const cx = x(currentRpm), cy = yHp(curHp);
+                    cursor.attr('cx', cx).attr('cy', cy);
+                    cursorLabel.attr('x', cx).attr('y', cy).text(`${Math.round(currentRpm)} RPM · ${Math.round(curHp)} cv`);
+                }
+            });
+        })();
+
+        // 4. DIGITAÇÃO DE CÓDIGO DO BACKEND
+        (function () {
+            const CODE = `// simremap/ai/service.py — Inferência LAYA.ai
+class AiTuningService:
+    async def tune_profile(self, profile_id: str, aggressiveness: str):
+        # 1. Clusterização de células (373 -> ~40 estados)
+        cell_states = self._build_cell_states(calibration, zones)
+        
+        # 2. Inferência assíncrona não-autorregressiva (35 ms)
+        predictions = await laya_agent.predict_decisions(
+            states=cell_states,
+            aggressiveness=aggressiveness  # safe, balanced, race
+        )
+        
+        # 3. Aplica correções na calibração e valida no Dyno
+        return self._apply_tuning_patch(calibration, predictions)`;
+
+            const el = document.getElementById('typed-code');
+            if (!el) return;
+            let i = 0, deleting = false;
+            function tick() {
+                if (!deleting) {
+                    el.textContent = CODE.slice(0, ++i);
+                    if (i >= CODE.length) { deleting = true; return setTimeout(tick, 4500); }
+                    return setTimeout(tick, 22);
+                }
+                el.textContent = CODE.slice(0, --i);
+                if (i <= 0) { deleting = false; return setTimeout(tick, 700); }
+                setTimeout(tick, 7);
+            }
+            const io = new IntersectionObserver(es => {
+                es.forEach(e => { if (e.isIntersecting) { tick(); io.unobserve(e.target); } });
+            }, { threshold: 0.3 });
+            io.observe(el);
+        })();
+
+        // 5. ANÉIS E CONTADORES DE MÉTRICAS
+        (function () {
+            const counters = document.querySelectorAll('.metric-value');
+            const io = new IntersectionObserver(entries => {
+                entries.forEach(e => {
+                    if (!e.isIntersecting) return;
+                    const el = e.target;
+                    const target = parseFloat(el.dataset.target) || 0;
+                    const suffix = el.dataset.suffix || '';
+                    d3.select(el).transition().duration(1800).ease(d3.easeCubicOut)
+                        .tween('count', () => {
+                            const i = d3.interpolateNumber(0, target);
+                            return t => el.textContent = Math.round(i(t)) + suffix;
+                        });
+                    io.unobserve(el);
+                });
+            }, { threshold: 0.4 });
+            counters.forEach(c => io.observe(c));
+
+            document.querySelectorAll('.metric-ring circle').forEach((ring, i) => {
+                let offset = 0;
+                setInterval(() => {
+                    offset = (offset + 1.2 + i * 0.3) % 260;
+                    ring.setAttribute('stroke-dashoffset', -offset);
+                }, 30);
+            });
+        })();
+
+        // 6. NAVEGAÇÃO DE SLIDES CARD-A-CARD
+        (function () {
+            const sections = Array.from(document.querySelectorAll('body > section'));
+            if (sections.length === 0) return;
+
+            const progress = document.getElementById('mira-progress');
+            const nextBtn = document.getElementById('mira-next');
+            const nextIcon = document.getElementById('mira-next-icon');
+
+            const atBottom = () => (window.scrollY + window.innerHeight) >= (document.documentElement.scrollHeight - 80);
+
+            function currentIndex() {
+                const y = window.scrollY + window.innerHeight * 0.35;
+                let idx = 0;
+                for (let i = 0; i < sections.length; i++) {
+                    if (sections[i].offsetTop <= y) idx = i;
+                }
+                return idx;
+            }
+
+            function goTo(i) {
+                const idx = Math.max(0, Math.min(sections.length - 1, i));
+                sections[idx].scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+
+            window.addEventListener('scroll', () => {
+                const docH = document.documentElement.scrollHeight - window.innerHeight;
+                progress.style.width = (docH > 0 ? (window.scrollY / docH) * 100 : 0) + '%';
+                nextBtn.classList.toggle('visible', window.scrollY > 150);
+                nextIcon.setAttribute('data-lucide', atBottom() ? 'chevron-up' : 'chevron-down');
+                lucide.createIcons();
+            });
+
+            nextBtn.addEventListener('click', () => {
+                if (atBottom()) { window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
+                goTo(currentIndex() + 1);
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (['ArrowRight', 'ArrowDown', 'PageDown'].includes(e.key)) {
+                    e.preventDefault();
+                    goTo(currentIndex() + 1);
+                } else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key)) {
+                    e.preventDefault();
+                    const idx = currentIndex();
+                    if (idx <= 0) window.scrollTo({ top: 0, behavior: 'smooth' });
+                    else goTo(idx - 1);
+                } else if (e.key === 'Home') {
+                    e.preventDefault();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else if (e.key === 'End') {
+                    e.preventDefault();
+                    goTo(sections.length - 1);
+                } else if (e.key.toLowerCase() === 'f') {
+                    if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+                    else document.exitFullscreen();
+                }
+            });
+        })();
+    </script>
+
+    <!-- Scripts do ecossistema Mira -->
+    <script src="mira/mira-edit.js" defer></script>
+    <script src="mira/mira-edit-free.js" defer></script>
+    <script src="mira/mira-draw.js" defer></script>
+    <script defer src="assets/vendor/gsap.min.js"></script>
+    <script defer src="mira/mira-cinema.js"></script>
+    <script defer src="mira/mira-foco.js"></script>
+</body>
+</html>

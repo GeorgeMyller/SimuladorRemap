@@ -1,0 +1,10 @@
+{
+  "version": "0.1.69",
+  "installedAt": "2026-10-23T12:18:00.000Z",
+  "updatedAt": "2026-10-23T12:18:00.000Z",
+  "engines": ["antigravity", "gemini-cli"],
+  "agents": ["core", "story", "visual"],
+  "skillsDirs": [],
+  "plugins": [],
+  "createdFiles": []
+}

@@ -1,0 +1,19 @@
+{
+  "version": "0.1.69",
+  "projectName": "SimuladorRemap",
+  "userName": "George",
+  "chatLanguage": "pt-BR",
+  "defaultTheme": "mira-dark",
+  "installedAt": "2026-10-23T12:18:00.000Z",
+  "updatedAt": "2026-10-23T12:18:00.000Z",
+  "sources": [
+    {
+      "name": "simremap",
+      "path": "../",
+      "type": "projeto"
+    }
+  ],
+  "decks": [
+    "simulador-remap-overview"
+  ]
+}
