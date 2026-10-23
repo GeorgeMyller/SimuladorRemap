@@ -1,25 +1,35 @@
 {
-  "samples_total": 1000,
-  "train_samples": 800,
-  "val_samples": 200,
-  "device": "mps",
+  "engine": "hone-mlx-decision",
+  "samples_total": 500,
+  "train_samples": 300,
+  "val_samples": 100,
+  "test_samples": 100,
+  "device": "mlx-applegpu",
+  "epochs": 4,
+  "trainable_parameters": 33444865,
+  "peak_memory_gb": 2.29,
   "metrics_before": {
-    "fuel_accuracy": 0.155,
-    "ign_accuracy": 0.08,
-    "risk_accuracy": 0.365,
-    "overall_accuracy": 0.2
+    "fuel_accuracy": 0.18,
+    "ign_accuracy": 0.2,
+    "risk_accuracy": 0.44,
+    "overall_accuracy": 0.2733
   },
   "metrics_after": {
-    "fuel_accuracy": 0.155,
-    "ign_accuracy": 0.08,
-    "risk_accuracy": 0.365,
-    "overall_accuracy": 0.2
+    "fuel_accuracy": 0.22,
+    "ign_accuracy": 0.4,
+    "risk_accuracy": 0.97,
+    "overall_accuracy": 0.53
   },
   "temperatures": [
-    5.0,
+    0.8303,
     1.0,
-    5.0
+    1.3163
   ],
-  "total_time_s": 165.75,
+  "temperature_by_options": {
+    "choice:3-5": 0.8303,
+    "noul:2": 1.3163
+  },
+  "total_time_s": 773.32,
+  "exported_model_path": "/Volumes/SSD-EXTERNO/SimuladorRemap/data/laya_ecu_tuned",
   "calibration_path": "/Volumes/SSD-EXTERNO/SimuladorRemap/data/laya_tuning_calibration.json"
 }

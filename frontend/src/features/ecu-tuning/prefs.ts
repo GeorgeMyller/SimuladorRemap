@@ -1,6 +1,6 @@
 /**
  * Preferências do editor e rascunho não gravado (tuning RF-22, EC-15; data-model 4.3).
- * - `simremap.ecu-tuning.prefs.v1`: `heatmap`, `lambdaDisplay` (λ ou AFR), `show3d`;
+ * - `simremap.ecu-tuning.prefs.v1`: `heatmap`, `lambdaDisplay` (λ ou AFR), `show3d`, `autoApply`;
  * - `simremap.ecu-tuning.draft.<calibration_id>`: células pendentes por tabela com `base_version`.
  * JSON inválido no `localStorage` é descartado (o chamador mostra o aviso).
  */
@@ -16,15 +16,18 @@ export interface TuningPrefs {
   heatmap: "on" | "off";
   lambdaDisplay: "lambda" | "afr";
   show3d: "side" | "below" | "off";
+  /** Aplica à sessão cada alteração gravada, como no Live Tuning. */
+  autoApply: "on" | "off";
 }
 
-export const DEFAULT_PREFS: TuningPrefs = { version: 1, heatmap: "on", lambdaDisplay: "lambda", show3d: "off" };
+export const DEFAULT_PREFS: TuningPrefs = { version: 1, heatmap: "on", lambdaDisplay: "lambda", show3d: "off", autoApply: "on" };
 
 const prefsSchema = z.object({
   version: z.literal(1),
   heatmap: z.enum(["on", "off"]).catch("on"),
   lambdaDisplay: z.enum(["lambda", "afr"]).catch("lambda"),
   show3d: z.enum(["side", "below", "off"]).catch("off"),
+  autoApply: z.enum(["on", "off"]).catch("on"),
 });
 
 function defaultStorage(): Storage | null {

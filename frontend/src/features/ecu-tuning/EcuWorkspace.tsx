@@ -101,6 +101,11 @@ export function EcuWorkspace({ sessionId, deps, onOpenSession }: EcuWorkspacePro
     if (mainRef.current) mainRef.current.scrollTop = 0;
   }, [snap.activeItemId]);
 
+  const autoApply = snap.prefs.autoApply === "on";
+  useEffect(() => {
+    store.setAutoApply(autoApply);
+  }, [store, autoApply]);
+
   if (snap.load.kind === "loading") {
     return (
       <section aria-busy="true" aria-labelledby="ecu-ws-title" className="p-4">
@@ -360,14 +365,22 @@ export function EcuWorkspace({ sessionId, deps, onOpenSession }: EcuWorkspacePro
         <button type="button" disabled={snap.readOnly} onClick={() => void store.saveVersion(versionLabel.trim())} className="rounded border border-sky-500 px-3 py-1 text-sky-200 hover:bg-sky-900 disabled:opacity-50">
           Salvar versão
         </button>
-        <ApplyToSessionButton
-          version={version}
-          runActive={runActive}
-          onlyLiveChanges={store.onlyLiveChanges() && snap.dirtyTables.length > 0}
-          disabled={!snap.calibration}
-          applying={snap.applying}
-          onApply={() => void store.applyToSession()}
-        />
+        <label className="flex items-center gap-1" title="Cada alteração gravada é aplicada à sessão, como no Live Tuning.">
+          <input type="checkbox" checked={autoApply} onChange={(e) => store.setPrefs({ autoApply: e.target.checked ? "on" : "off" })} />
+          <span>Aplicar automaticamente</span>
+        </label>
+        {autoApply ? (
+          snap.applying && <span className="text-zinc-300">A aplicar…</span>
+        ) : (
+          <ApplyToSessionButton
+            version={version}
+            runActive={runActive}
+            onlyLiveChanges={store.onlyLiveChanges() && snap.dirtyTables.length > 0}
+            disabled={!snap.calibration}
+            applying={snap.applying}
+            onApply={() => void store.applyToSession()}
+          />
+        )}
         {snap.applied && (
           <span className="text-emerald-300" data-testid="applied">
             {MSG.applied(snap.applied.version)}

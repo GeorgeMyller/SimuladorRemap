@@ -59,3 +59,8 @@ _reversa_docs/.backup-*/
 # --- Temporários ---
 temp/
 *.log
+
+# --- Model weights & Training Runs (evitar exceder limite de 100MB do GitHub) ---
+*.safetensors
+data/hone_laya_run/
+

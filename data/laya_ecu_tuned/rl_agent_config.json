@@ -1,0 +1,44 @@
+{
+  "encoder": "answerdotai/ModernBERT-large",
+  "head_layers": 2,
+  "max_len": 192,
+  "head_max_len": 192,
+  "max_prefixes": 6,
+  "act_costs": {
+    "escalate": 0.5
+  },
+  "cost_wrong_act": 3.0,
+  "amp_dtype": "bf16",
+  "model_name": "rl-agent",
+  "temperature": [
+    0.8303,
+    1.0,
+    1.3163
+  ],
+  "temperature_by_options": {
+    "choice:3-5": 0.8303,
+    "noul:2": 1.3163
+  },
+  "training": {
+    "updates": 7313,
+    "epochs_completed": 1,
+    "hours": 1.96,
+    "world_size": 1,
+    "fine_tuned_from_checkpoint": true
+  },
+  "hone": {
+    "base": "convaiinnovations/laya",
+    "revision": "7b928d828b7b0e022f929d9bd2e44165aa270148",
+    "recipe_hash": "a87210c708dbd3df738c412309096798ec603592117095a0cb98d8374e0f2636",
+    "lora_merged": [
+      "Wi",
+      "Wo",
+      "Wqkv"
+    ],
+    "heads": [
+      "type_emb",
+      "head",
+      "scorer"
+    ]
+  }
+}

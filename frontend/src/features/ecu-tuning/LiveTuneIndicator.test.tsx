@@ -6,6 +6,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { MockWebSocket } from "@/test/mocks";
 
 import { ApplyToSessionButton, LiveTuneIndicator } from "./LiveTuneIndicator";
+import { DEFAULT_PREFS, PREFS_KEY } from "./prefs";
 import { CAL_ID, makeApi, problem, SESSION_ID } from "./test-utils/fixtures";
 import { loadedStore, renderWorkspace } from "./test-utils/harness";
 
@@ -53,6 +54,7 @@ describe("aplicar à sessão (RF-18)", () => {
   });
 
   it("após 200 a barra de estado mostra 'revisão N aplicada'", async () => {
+    localStorage.setItem(PREFS_KEY, JSON.stringify({ ...DEFAULT_PREFS, autoApply: "off" }));
     const api = makeApi();
     renderWorkspace(api);
     await screen.findByTestId("workspace-profile");
@@ -62,6 +64,18 @@ describe("aplicar à sessão (RF-18)", () => {
     });
     expect(api.applyToSession).toHaveBeenCalledWith(SESSION_ID, { calibration_id: CAL_ID, version: 6, profile_options: {} });
     expect(await screen.findByTestId("applied")).toHaveTextContent("revisão 6 aplicada à sessão");
+  });
+
+  it("aplicação automática (padrão) esconde o botão; desligá-la mostra-o e grava a preferência", async () => {
+    const api = makeApi();
+    renderWorkspace(api);
+    await screen.findByTestId("workspace-profile");
+    const toggle = screen.getByRole("checkbox", { name: "Aplicar automaticamente" });
+    expect(toggle).toBeChecked();
+    expect(screen.queryByRole("button", { name: "Aplicar à sessão" })).not.toBeInTheDocument();
+    fireEvent.click(toggle);
+    expect(screen.getByRole("button", { name: "Aplicar à sessão" })).toBeInTheDocument();
+    expect(JSON.parse(localStorage.getItem(PREFS_KEY)!)).toMatchObject({ autoApply: "off" });
   });
 
   it("store: puxada ativa só aplica com alterações live; 409 TABLE_NOT_LIVE_TUNABLE vira aviso", async () => {

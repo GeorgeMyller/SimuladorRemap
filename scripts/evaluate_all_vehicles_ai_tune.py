@@ -1,7 +1,7 @@
 """Execução e validação do AI Tuning (LAYA.ai) em todos os veículos do catálogo.
 
-Avalia o impacto do ajuste autônomo nas tabelas de Eficiência Volumétrica (VE)
-e Ponto de Ignição (Base), mensurando ganhos de torque, potência, segurança de detonação
+Avalia o impacto do ajuste autônomo nas tabelas de calibração em 3 configurações
+(`safe`, `balanced`, `race`), mensurando ganhos de torque, potência, segurança de detonação
 e tempo de execução em cada um dos 4 veículos.
 """
 
@@ -17,7 +17,20 @@ from simremap.ai.contracts import AiTuneRequest
 from simremap.ai.service import AiTuningService
 from simremap.catalog.service import get_catalog
 from simremap.ecu.calibration import validate_stock_calibration
-from simremap.ecu.tables import Table3D
+from simremap.ecu.tables import Table2D, Table3D
+
+SETUP_CANDIDATES = [
+    "ve",
+    "inj_base_ms",
+    "lambda_target",
+    "ignition_base",
+    "oem_pressure_target",
+    "boost_target",
+    "torque_request",
+    "torque_limit",
+    "torque_limit_gear",
+    "boost_target_gear",
+]
 
 
 def analyze_table_stats(table: Table3D) -> dict[str, Any]:
@@ -44,7 +57,7 @@ def evaluate_vehicle(
     vehicle_id: str,
     aggressiveness: str = "balanced",
 ) -> dict[str, Any]:
-    """Executa o pipeline completo de AI Tuning em um veículo."""
+    """Executa o pipeline completo de AI Tuning coordenado em um veículo."""
     v = catalog.get_vehicle(vehicle_id)
     profile_id = getattr(v, "stock_profile_id", "oem-stage") or "oem-stage"
     stock_fuel = getattr(v, "stock_fuel_id", "e27")
@@ -57,10 +70,14 @@ def evaluate_vehicle(
         created_at=datetime.now(UTC),
     )
 
-    ve_before = analyze_table_stats(cal.tables["ve"])
-    ign_before = analyze_table_stats(cal.tables["ignition_base"])
+    ve_before = analyze_table_stats(cal.tables["ve"]) if "ve" in cal.tables else None
+    ign_before = (
+        analyze_table_stats(cal.tables["ignition_base"])
+        if "ignition_base" in cal.tables
+        else None
+    )
 
-    # Estimativas baseline do motor a partir de curvas e specs
+    # Estimativas baseline do motor
     baseline_torque_nm = 300.0
     baseline_power_hp = 220.0
     try:
@@ -74,9 +91,11 @@ def evaluate_vehicle(
     except Exception:
         pass
 
+    target_ids = [tid for tid in SETUP_CANDIDATES if tid in cal.tables]
+
     req = AiTuneRequest(
-        target_table_ids=["ve", "ignition_base"],
-        aggressiveness=aggressiveness, # safe, balanced, race
+        target_table_ids=target_ids,
+        aggressiveness=aggressiveness,
         max_fuel_step_pct=8.0,
         max_ign_advance_step_deg=2.0,
     )
@@ -85,72 +104,59 @@ def evaluate_vehicle(
     resp = service.tune_calibration(cal, req, fuel_id=stock_fuel)
     elapsed_s = round(time.perf_counter() - t0, 3)
 
-    # Aplica alterações em cópia da calibração para extrair stats pós-tune
+    # Aplica alterações em cópia da calibração
     cal_tuned = validate_stock_calibration(
         payload,
         vehicle_id=vehicle_id,
         profile_id=profile_id,
         created_at=datetime.now(UTC),
     )
-    ve_corrs = [c for c in resp.corrections if c.table_id == "ve"]
-    ign_corrs = [c for c in resp.corrections if c.table_id == "ignition_base"]
 
-    for c in ve_corrs:
-        cal_tuned.tables["ve"].values[c.row][c.col] = c.new_value
-    for c in ign_corrs:
-        cal_tuned.tables["ignition_base"].values[c.row][c.col] = c.new_value
+    by_table: dict[str, list[Any]] = {}
+    for c in resp.corrections:
+        by_table.setdefault(c.table_id, []).append(c)
 
-    ve_after = analyze_table_stats(cal_tuned.tables["ve"])
-    ign_after = analyze_table_stats(cal_tuned.tables["ignition_base"])
+    for tid, corrs in by_table.items():
+        tbl = cal_tuned.tables.get(tid)
+        if isinstance(tbl, Table3D):
+            for c in corrs:
+                tbl.values[c.row][c.col] = c.new_value
+        elif isinstance(tbl, Table2D):
+            for c in corrs:
+                tbl.values[c.col] = c.new_value
 
-    # Cálculo físico de ganho de torque baseado no aumento de VE médio e avanço de ignição
-    avg_ve_delta_pct = ((ve_after["mean"] - ve_before["mean"]) / ve_before["mean"]) * 100.0
-    avg_ign_delta_deg = ign_after["mean"] - ign_before["mean"]
-
-    # Fórmulas clássicas de dinamômetro:
-    # 1 grau de avanço próximo do MBT rende ~1.2% de torque adicional
-    # 1% de VE rende ~0.85% de torque (considerando estequiometria)
-    estimated_dyno_gain_pct = round(
-        max(1.0, (avg_ve_delta_pct * 0.45) + (max(0.0, avg_ign_delta_deg) * 1.35)),
-        2,
+    ve_after = analyze_table_stats(cal_tuned.tables["ve"]) if "ve" in cal_tuned.tables else None
+    ign_after = (
+        analyze_table_stats(cal_tuned.tables["ignition_base"])
+        if "ignition_base" in cal_tuned.tables
+        else None
     )
-    tuned_torque_nm = round(baseline_torque_nm * (1.0 + estimated_dyno_gain_pct / 100.0), 1)
-    tuned_power_hp = round(baseline_power_hp * (1.0 + estimated_dyno_gain_pct / 100.0), 1)
+
+    tuned_torque_nm = round(
+        baseline_torque_nm * (1.0 + resp.estimated_torque_gain_pct / 100.0), 1
+    )
+    tuned_power_hp = round(
+        baseline_power_hp * (1.0 + resp.estimated_torque_gain_pct / 100.0), 1
+    )
+
+    table_mod_counts = {tid: len(corrs) for tid, corrs in by_table.items()}
 
     return {
         "vehicle_id": vehicle_id,
         "display_name": v.display_name,
         "induction": v.induction,
         "fuel_id": stock_fuel,
+        "aggressiveness": aggressiveness,
         "engine_displacement_cc": getattr(v.engine, "displacement_cc", 2000),
         "max_rpm": v.mechanical_limits.max_rpm,
         "elapsed_seconds": elapsed_s,
         "corrections_summary": {
             "total_cells_modified": resp.total_cells_modified,
-            "ve_cells_modified": len(ve_corrs),
-            "ign_cells_modified": len(ign_corrs),
+            "tables_modified": list(table_mod_counts.keys()),
+            "cells_by_table": table_mod_counts,
             "safety_risk_flagged": resp.safety_risk,
             "risk_confidence": resp.risk_confidence,
-        },
-        "table_comparisons": {
-            "ve": {
-                "before": ve_before,
-                "after": ve_after,
-                "delta_mean_pct": round(avg_ve_delta_pct, 2),
-                "sample_idle_delta": round(ve_after["sample_idle"] - ve_before["sample_idle"], 2),
-                "sample_cruise_delta": round(ve_after["sample_cruise"] - ve_before["sample_cruise"], 2),
-                "sample_peak_delta": round(ve_after["sample_peak_load"] - ve_before["sample_peak_load"], 2),
-                "sample_redline_delta": round(ve_after["sample_redline"] - ve_before["sample_redline"], 2),
-            },
-            "ignition_base": {
-                "before": ign_before,
-                "after": ign_after,
-                "delta_mean_deg": round(avg_ign_delta_deg, 2),
-                "sample_idle_delta": round(ign_after["sample_idle"] - ign_before["sample_idle"], 2),
-                "sample_cruise_delta": round(ign_after["sample_cruise"] - ign_before["sample_cruise"], 2),
-                "sample_peak_delta": round(ign_after["sample_peak_load"] - ign_before["sample_peak_load"], 2),
-                "sample_redline_delta": round(ign_after["sample_redline"] - ign_before["sample_redline"], 2),
-            },
+            "estimated_torque_gain_pct": resp.estimated_torque_gain_pct,
         },
         "dyno_performance": {
             "baseline_torque_nm": baseline_torque_nm,
@@ -159,7 +165,25 @@ def evaluate_vehicle(
             "baseline_power_hp": baseline_power_hp,
             "tuned_power_hp": tuned_power_hp,
             "power_gain_hp": round(tuned_power_hp - baseline_power_hp, 1),
-            "total_gain_pct": estimated_dyno_gain_pct,
+            "total_gain_pct": resp.estimated_torque_gain_pct,
+        },
+        "ve_comparison": {
+            "before_mean": ve_before["mean"] if ve_before else None,
+            "after_mean": ve_after["mean"] if ve_after else None,
+            "delta_mean_pct": (
+                round(((ve_after["mean"] - ve_before["mean"]) / ve_before["mean"]) * 100.0, 2)
+                if ve_before and ve_after
+                else 0.0
+            ),
+        },
+        "ign_comparison": {
+            "before_mean": ign_before["mean"] if ign_before else None,
+            "after_mean": ign_after["mean"] if ign_after else None,
+            "delta_mean_deg": (
+                round(ign_after["mean"] - ign_before["mean"], 2)
+                if ign_before and ign_after
+                else 0.0
+            ),
         },
     }
 
@@ -168,11 +192,13 @@ def run_benchmark():
     catalog = get_catalog()
     service = AiTuningService(catalog)
 
-    vehicles = [
-        "hatch-20t-gdi",
-        "coupe-30t-i6",
-        "muscle-v8-sc",
-        "classic-20t-swap",
+    eval_matrix = [
+        ("hatch-20t-gdi", "safe"),
+        ("hatch-20t-gdi", "balanced"),
+        ("hatch-20t-gdi", "race"),
+        ("coupe-30t-i6", "balanced"),
+        ("muscle-v8-sc", "balanced"),
+        ("classic-20t-swap", "balanced"),
     ]
 
     print("=" * 80)
@@ -180,22 +206,27 @@ def run_benchmark():
     print("=" * 80)
 
     results = []
-    for vid in vehicles:
-        print(f"\n[*] Executando AI Tuning no veículo: {vid}...")
-        res = evaluate_vehicle(catalog, service, vid, aggressiveness="balanced")
+    current_vid = ""
+    for vid, mode in eval_matrix:
+        if vid != current_vid:
+            print(f"\n[*] Veículo: {vid}", flush=True)
+            current_vid = vid
+        res = evaluate_vehicle(catalog, service, vid, aggressiveness=mode)
         results.append(res)
         p = res["dyno_performance"]
         c = res["corrections_summary"]
-        print(f"    Concluído em {res['elapsed_seconds']}s")
-        print(f"    Células alteradas: {c['total_cells_modified']} (VE: {c['ve_cells_modified']}, Ignição: {c['ign_cells_modified']})")
-        print(f"    Torque:  {p['baseline_torque_nm']:.1f} Nm -> {p['tuned_torque_nm']:.1f} Nm (+{p['torque_gain_nm']:.1f} Nm, +{p['total_gain_pct']}%)")
-        print(f"    Potência: {p['baseline_power_hp']:.1f} HP -> {p['tuned_power_hp']:.1f} HP (+{p['power_gain_hp']:.1f} HP)")
-        print(f"    Risco de quebra: {'DETECTADO' if c['safety_risk_flagged'] else 'SEGURO (Zero Knock)'}")
+        print(
+            f"    [{mode.upper():8s}] {res['elapsed_seconds']}s | "
+            f"{c['total_cells_modified']} células em {len(c['tables_modified'])} tabelas | "
+            f"Torque: {p['baseline_torque_nm']:.0f} -> {p['tuned_torque_nm']:.0f} Nm (+{p['total_gain_pct']}%) | "
+            f"Knock: {'RISCO' if c['safety_risk_flagged'] else 'Zero'}",
+            flush=True,
+        )
 
     out_file = Path(__file__).resolve().parent.parent / "data" / "ai_tune_all_vehicles_results.json"
     with open(out_file, "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2, ensure_ascii=False)
-    print(f"\n[+] Resultados consolidados salvos com sucesso em: {out_file}")
+    print(f"\n[+] Resultados salvos em: {out_file}", flush=True)
 
 
 if __name__ == "__main__":

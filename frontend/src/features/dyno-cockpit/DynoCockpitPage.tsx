@@ -475,10 +475,11 @@ export function DynoCockpitView({ sessionId, deps, focus = null, liveTuningDeps 
             <div className="order-1 flex min-w-0 flex-col gap-3 lg:order-none lg:col-span-2">
               {carPanel}
               <div className="order-first lg:order-none">{gaugesPanel}</div>
+              {runControls}
             </div>
           </div>
-          <div className="mt-3 grid grid-cols-1 gap-3 lg:grid-cols-4 xl:grid-cols-5">
-            <section aria-label="Painéis inferiores" className="order-2 min-w-0 rounded border border-zinc-700 bg-zinc-900/60 p-2 lg:order-none lg:col-span-3 xl:col-span-4">
+          <div className="mt-3">
+            <section aria-label="Painéis inferiores" className="min-w-0 rounded border border-zinc-700 bg-zinc-900/60 p-2">
               <div className="mb-2 flex items-start justify-between gap-2">
                 <div role="tablist" aria-label="Painéis inferiores" className="flex flex-wrap gap-1">
                   {BOTTOM_TABS.map((tab, i) => (
@@ -530,9 +531,6 @@ export function DynoCockpitView({ sessionId, deps, focus = null, liveTuningDeps 
                 )}
               </div>
             </section>
-            <div className="order-1 lg:order-none lg:col-span-1">
-              {runControls}
-            </div>
           </div>
           </>
           )}

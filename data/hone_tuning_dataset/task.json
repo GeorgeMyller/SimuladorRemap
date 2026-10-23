@@ -1,0 +1,36 @@
+{
+  "questions": {
+    "fuel_correction": {
+      "type": "choice",
+      "instructions": "Qual correção de combustível aplicar com base na sonda?",
+      "criteria": [
+        "enrich_heavy",
+        "enrich_light",
+        "hold",
+        "lean_light",
+        "lean_heavy"
+      ]
+    },
+    "ign_correction": {
+      "type": "choice",
+      "instructions": "Qual correção de ponto aplicar considerando MBT?",
+      "criteria": [
+        "retard_critical",
+        "retard_light",
+        "hold",
+        "advance_light",
+        "advance_heavy"
+      ]
+    },
+    "safety_risk": {
+      "type": "noul",
+      "instructions": "O motor está operando com risco de detonação ou sobreaquecimento?"
+    }
+  },
+  "decide": "safety_risk",
+  "policy": {
+    "high": 0.5,
+    "low": 0.5,
+    "positive": "true"
+  }
+}

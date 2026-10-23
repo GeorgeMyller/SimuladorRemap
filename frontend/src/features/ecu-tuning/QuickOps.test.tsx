@@ -293,10 +293,12 @@ describe("aplicação automática após o PATCH (RF-07)", () => {
     expect(api.applyToSession).not.toHaveBeenCalled();
 
     store.setAutoApply(true);
+    await waitFor(() => expect(api.applyToSession).toHaveBeenCalledTimes(1));
+    await waitFor(() => expect(store.getSnapshot().applying).toBe(false));
     store.editCell("ve", 0, 1, 81);
     await store.queue!.flush();
-    await waitFor(() => expect(api.applyToSession).toHaveBeenCalledTimes(1));
-    expect(api.patchTable.mock.invocationCallOrder[1]!).toBeLessThan(api.applyToSession.mock.invocationCallOrder[0]!);
+    await waitFor(() => expect(api.applyToSession).toHaveBeenCalledTimes(2));
+    expect(api.patchTable.mock.invocationCallOrder[1]!).toBeLessThan(api.applyToSession.mock.invocationCallOrder[1]!);
     await waitFor(() => expect(store.getSnapshot().applied?.version).toBe(8));
     expect(store.getSnapshot().dirtyTables).toEqual([]);
   });
@@ -331,6 +333,27 @@ describe("aplicação automática após o PATCH (RF-07)", () => {
     await store.queue!.flush();
     await new Promise((r) => setTimeout(r, 5));
     expect(api.applyToSession).not.toHaveBeenCalled();
+  });
+
+  it("alteração não live retida durante a puxada é aplicada quando a puxada termina", async () => {
+    const api = makeApi();
+    store = await loadedStore(api, { debounceMs: 1 });
+    store.setAutoApply(true);
+    store.setRunState("running");
+    await store.saveStrategy("rev_limiter", { hard_rpm: 6800 });
+    expect(api.applyToSession).not.toHaveBeenCalled();
+    store.setRunState("idle");
+    await waitFor(() => expect(api.applyToSession).toHaveBeenCalledTimes(1));
+  });
+
+  it("aplicação automática não mostra aviso de sucesso", async () => {
+    const api = makeApi();
+    store = await loadedStore(api, { debounceMs: 1 });
+    store.setAutoApply(true);
+    store.editCell("ve", 0, 0, 80);
+    await store.queue!.flush();
+    await waitFor(() => expect(store.getSnapshot().applied).not.toBeNull());
+    expect(store.getSnapshot().notices.some((n) => n.tone === "success")).toBe(false);
   });
 });
 

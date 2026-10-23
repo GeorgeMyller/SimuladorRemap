@@ -263,20 +263,23 @@ export class WorkspaceStore {
     if (f.runState !== this.snapshot.runState || f.fresh !== this.snapshot.telemetryFresh) {
       this.set({ runState: f.runState, telemetryFresh: f.fresh });
     }
-    if (wasActive && !isRunActive(f.runState) && this.queue && this.queue.heldTables().length > 0) {
-      this.queue.releaseHeld();
-      this.set({ heldTables: [] });
-    }
+    if (wasActive && !isRunActive(f.runState)) this.onRunEnded();
   }
 
   /** Estado de puxada vindo da telemetria (ou injetado em testes). */
   setRunState(state: RunState | null): void {
     const wasActive = isRunActive(this.snapshot.runState);
     this.set({ runState: state });
-    if (wasActive && !isRunActive(state) && this.queue && this.queue.heldTables().length > 0) {
+    if (wasActive && !isRunActive(state)) this.onRunEnded();
+  }
+
+  /** Fim da puxada: liberta as tabelas retidas e aplica o que ficou pendente (aplicação automática). */
+  private onRunEnded(): void {
+    if (this.queue && this.queue.heldTables().length > 0) {
       this.queue.releaseHeld();
       this.set({ heldTables: [] });
     }
+    if (this.autoApply && this.hasUnapplied() && !this.queue?.hasPending()) this.requestAutoApply();
   }
 
   async load(): Promise<void> {
@@ -635,7 +638,24 @@ export class WorkspaceStore {
     }
     if (this.snapshot.aiTuning) return false;
 
-    const targetTableIds = tableId ? [tableId] : ["ve", "ignition_base"];
+    const SETUP_TABLE_CANDIDATES = [
+      "ve",
+      "inj_base_ms",
+      "lambda_target",
+      "ignition_base",
+      "oem_pressure_target",
+      "boost_target",
+      "torque_request",
+      "torque_limit",
+      "torque_limit_gear",
+      "boost_target_gear",
+    ];
+    const targetTableIds = tableId
+      ? [tableId]
+      : SETUP_TABLE_CANDIDATES.filter((tid) => Boolean(cal.tables[tid]));
+    if (targetTableIds.length === 0) {
+      targetTableIds.push("ve", "ignition_base");
+    }
     const aggressiveness = level ?? this.snapshot.aiAggressiveness ?? "balanced";
     this.set({ aiTuning: true });
 
@@ -772,7 +792,13 @@ export class WorkspaceStore {
 
   /** Live Tuning (RF-07): após cada lote gravado sem pendências, aplica à sessão (se `canApply`). */
   setAutoApply(enabled: boolean): void {
+    const was = this.autoApply;
     this.autoApply = enabled;
+    if (enabled && !was && this.hasUnapplied()) this.requestAutoApply();
+  }
+
+  private hasUnapplied(): boolean {
+    return this.snapshot.dirtyTables.length > 0 || this.snapshot.dirtyOther;
   }
 
   private requestAutoApply(): void {
@@ -780,7 +806,7 @@ export class WorkspaceStore {
       this.autoApplyQueued = true;
       return;
     }
-    if (this.canApply()) void this.applyToSession();
+    if (this.canApply()) void this.applyToSession({ silent: true });
   }
 
   private markStock(): void {
@@ -897,6 +923,7 @@ export class WorkspaceStore {
       const merged = { ...next, versions: withVersions.versions ?? next.versions ?? cal.versions };
       this.queue?.setVersion(next.version);
       this.set({ calibration: merged, tables: gridTables(merged) });
+      if (this.autoApply) this.requestAutoApply();
       return merged;
     } catch (error) {
       const p = problemOf(error);
@@ -986,7 +1013,8 @@ export class WorkspaceStore {
     return true;
   }
 
-  async applyToSession(): Promise<ApplyCalibrationResult | null> {
+  /** `silent`: aplicação automática, sem aviso de sucesso (o rodapé mostra a revisão aplicada). */
+  async applyToSession({ silent = false }: { silent?: boolean } = {}): Promise<ApplyCalibrationResult | null> {
     const cal = this.snapshot.calibration;
     if (!cal || !this.canApply()) return null;
     this.set({ applying: true });
@@ -1002,7 +1030,7 @@ export class WorkspaceStore {
       });
       const untouched = seq === this.editSeq;
       this.set({ applied: result, applying: false, ...(untouched ? { dirtyTables: [], dirtyOther: false } : {}) });
-      this.notify("success", MSG.applied(result.version));
+      if (!silent) this.notify("success", MSG.applied(result.version));
       return result;
     } catch (error) {
       const p = problemOf(error);

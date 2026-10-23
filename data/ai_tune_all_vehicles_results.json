@@ -4,88 +4,158 @@
     "display_name": "Hatch 2.0 turbo GDI",
     "induction": "turbo",
     "fuel_id": "e27",
+    "aggressiveness": "safe",
     "engine_displacement_cc": 1984.0,
     "max_rpm": 6800.0,
-    "elapsed_seconds": 62.31,
+    "elapsed_seconds": 170.723,
     "corrections_summary": {
-      "total_cells_modified": 512,
-      "ve_cells_modified": 256,
-      "ign_cells_modified": 256,
-      "safety_risk_flagged": false,
-      "risk_confidence": 0.95
-    },
-    "table_comparisons": {
-      "ve": {
-        "before": {
-          "min": 57.48,
-          "max": 102.45,
-          "mean": 89.12,
-          "n_rows": 16,
-          "n_cols": 16,
-          "total_cells": 256,
-          "sample_idle": 66.4,
-          "sample_cruise": 86.6,
-          "sample_peak_load": 101.01,
-          "sample_redline": 97.26
-        },
-        "after": {
-          "min": 62.1,
-          "max": 110.6,
-          "mean": 95.19,
-          "n_rows": 16,
-          "n_cols": 16,
-          "total_cells": 256,
-          "sample_idle": 71.7,
-          "sample_cruise": 93.5,
-          "sample_peak_load": 109.1,
-          "sample_redline": 105.0
-        },
-        "delta_mean_pct": 6.81,
-        "sample_idle_delta": 5.3,
-        "sample_cruise_delta": 6.9,
-        "sample_peak_delta": 8.09,
-        "sample_redline_delta": 7.74
+      "total_cells_modified": 826,
+      "tables_modified": [
+        "ve",
+        "lambda_target",
+        "ignition_base",
+        "oem_pressure_target",
+        "torque_request",
+        "torque_limit",
+        "torque_limit_gear"
+      ],
+      "cells_by_table": {
+        "ve": 256,
+        "lambda_target": 70,
+        "ignition_base": 256,
+        "oem_pressure_target": 132,
+        "torque_request": 84,
+        "torque_limit": 22,
+        "torque_limit_gear": 6
       },
-      "ignition_base": {
-        "before": {
-          "min": 6.57,
-          "max": 42.18,
-          "mean": 21.53,
-          "n_rows": 16,
-          "n_cols": 16,
-          "total_cells": 256,
-          "sample_idle": 22.97,
-          "sample_cruise": 21.37,
-          "sample_peak_load": 16.99,
-          "sample_redline": 23.57
-        },
-        "after": {
-          "min": 3.6,
-          "max": 39.2,
-          "mean": 18.53,
-          "n_rows": 16,
-          "n_cols": 16,
-          "total_cells": 256,
-          "sample_idle": 20.0,
-          "sample_cruise": 18.4,
-          "sample_peak_load": 14.0,
-          "sample_redline": 20.6
-        },
-        "delta_mean_deg": -3.0,
-        "sample_idle_delta": -2.97,
-        "sample_cruise_delta": -2.97,
-        "sample_peak_delta": -2.99,
-        "sample_redline_delta": -2.97
-      }
+      "safety_risk_flagged": false,
+      "risk_confidence": 0.95,
+      "estimated_torque_gain_pct": 5.5
     },
     "dyno_performance": {
       "baseline_torque_nm": 300.0,
-      "tuned_torque_nm": 309.2,
-      "torque_gain_nm": 9.2,
+      "tuned_torque_nm": 316.5,
+      "torque_gain_nm": 16.5,
       "baseline_power_hp": 220.0,
-      "tuned_power_hp": 226.7,
-      "power_gain_hp": 6.7,
-      "total_gain_pct": 3.06
+      "tuned_power_hp": 232.1,
+      "power_gain_hp": 12.1,
+      "total_gain_pct": 5.5
+    },
+    "ve_comparison": {
+      "before_mean": 89.12,
+      "after_mean": 91.26,
+      "delta_mean_pct": 2.4
+    },
+    "ign_comparison": {
+      "before_mean": 21.53,
+      "after_mean": 21.53,
+      "delta_mean_deg": 0.0
+    }
+  },
+  {
+    "vehicle_id": "hatch-20t-gdi",
+    "display_name": "Hatch 2.0 turbo GDI",
+    "induction": "turbo",
+    "fuel_id": "e27",
+    "aggressiveness": "balanced",
+    "engine_displacement_cc": 1984.0,
+    "max_rpm": 6800.0,
+    "elapsed_seconds": 159.711,
+    "corrections_summary": {
+      "total_cells_modified": 866,
+      "tables_modified": [
+        "ve",
+        "lambda_target",
+        "ignition_base",
+        "oem_pressure_target",
+        "torque_request",
+        "torque_limit",
+        "torque_limit_gear"
+      ],
+      "cells_by_table": {
+        "ve": 256,
+        "lambda_target": 110,
+        "ignition_base": 256,
+        "oem_pressure_target": 132,
+        "torque_request": 84,
+        "torque_limit": 22,
+        "torque_limit_gear": 6
+      },
+      "safety_risk_flagged": false,
+      "risk_confidence": 0.95,
+      "estimated_torque_gain_pct": 9.5
+    },
+    "dyno_performance": {
+      "baseline_torque_nm": 300.0,
+      "tuned_torque_nm": 328.5,
+      "torque_gain_nm": 28.5,
+      "baseline_power_hp": 220.0,
+      "tuned_power_hp": 240.9,
+      "power_gain_hp": 20.9,
+      "total_gain_pct": 9.5
+    },
+    "ve_comparison": {
+      "before_mean": 89.12,
+      "after_mean": 91.97,
+      "delta_mean_pct": 3.2
+    },
+    "ign_comparison": {
+      "before_mean": 21.53,
+      "after_mean": 21.53,
+      "delta_mean_deg": 0.0
+    }
+  },
+  {
+    "vehicle_id": "hatch-20t-gdi",
+    "display_name": "Hatch 2.0 turbo GDI",
+    "induction": "turbo",
+    "fuel_id": "e27",
+    "aggressiveness": "race",
+    "engine_displacement_cc": 1984.0,
+    "max_rpm": 6800.0,
+    "elapsed_seconds": 197.553,
+    "corrections_summary": {
+      "total_cells_modified": 866,
+      "tables_modified": [
+        "ve",
+        "lambda_target",
+        "ignition_base",
+        "oem_pressure_target",
+        "torque_request",
+        "torque_limit",
+        "torque_limit_gear"
+      ],
+      "cells_by_table": {
+        "ve": 256,
+        "lambda_target": 110,
+        "ignition_base": 256,
+        "oem_pressure_target": 132,
+        "torque_request": 84,
+        "torque_limit": 22,
+        "torque_limit_gear": 6
+      },
+      "safety_risk_flagged": false,
+      "risk_confidence": 0.95,
+      "estimated_torque_gain_pct": 16.5
+    },
+    "dyno_performance": {
+      "baseline_torque_nm": 300.0,
+      "tuned_torque_nm": 349.5,
+      "torque_gain_nm": 49.5,
+      "baseline_power_hp": 220.0,
+      "tuned_power_hp": 256.3,
+      "power_gain_hp": 36.3,
+      "total_gain_pct": 16.5
+    },
+    "ve_comparison": {
+      "before_mean": 89.12,
+      "after_mean": 93.4,
+      "delta_mean_pct": 4.8
+    },
+    "ign_comparison": {
+      "before_mean": 21.53,
+      "after_mean": 21.53,
+      "delta_mean_deg": 0.0
     }
   },
   {
@@ -93,88 +163,52 @@
     "display_name": "Coupé 3.0 turbo 6 em linha",
     "induction": "turbo",
     "fuel_id": "e27",
+    "aggressiveness": "balanced",
     "engine_displacement_cc": 2998.0,
     "max_rpm": 7200.0,
-    "elapsed_seconds": 62.996,
+    "elapsed_seconds": 173.137,
     "corrections_summary": {
-      "total_cells_modified": 512,
-      "ve_cells_modified": 256,
-      "ign_cells_modified": 256,
-      "safety_risk_flagged": false,
-      "risk_confidence": 0.95
-    },
-    "table_comparisons": {
-      "ve": {
-        "before": {
-          "min": 62.58,
-          "max": 104.13,
-          "mean": 91.45,
-          "n_rows": 16,
-          "n_cols": 16,
-          "total_cells": 256,
-          "sample_idle": 72.19,
-          "sample_cruise": 89.56,
-          "sample_peak_load": 103.18,
-          "sample_redline": 95.08
-        },
-        "after": {
-          "min": 65.4,
-          "max": 112.5,
-          "mean": 96.15,
-          "n_rows": 16,
-          "n_cols": 16,
-          "total_cells": 256,
-          "sample_idle": 78.0,
-          "sample_cruise": 96.7,
-          "sample_peak_load": 111.4,
-          "sample_redline": 87.5
-        },
-        "delta_mean_pct": 5.14,
-        "sample_idle_delta": 5.81,
-        "sample_cruise_delta": 7.14,
-        "sample_peak_delta": 8.22,
-        "sample_redline_delta": -7.58
+      "total_cells_modified": 843,
+      "tables_modified": [
+        "ve",
+        "lambda_target",
+        "ignition_base",
+        "oem_pressure_target",
+        "torque_request",
+        "torque_limit",
+        "torque_limit_gear"
+      ],
+      "cells_by_table": {
+        "ve": 256,
+        "lambda_target": 70,
+        "ignition_base": 237,
+        "oem_pressure_target": 156,
+        "torque_request": 91,
+        "torque_limit": 25,
+        "torque_limit_gear": 8
       },
-      "ignition_base": {
-        "before": {
-          "min": -5.0,
-          "max": 45.0,
-          "mean": 16.41,
-          "n_rows": 16,
-          "n_cols": 16,
-          "total_cells": 256,
-          "sample_idle": 13.71,
-          "sample_cruise": 16.17,
-          "sample_peak_load": 9.32,
-          "sample_redline": 19.44
-        },
-        "after": {
-          "min": -8.0,
-          "max": 42.0,
-          "mean": 13.79,
-          "n_rows": 16,
-          "n_cols": 16,
-          "total_cells": 256,
-          "sample_idle": 10.7,
-          "sample_cruise": 13.2,
-          "sample_peak_load": 11.3,
-          "sample_redline": 16.4
-        },
-        "delta_mean_deg": -2.62,
-        "sample_idle_delta": -3.01,
-        "sample_cruise_delta": -2.97,
-        "sample_peak_delta": 1.98,
-        "sample_redline_delta": -3.04
-      }
+      "safety_risk_flagged": false,
+      "risk_confidence": 0.95,
+      "estimated_torque_gain_pct": 9.5
     },
     "dyno_performance": {
       "baseline_torque_nm": 300.0,
-      "tuned_torque_nm": 306.9,
-      "torque_gain_nm": 6.9,
+      "tuned_torque_nm": 328.5,
+      "torque_gain_nm": 28.5,
       "baseline_power_hp": 220.0,
-      "tuned_power_hp": 225.1,
-      "power_gain_hp": 5.1,
-      "total_gain_pct": 2.31
+      "tuned_power_hp": 240.9,
+      "power_gain_hp": 20.9,
+      "total_gain_pct": 9.5
+    },
+    "ve_comparison": {
+      "before_mean": 91.45,
+      "after_mean": 94.38,
+      "delta_mean_pct": 3.2
+    },
+    "ign_comparison": {
+      "before_mean": 16.41,
+      "after_mean": 16.41,
+      "delta_mean_deg": 0.0
     }
   },
   {
@@ -182,88 +216,52 @@
     "display_name": "Muscle V8 5,0 sobrealimentado",
     "induction": "supercharger",
     "fuel_id": "e27",
+    "aggressiveness": "balanced",
     "engine_displacement_cc": 4951.0,
     "max_rpm": 7800.0,
-    "elapsed_seconds": 63.57,
+    "elapsed_seconds": 158.184,
     "corrections_summary": {
-      "total_cells_modified": 512,
-      "ve_cells_modified": 256,
-      "ign_cells_modified": 256,
-      "safety_risk_flagged": false,
-      "risk_confidence": 0.95
-    },
-    "table_comparisons": {
-      "ve": {
-        "before": {
-          "min": 36.78,
-          "max": 103.28,
-          "mean": 75.03,
-          "n_rows": 16,
-          "n_cols": 16,
-          "total_cells": 256,
-          "sample_idle": 41.68,
-          "sample_cruise": 62.98,
-          "sample_peak_load": 90.8,
-          "sample_redline": 92.58
-        },
-        "after": {
-          "min": 39.7,
-          "max": 111.5,
-          "mean": 80.98,
-          "n_rows": 16,
-          "n_cols": 16,
-          "total_cells": 256,
-          "sample_idle": 45.0,
-          "sample_cruise": 68.0,
-          "sample_peak_load": 98.1,
-          "sample_redline": 100.0
-        },
-        "delta_mean_pct": 7.93,
-        "sample_idle_delta": 3.32,
-        "sample_cruise_delta": 5.02,
-        "sample_peak_delta": 7.3,
-        "sample_redline_delta": 7.42
+      "total_cells_modified": 784,
+      "tables_modified": [
+        "ve",
+        "lambda_target",
+        "ignition_base",
+        "oem_pressure_target",
+        "torque_request",
+        "torque_limit",
+        "torque_limit_gear"
+      ],
+      "cells_by_table": {
+        "ve": 256,
+        "lambda_target": 10,
+        "ignition_base": 254,
+        "oem_pressure_target": 141,
+        "torque_request": 91,
+        "torque_limit": 26,
+        "torque_limit_gear": 6
       },
-      "ignition_base": {
-        "before": {
-          "min": -3.31,
-          "max": 43.36,
-          "mean": 21.51,
-          "n_rows": 16,
-          "n_cols": 16,
-          "total_cells": 256,
-          "sample_idle": 34.16,
-          "sample_cruise": 22.44,
-          "sample_peak_load": 12.89,
-          "sample_redline": 19.58
-        },
-        "after": {
-          "min": -6.3,
-          "max": 40.4,
-          "mean": 19.7,
-          "n_rows": 16,
-          "n_cols": 16,
-          "total_cells": 256,
-          "sample_idle": 31.2,
-          "sample_cruise": 19.4,
-          "sample_peak_load": 9.9,
-          "sample_redline": 16.6
-        },
-        "delta_mean_deg": -1.81,
-        "sample_idle_delta": -2.96,
-        "sample_cruise_delta": -3.04,
-        "sample_peak_delta": -2.99,
-        "sample_redline_delta": -2.98
-      }
+      "safety_risk_flagged": false,
+      "risk_confidence": 0.95,
+      "estimated_torque_gain_pct": 9.5
     },
     "dyno_performance": {
       "baseline_torque_nm": 300.0,
-      "tuned_torque_nm": 310.7,
-      "torque_gain_nm": 10.7,
+      "tuned_torque_nm": 328.5,
+      "torque_gain_nm": 28.5,
       "baseline_power_hp": 220.0,
-      "tuned_power_hp": 227.9,
-      "power_gain_hp": 7.9,
-      "total_gain_pct": 3.57
+      "tuned_power_hp": 240.9,
+      "power_gain_hp": 20.9,
+      "total_gain_pct": 9.5
+    },
+    "ve_comparison": {
+      "before_mean": 75.03,
+      "after_mean": 77.43,
+      "delta_mean_pct": 3.2
+    },
+    "ign_comparison": {
+      "before_mean": 21.51,
+      "after_mean": 21.51,
+      "delta_mean_deg": 0.0
     }
   },
   {
@@ -271,88 +269,52 @@
     "display_name": "Clássico 2.0 turbo de swap",
     "induction": "turbo",
     "fuel_id": "e100",
+    "aggressiveness": "balanced",
     "engine_displacement_cc": 1984.0,
     "max_rpm": 7800.0,
-    "elapsed_seconds": 63.065,
+    "elapsed_seconds": 154.261,
     "corrections_summary": {
-      "total_cells_modified": 512,
-      "ve_cells_modified": 256,
-      "ign_cells_modified": 256,
-      "safety_risk_flagged": false,
-      "risk_confidence": 0.95
-    },
-    "table_comparisons": {
-      "ve": {
-        "before": {
-          "min": 47.7,
-          "max": 94.56,
-          "mean": 79.93,
-          "n_rows": 16,
-          "n_cols": 16,
-          "total_cells": 256,
-          "sample_idle": 54.75,
-          "sample_cruise": 78.25,
-          "sample_peak_load": 88.97,
-          "sample_redline": 90.16
-        },
-        "after": {
-          "min": 51.5,
-          "max": 102.1,
-          "mean": 85.16,
-          "n_rows": 16,
-          "n_cols": 16,
-          "total_cells": 256,
-          "sample_idle": 59.1,
-          "sample_cruise": 84.5,
-          "sample_peak_load": 81.9,
-          "sample_redline": 97.4
-        },
-        "delta_mean_pct": 6.54,
-        "sample_idle_delta": 4.35,
-        "sample_cruise_delta": 6.25,
-        "sample_peak_delta": -7.07,
-        "sample_redline_delta": 7.24
+      "total_cells_modified": 806,
+      "tables_modified": [
+        "ve",
+        "lambda_target",
+        "ignition_base",
+        "oem_pressure_target",
+        "torque_request",
+        "torque_limit",
+        "torque_limit_gear"
+      ],
+      "cells_by_table": {
+        "ve": 256,
+        "lambda_target": 40,
+        "ignition_base": 238,
+        "oem_pressure_target": 152,
+        "torque_request": 91,
+        "torque_limit": 24,
+        "torque_limit_gear": 5
       },
-      "ignition_base": {
-        "before": {
-          "min": -5.0,
-          "max": 45.0,
-          "mean": 23.85,
-          "n_rows": 16,
-          "n_cols": 16,
-          "total_cells": 256,
-          "sample_idle": 27.83,
-          "sample_cruise": 25.53,
-          "sample_peak_load": 18.65,
-          "sample_redline": 20.73
-        },
-        "after": {
-          "min": -8.0,
-          "max": 42.0,
-          "mean": 21.13,
-          "n_rows": 16,
-          "n_cols": 16,
-          "total_cells": 256,
-          "sample_idle": 24.8,
-          "sample_cruise": 22.5,
-          "sample_peak_load": 15.7,
-          "sample_redline": 22.7
-        },
-        "delta_mean_deg": -2.72,
-        "sample_idle_delta": -3.03,
-        "sample_cruise_delta": -3.03,
-        "sample_peak_delta": -2.95,
-        "sample_redline_delta": 1.97
-      }
+      "safety_risk_flagged": false,
+      "risk_confidence": 0.95,
+      "estimated_torque_gain_pct": 9.5
     },
     "dyno_performance": {
       "baseline_torque_nm": 300.0,
-      "tuned_torque_nm": 308.8,
-      "torque_gain_nm": 8.8,
+      "tuned_torque_nm": 328.5,
+      "torque_gain_nm": 28.5,
       "baseline_power_hp": 220.0,
-      "tuned_power_hp": 226.5,
-      "power_gain_hp": 6.5,
-      "total_gain_pct": 2.94
+      "tuned_power_hp": 240.9,
+      "power_gain_hp": 20.9,
+      "total_gain_pct": 9.5
+    },
+    "ve_comparison": {
+      "before_mean": 79.93,
+      "after_mean": 82.49,
+      "delta_mean_pct": 3.2
+    },
+    "ign_comparison": {
+      "before_mean": 23.85,
+      "after_mean": 23.85,
+      "delta_mean_deg": 0.0
     }
   }
 ]

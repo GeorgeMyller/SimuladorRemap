@@ -25,9 +25,9 @@ beforeEach(() => localStorage.clear());
 describe("preferências (data-model 4.3)", () => {
   it("padrão sem chave e round-trip com a chave versionada", () => {
     expect(loadPrefs(localStorage)).toEqual(DEFAULT_PREFS);
-    savePrefs({ version: 1, heatmap: "off", lambdaDisplay: "afr", show3d: "below" }, localStorage);
+    savePrefs({ version: 1, heatmap: "off", lambdaDisplay: "afr", show3d: "below", autoApply: "off" }, localStorage);
     expect(JSON.parse(localStorage.getItem(PREFS_KEY)!)).toMatchObject({ lambdaDisplay: "afr" });
-    expect(loadPrefs(localStorage)).toEqual({ version: 1, heatmap: "off", lambdaDisplay: "afr", show3d: "below" });
+    expect(loadPrefs(localStorage)).toEqual({ version: 1, heatmap: "off", lambdaDisplay: "afr", show3d: "below", autoApply: "off" });
   });
 
   it("JSON inválido ou versão diferente cai no padrão; campo inválido usa o padrão do campo", () => {
@@ -36,7 +36,7 @@ describe("preferências (data-model 4.3)", () => {
     localStorage.setItem(PREFS_KEY, JSON.stringify({ version: 2 }));
     expect(loadPrefs(localStorage)).toEqual(DEFAULT_PREFS);
     localStorage.setItem(PREFS_KEY, JSON.stringify({ version: 1, heatmap: "x", lambdaDisplay: "afr", show3d: "side" }));
-    expect(loadPrefs(localStorage)).toEqual({ version: 1, heatmap: "on", lambdaDisplay: "afr", show3d: "side" });
+    expect(loadPrefs(localStorage)).toEqual({ version: 1, heatmap: "on", lambdaDisplay: "afr", show3d: "side", autoApply: "on" });
   });
 
   it("sem storage não lança", () => {

@@ -219,7 +219,7 @@ export function TableEditorCore({ store, tableId, title, warnings = [], variant,
         show3d={show3d}
         onOperation={(op) => store.applyOperation(tableId, op)}
         onQuickTune={() => store.quickTune(tableId)}
-        onAiTune={(level) => void store.aiTune(tableId, level)}
+        onAiTune={(level) => void store.aiTune(undefined, level)}
         aiTuning={snap.aiTuning}
         aiAggressiveness={snap.aiAggressiveness ?? "balanced"}
         onSetAiAggressiveness={(level) => store.setAiAggressiveness(level)}

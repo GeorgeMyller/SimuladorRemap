@@ -1,199 +1,167 @@
-"""Script de treino e calibração (Honing) do LAYA.ai com dados sintéticos.
+"""Script de treino real (MLX LoRA + Cabeças + Calibração) do LAYA.ai via Hone.
 
-Processa 1.000 amostras sintéticas de telemetria automotiva,
-extrai logits do modelo neural e ajusta as temperaturas de calibração
-(ECE e strictly proper scoring rules) para otimização de calibração ECU.
+Executa o pipeline completo do motor de decisões do Hone no Apple Silicon (MLX):
+1. Valida o dataset em `data/hone_tuning_dataset/` (`hone data check`).
+2. Treina LoRA (`Wqkv`, `Wo`, `Wi`) e cabeças (`type_emb`, `head`, `scorer`) com `hone train`.
+3. Calibra temperaturas por faixa (`choice:3-5`, `noul:2`) e avalia no conjunto `test`.
+4. Exporta o checkpoint fundido para `data/laya_ecu_tuned/` (`hone export`) para carga direta pelo `laya.load()`.
 """
 
 from __future__ import annotations
 
 import json
+import shutil
+import subprocess
 import time
 from pathlib import Path
 from typing import Any
 
-import laya
-import laya.calibrate as calib
-import numpy as np
+HONE_BIN = Path("/Volumes/SSD-EXTERNO/hone/.venv/bin/hone")
 
 
-def load_dataset_pairs(file_path: Path) -> list[tuple[str, dict[str, Any], dict[str, Any]]]:
-    """Lê registros JSONL e formata pares (state, questions, targets)."""
-    pairs = []
-    with open(file_path, "r", encoding="utf-8") as f:
-        for line in f:
-            if not line.strip():
-                continue
-            item = json.loads(line)
-            state = item["state"]
-            qs = item["questions"]
-
-            # Vetor one-hot de combustível (choice: 5)
-            fuel_crit = qs["fuel_correction"]["criteria"]
-            fuel_ans = qs["fuel_correction"]["answer"]
-            fuel_vec = [1.0 if opt == fuel_ans else 0.0 for opt in fuel_crit]
-
-            # Vetor one-hot de ignição (choice: 5)
-            ign_crit = qs["ign_correction"]["criteria"]
-            ign_ans = qs["ign_correction"]["answer"]
-            ign_vec = [1.0 if opt == ign_ans else 0.0 for opt in ign_crit]
-
-            # Vetor one-hot de risco de quebra (noul: [não, sim])
-            risk_ans = qs["safety_risk"]["answer"]
-            risk_vec = [0.0, 1.0] if risk_ans else [1.0, 0.0]
-
-            targets = {
-                "fuel_correction": fuel_vec,
-                "ign_correction": ign_vec,
-                "safety_risk": risk_vec,
-            }
-
-            clean_qs = {
-                k: {qk: qv for qk, qv in v.items() if qk != "answer"}
-                for k, v in qs.items()
-            }
-            pairs.append((state, clean_qs, targets))
-    return pairs
-
-
-def evaluate_accuracy(agent: Any, pairs: list[tuple[str, dict[str, Any], dict[str, Any]]]) -> dict[str, float]:
-    """Calcula a acurácia de predição do modelo sobre as perguntas."""
-    correct_fuel = 0
-    correct_ign = 0
-    correct_risk = 0
-    total = len(pairs)
-
-    states = [p[0] for p in pairs]
-    qs = pairs[0][1]
-
-    # Batch prediction
-    chunk_size = 64
-    all_res = []
-    for i in range(0, total, chunk_size):
-        chunk_states = states[i : i + chunk_size]
-        res = agent.predict_batch(chunk_states, qs)
-        all_res.extend(res)
-
-    for (_, _, targets), res in zip(pairs, all_res, strict=True):
-        ans = res.get("answers", {})
-
-        # Combustível
-        pred_fuel = ans.get("fuel_correction", {}).get("choice")
-        target_fuel_idx = int(np.argmax(targets["fuel_correction"]))
-        target_fuel = qs["fuel_correction"]["criteria"][target_fuel_idx]
-        if pred_fuel == target_fuel:
-            correct_fuel += 1
-
-        # Ignição
-        pred_ign = ans.get("ign_correction", {}).get("choice")
-        target_ign_idx = int(np.argmax(targets["ign_correction"]))
-        target_ign = qs["ign_correction"]["criteria"][target_ign_idx]
-        if pred_ign == target_ign:
-            correct_ign += 1
-
-        # Risco de segurança
-        target_risk = bool(targets["safety_risk"][1] > 0.5)
-        # Noul retorna act_probability ou choice
-        risk_choice = ans.get("safety_risk", {}).get("choice")
-        pred_risk = risk_choice in ("yes", "true", True) or ans.get("safety_risk", {}).get("confidence", 0) > 0.5
-        if pred_risk == target_risk:
-            correct_risk += 1
-
+def _extract_metrics(section: dict[str, Any]) -> dict[str, float]:
+    """Extrai acurácias por pergunta do relatório do Hone."""
+    qs = section.get("questions", {})
+    fuel_acc = float(qs.get("fuel_correction", {}).get("accuracy", 0.0))
+    ign_acc = float(qs.get("ign_correction", {}).get("accuracy", 0.0))
+    risk_acc = float(qs.get("safety_risk", {}).get("accuracy", 0.0))
+    overall = round((fuel_acc + ign_acc + risk_acc) / 3.0, 4)
     return {
-        "fuel_accuracy": correct_fuel / total,
-        "ign_accuracy": correct_ign / total,
-        "risk_accuracy": correct_risk / total,
-        "overall_accuracy": (correct_fuel + correct_ign + correct_risk) / (total * 3),
+        "fuel_accuracy": round(fuel_acc, 4),
+        "ign_accuracy": round(ign_acc, 4),
+        "risk_accuracy": round(risk_acc, 4),
+        "overall_accuracy": overall,
     }
 
 
 def hone_model(
-    train_file: Path,
-    val_file: Path,
+    data_dir: Path,
+    run_dir: Path,
+    export_dir: Path,
     output_calib: Path,
+    *,
+    epochs: int = 4,
+    batch: int = 16,
+    lr: float = 2.5e-4,
 ) -> dict[str, Any]:
-    """Executa o pipeline de treino/calibração com métricas antes e depois."""
-    print("=" * 70)
-    print("INICIANDO CALIBRAÇÃO E TREINO (HONING) DO LAYA.AI COM DADOS SINTÉTICOS")
-    print("=" * 70)
-
+    """Executa o pipeline de fine-tuning MLX e exportação do LAYA via Hone."""
+    print("=" * 72)
+    print("INICIANDO FINE-TUNING REAL (MLX LoRA) DO LAYA.AI VIA HONE")
+    print("=" * 72)
     t0 = time.perf_counter()
-    agent = laya.load()
-    device = getattr(agent, "device", "cpu")
-    print(f"[*] Modelo LAYA carregado com sucesso (dispositivo: {device})")
 
-    print(f"[*] Carregando dados sintéticos:\n    Treino: {train_file}\n    Validação: {val_file}")
-    train_pairs = load_dataset_pairs(train_file)
-    val_pairs = load_dataset_pairs(val_file)
-    total_samples = len(train_pairs) + len(val_pairs)
-    print(f"[*] Total de amostras carregadas: {total_samples} (800 treino / 200 validação)")
+    if run_dir.exists():
+        shutil.rmtree(run_dir)
+    if export_dir.exists():
+        shutil.rmtree(export_dir)
 
-    # 1. Avaliação Baseline (Antes do Hone)
-    print("\n--- AVALIAÇÃO BASELINE (PRÉ-CALIBRAÇÃO) ---")
-    metrics_before = evaluate_accuracy(agent, val_pairs)
-    print(f"    Acurácia Combustível (VE): {metrics_before['fuel_accuracy'] * 100:.2f}%")
-    print(f"    Acurácia Ponto de Ignição: {metrics_before['ign_accuracy'] * 100:.2f}%")
-    print(f"    Detecção Risco / Knock:    {metrics_before['risk_accuracy'] * 100:.2f}%")
-    print(f"    Acurácia Média Global:     {metrics_before['overall_accuracy'] * 100:.2f}%")
+    cmd_check = [
+        str(HONE_BIN),
+        "data",
+        "check",
+        "--data",
+        str(data_dir),
+        "--model",
+        "convaiinnovations/laya",
+    ]
+    subprocess.run(cmd_check, check=True)  # noqa: S603
 
-    # 2. Coleta de Logits do Modelo
-    print("\n[*] Coletando logits e alvos supervisionados (forward passes)...")
-    t_fwd = time.perf_counter()
-    train_records = calib.records_from_labeled(agent, train_pairs)
-    fwd_time = time.perf_counter() - t_fwd
-    print(f"    {len(train_records)} registros rotulados gerados em {fwd_time:.2f}s "
-          f"({fwd_time / len(train_records) * 1000:.2f}ms/registro)")
+    cmd_train = [
+        str(HONE_BIN),
+        "train",
+        "--data",
+        str(data_dir),
+        "--model",
+        "convaiinnovations/laya",
+        "--out",
+        str(run_dir),
+        "--epochs",
+        str(epochs),
+        "--batch",
+        str(batch),
+        "--lr",
+        str(lr),
+        "--baseline",
+    ]
+    subprocess.run(cmd_train, check=True)  # noqa: S603
 
-    # 3. Ajuste de Temperaturas (Hone)
-    print("\n[*] Otimizando temperaturas e curvas de calibração de probabilidade (Hone)...")
-    t_fit = time.perf_counter()
-    fit_res = agent.fit_temperatures(train_records, compute_ece=True, seed=42)
-    fit_time = time.perf_counter() - t_fit
+    cmd_export = [
+        str(HONE_BIN),
+        "export",
+        "--run",
+        str(run_dir),
+        "--out",
+        str(export_dir),
+    ]
+    subprocess.run(cmd_export, check=True)  # noqa: S603
 
-    temp_scalars = fit_res.get("temperature", [])
-    print(f"    Otimização concluída em {fit_time:.3f}s")
-    print(f"    Escalares de temperatura ajustados: {temp_scalars}")
-    if "report" in fit_res:
-        rep = fit_res["report"]
-        print(f"    Amostras avaliadas no ECE: {rep.get('n', 0)}")
+    report = json.loads((run_dir / "report.json").read_text(encoding="utf-8"))
+    metrics_before = _extract_metrics(report.get("baseline", {}))
+    metrics_after = _extract_metrics(report.get("test", {}))
 
-    # 4. Avaliação Pós-Hone
-    print("\n--- AVALIAÇÃO PÓS-TREINO / CALIBRAÇÃO (PÓS-HONING) ---")
-    metrics_after = evaluate_accuracy(agent, val_pairs)
-    print(f"    Acurácia Combustível (VE): {metrics_after['fuel_accuracy'] * 100:.2f}%")
-    print(f"    Acurácia Ponto de Ignição: {metrics_after['ign_accuracy'] * 100:.2f}%")
-    print(f"    Detecção Risco / Knock:    {metrics_after['risk_accuracy'] * 100:.2f}%")
-    print(f"    Acurácia Média Global:     {metrics_after['overall_accuracy'] * 100:.2f}%")
+    agent_cfg = json.loads((export_dir / "rl_agent_config.json").read_text(encoding="utf-8"))
+    cal_info = report.get("calibration") or {}
+    calib_payload = {
+        "version": 2,
+        "temperature": cal_info.get("temperature", agent_cfg.get("temperature", [1.0, 1.0, 1.0])),
+        "temperature_by_options": cal_info.get(
+            "temperature_by_options",
+            agent_cfg.get("temperature_by_options", {}),
+        ),
+        "model_id_or_path": str(export_dir),
+        "subfolder": None,
+        "config": agent_cfg,
+    }
+    output_calib.write_text(
+        json.dumps(calib_payload, indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
 
-    # 5. Salva perfil calibrado
-    output_calib.parent.mkdir(parents=True, exist_ok=True)
-    agent.save_calibration(str(output_calib))
-    print(f"\n[+] Perfil de calibração neural salvo com sucesso em: {output_calib}")
+    total_time = round(time.perf_counter() - t0, 2)
+    examples = report.get("examples", {})
+    train_n = int(examples.get("train", {}).get("states", 0))
+    val_n = int(examples.get("valid", {}).get("states", 0))
+    test_n = int(examples.get("test", {}).get("states", 0))
 
-    total_time = time.perf_counter() - t0
-    print(f"[+] Processo concluído em {total_time:.2f}s!")
+    print("\n--- RESUMO PÓS-TREINO HONE (MLX) ---")
+    print(f"    Baseline -> Global: {metrics_before['overall_accuracy'] * 100:.2f}%")
+    print(f"    Pós-Hone -> Combustível: {metrics_after['fuel_accuracy'] * 100:.2f}%")
+    print(f"    Pós-Hone -> Ignição:     {metrics_after['ign_accuracy'] * 100:.2f}%")
+    print(f"    Pós-Hone -> Risco/Knock: {metrics_after['risk_accuracy'] * 100:.2f}%")
+    print(f"    Pós-Hone -> Global:      {metrics_after['overall_accuracy'] * 100:.2f}%")
+    print(f"    Checkpoint exportado:    {export_dir}")
 
     return {
-        "samples_total": total_samples,
-        "train_samples": len(train_pairs),
-        "val_samples": len(val_pairs),
-        "device": str(device),
+        "engine": "hone-mlx-decision",
+        "samples_total": train_n + val_n + test_n,
+        "train_samples": train_n,
+        "val_samples": val_n,
+        "test_samples": test_n,
+        "device": "mlx-applegpu",
+        "epochs": epochs,
+        "trainable_parameters": report.get("trainable_parameters"),
+        "peak_memory_gb": report.get("peak_memory_gb"),
         "metrics_before": metrics_before,
         "metrics_after": metrics_after,
-        "temperatures": temp_scalars,
-        "total_time_s": round(total_time, 2),
+        "temperatures": calib_payload["temperature"],
+        "temperature_by_options": calib_payload["temperature_by_options"],
+        "total_time_s": total_time,
+        "exported_model_path": str(export_dir),
         "calibration_path": str(output_calib),
     }
 
 
 if __name__ == "__main__":
     base_dir = Path(__file__).resolve().parent.parent
-    tr_path = base_dir / "data" / "synthetic_tuning_train.jsonl"
-    vl_path = base_dir / "data" / "synthetic_tuning_val.jsonl"
-    out_calib = base_dir / "data" / "laya_tuning_calibration.json"
+    d_dir = base_dir / "data" / "hone_tuning_dataset"
+    r_dir = base_dir / "data" / "hone_laya_run"
+    e_dir = base_dir / "data" / "laya_ecu_tuned"
+    c_path = base_dir / "data" / "laya_tuning_calibration.json"
 
-    res = hone_model(tr_path, vl_path, out_calib)
+    res = hone_model(d_dir, r_dir, e_dir, c_path)
     summary_path = base_dir / "data" / "honing_training_summary.json"
-    with open(summary_path, "w", encoding="utf-8") as f:
-        json.dump(res, f, indent=2, ensure_ascii=False)
+    summary_path.write_text(
+        json.dumps(res, indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
     print(f"[+] Resumo da calibração salvo em: {summary_path}")
