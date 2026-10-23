@@ -20,6 +20,8 @@ class DummyLayaAgent:
         self,
         states: list[str],
         questions: dict[str, Any],
+        *args: Any,
+        **kwargs: Any,
     ) -> list[dict[str, Any]]:
         results = []
         for _ in states:

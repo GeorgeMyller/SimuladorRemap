@@ -20,7 +20,7 @@ from simremap.ecu.tables import Table2D, Table3D
 log = get_logger("simremap.ai")
 
 EPSILON: Final[float] = 1e-4
-CHUNK_SIZE: Final[int] = 64
+CHUNK_SIZE: Final[int] = 32
 STEP_RATIO_LIGHT: Final[float] = 0.4
 STEP_DEG_LIGHT: Final[float] = 0.5
 STEP_DEG_HEAVY_RATIO: Final[float] = 1.5
@@ -154,7 +154,12 @@ class LayaModelHolder:
             unique_missing = list(dict.fromkeys(states[i] for i in missing_indices))
             for i in range(0, len(unique_missing), CHUNK_SIZE):
                 chunk_states = unique_missing[i : i + CHUNK_SIZE]
-                chunk_preds = agent.predict_batch(chunk_states, questions)
+                try:
+                    chunk_preds = agent.predict_batch(
+                        chunk_states, questions, batch_size=16
+                    )
+                except TypeError:
+                    chunk_preds = agent.predict_batch(chunk_states, questions)
                 for s, p in zip(chunk_states, chunk_preds, strict=True):
                     cls._cache[s] = p
 

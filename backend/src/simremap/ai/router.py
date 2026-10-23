@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 from typing import Annotated, Any, Final
 
 from fastapi import APIRouter, Body, Path, Request
@@ -57,4 +58,4 @@ async def ai_tune_calibration(
     stock_fuel = getattr(vehicle, "stock_fuel_id", "e100")
 
     service = AiTuningService(catalog)
-    return service.tune_calibration(calib, body, fuel_id=stock_fuel)
+    return await asyncio.to_thread(service.tune_calibration, calib, body, fuel_id=stock_fuel)

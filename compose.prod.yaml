@@ -8,7 +8,7 @@ services:
     environment:
       SIMREMAP_ENV: prod
     cpus: 2.0
-    mem_limit: 3g
+    mem_limit: 4g
     pids_limit: 256
     restart: unless-stopped
     read_only: true
