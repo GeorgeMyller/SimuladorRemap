@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 from typing import Any, ClassVar, Final
 
@@ -97,6 +98,14 @@ class LayaModelHolder:
         cand = (Path("data") / rel_name).resolve()
         if cand.exists():
             return cand
+        env_data = os.environ.get("SIMREMAP_DATA_DIR")
+        if env_data:
+            cand_env = (Path(env_data) / rel_name).resolve()
+            if cand_env.exists():
+                return cand_env
+        cand_root = (Path("/data") / rel_name).resolve()
+        if cand_root.exists():
+            return cand_root
         root = Path(__file__).resolve().parents[4]
         return (root / "data" / rel_name).resolve()
 

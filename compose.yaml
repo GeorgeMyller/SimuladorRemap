@@ -18,6 +18,7 @@ services:
       - "127.0.0.1:8000:8000"   # só loopback (D-32); 0.0.0.0 exige SIMREMAP_BIND_PUBLIC=true
     volumes:
       - simremap-data:/data
+      - ./data:/app/data:ro
     environment:
       SIMREMAP_ENV: ${SIMREMAP_ENV:-prod}
       SIMREMAP_LOG_LEVEL: ${SIMREMAP_LOG_LEVEL:-INFO}
