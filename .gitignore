@@ -50,9 +50,9 @@ _reversa_docs/.logs/
 _reversa_docs/.backup-*/
 .vlm-AIStack/reversa/snapshots/
 
-# --- Stack VLM: estado local ---
-.vlm-AIStack/meta/.update-check.json
-.vlm-AIStack/meta/backups/
+# --- Stack VLM e Agentes (apenas local) ---
+.vlm-AIStack/
+.agents
 .ag-kit-backups
 .claude/settings.local.json
 
