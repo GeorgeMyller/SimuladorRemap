@@ -162,7 +162,7 @@ export function EcuWorkspace({ sessionId, deps, onOpenSession }: EcuWorkspacePro
   const active = store.activeItem();
   const activeTableId = active ? store.resolveTableId(active) : null;
   const liveTables = Object.values(snap.tables).map((t) => ({ tableId: t.tableId, label: labelOf(t.tableId), live: store.isLiveTunable(t.tableId) }));
-  const version = save.version || cal.version;
+  const version = save.version || cal?.version || 1;
 
   const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
     const mod = e.ctrlKey || e.metaKey;

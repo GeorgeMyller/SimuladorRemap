@@ -121,3 +121,22 @@ async def test_ai_tune_validation_error(client: httpx.AsyncClient) -> None:
         json={"max_fuel_step_pct": 50.0},
     )
     assert resp.status_code == 422
+
+
+async def test_ai_tune_standalone_profile(client: httpx.AsyncClient) -> None:
+    """Garante compatibilidade total com perfil de ECU standalone (ft-pro)."""
+    cal_id = "stock-classic-20t-swap-ft-pro"
+    payload = {
+        "target_table_ids": ["ve", "ignition_base", "boost_target", "lambda_target"],
+        "aggressiveness": "race",
+    }
+    resp = await client.post(f"/api/v1/calibrations/{cal_id}/ai-tune", json=payload)
+    assert resp.status_code == 200, resp.text
+    data = resp.json()
+
+    assert data["total_cells_modified"] > 0
+    table_ids = {c["table_id"] for c in data["corrections"]}
+    assert "ve" in table_ids
+    assert "ignition_base" in table_ids
+    assert "boost_target" in table_ids
+    assert "lambda_target" in table_ids

@@ -25,12 +25,16 @@ Uso::
 
 from __future__ import annotations
 
+import contextlib
 import logging
+import os
 import re
 import sys
 import traceback
 from collections.abc import Mapping
 from datetime import UTC, datetime
+from logging.handlers import RotatingFileHandler
+from pathlib import Path
 from typing import IO, Any, Final
 
 import orjson
@@ -214,6 +218,34 @@ def configure_logging(level: str = "INFO", stream: IO[str] | None = None) -> log
         if getattr(existing, _HANDLER_MARK, False):
             root.removeHandler(existing)
     root.addHandler(handler)
+
+    # Anexa RotatingFileHandler para gravação persistente em arquivo de log
+    log_file_cand: Path | None = None
+    env_file = os.environ.get("SIMREMAP_LOG_FILE")
+    env_data = os.environ.get("SIMREMAP_DATA_DIR")
+    if env_file:
+        log_file_cand = Path(env_file).resolve()
+    elif env_data:
+        log_file_cand = (Path(env_data) / "logs" / "simremap.log").resolve()
+    elif Path("/data/logs").exists() or Path("/data").exists():
+        log_file_cand = Path("/data/logs/simremap.log").resolve()
+    else:
+        root_data = Path(__file__).resolve().parents[4] / "data" / "logs" / "simremap.log"
+        if root_data.parent.parent.exists():
+            log_file_cand = root_data.resolve()
+        else:
+            log_file_cand = Path("data/logs/simremap.log").resolve()
+
+    if log_file_cand is not None:
+        with contextlib.suppress(Exception):
+            log_file_cand.parent.mkdir(parents=True, exist_ok=True)
+            f_handler = RotatingFileHandler(
+                log_file_cand, maxBytes=15 * 1024 * 1024, backupCount=5, encoding="utf-8"
+            )
+            f_handler.setFormatter(_build_formatter())
+            setattr(f_handler, _HANDLER_MARK, True)
+            root.addHandler(f_handler)
+
     root.setLevel(level)
     logging.getLogger("simremap").setLevel(logging.NOTSET)  # herda o nível da raiz
 

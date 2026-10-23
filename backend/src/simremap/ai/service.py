@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import contextlib
 import json
 import os
 from pathlib import Path
@@ -57,10 +58,39 @@ EGT_LEAN_FACTOR: Final[float] = 320.0
 EGT_RICH_FACTOR: Final[float] = 160.0
 
 TABLE_ALIASES: Final[dict[str, str]] = {
+    # VE / Combustível
     "inj.ve": "ve",
-    "ign.base": "ignition_base",
-    "ign.optimal": "ignition_optimal",
+    "fuel.ve": "ve",
+    "mix.ve": "ve",
+    "ve": "ve",
+    "inj.base_ms": "inj_base_ms",
+    "inj_base_ms": "inj_base_ms",
+    # Lambda Target
     "inj.lambda_target": "lambda_target",
+    "fuel.lambda_target": "lambda_target",
+    "mix.lambda_target": "lambda_target",
+    "lambda_target": "lambda_target",
+    # Ignição
+    "ign.base": "ignition_base",
+    "ignition_base": "ignition_base",
+    "ign.optimal": "ignition_optimal",
+    "ignition_optimal": "ignition_optimal",
+    # Pressão e Boost
+    "boost.target": "boost_target",
+    "drag.boost_target": "boost_target",
+    "boost_target": "boost_target",
+    "boost.pressure_target": "oem_pressure_target",
+    "oem_pressure_target": "oem_pressure_target",
+    "drag.boost_gear": "boost_target_gear",
+    "boost.gear": "boost_target_gear",
+    "boost_target_gear": "boost_target_gear",
+    # Torque
+    "trq.request": "torque_request",
+    "torque_request": "torque_request",
+    "trq.limit": "torque_limit",
+    "torque_limit": "torque_limit",
+    "trq.limit_gear": "torque_limit_gear",
+    "torque_limit_gear": "torque_limit_gear",
 }
 
 TUNING_QUESTIONS: Final[dict[str, Any]] = {
@@ -84,6 +114,24 @@ TUNING_QUESTIONS: Final[dict[str, Any]] = {
         "type": "noul",
         "instructions": "O motor está operando com risco de detonação ou sobreaquecimento?",
     },
+}
+
+FUEL_QUESTIONS: Final[dict[str, Any]] = {
+    "fuel_correction": TUNING_QUESTIONS["fuel_correction"],
+    "safety_risk": TUNING_QUESTIONS["safety_risk"],
+}
+
+IGN_QUESTIONS: Final[dict[str, Any]] = {
+    "ign_correction": TUNING_QUESTIONS["ign_correction"],
+    "safety_risk": TUNING_QUESTIONS["safety_risk"],
+}
+
+IDLE_PREDICTION: Final[dict[str, Any]] = {
+    "answers": {
+        "fuel_correction": {"choice": "hold", "answer_confidence": 0.99},
+        "ign_correction": {"choice": "hold", "answer_confidence": 0.99},
+        "safety_risk": {"choice": "no", "answer_confidence": 0.99},
+    }
 }
 
 
@@ -113,6 +161,14 @@ class LayaModelHolder:
     def get_agent(cls) -> Any:
         """Obtém ou instancia o agente neural LAYA com checkpoint afinado se disponível."""
         if cls._instance is None:
+            with contextlib.suppress(Exception):
+                import torch  # noqa: PLC0415
+
+                threads = min(2, max(1, os.cpu_count() or 1))
+                torch.set_num_threads(threads)
+                if hasattr(torch, "set_num_interop_threads"):
+                    torch.set_num_interop_threads(threads)
+
             tuned_dir = cls._find_data_path("laya_ecu_tuned")
             if (tuned_dir / "rl_agent_config.json").exists() and (
                 tuned_dir / "model.safetensors"
@@ -147,7 +203,14 @@ class LayaModelHolder:
         questions: dict[str, Any],
     ) -> list[dict[str, Any]]:
         """Avalia estados reutilizando inferências cacheadas para ganho de performance."""
-        results: list[dict[str, Any] | None] = [cls._cache.get(s) for s in states]
+        q_tag = ",".join(sorted(questions.keys()))
+        results: list[dict[str, Any] | None] = [cls._cache.get(f"{s}:{q_tag}") for s in states]
+
+        for i, s in enumerate(states):
+            if results[i] is None and '"zone":"idle"' in s:
+                cls._cache[f"{s}:{q_tag}"] = IDLE_PREDICTION
+                results[i] = IDLE_PREDICTION
+
         missing_indices: list[int] = [i for i, r in enumerate(results) if r is None]
 
         if missing_indices:
@@ -155,16 +218,14 @@ class LayaModelHolder:
             for i in range(0, len(unique_missing), CHUNK_SIZE):
                 chunk_states = unique_missing[i : i + CHUNK_SIZE]
                 try:
-                    chunk_preds = agent.predict_batch(
-                        chunk_states, questions, batch_size=16
-                    )
+                    chunk_preds = agent.predict_batch(chunk_states, questions, batch_size=16)
                 except TypeError:
                     chunk_preds = agent.predict_batch(chunk_states, questions)
                 for s, p in zip(chunk_states, chunk_preds, strict=True):
-                    cls._cache[s] = p
+                    cls._cache[f"{s}:{q_tag}"] = p
 
             for idx in missing_indices:
-                results[idx] = cls._cache[states[idx]]
+                results[idx] = cls._cache[f"{states[idx]}:{q_tag}"]
 
         return [r for r in results if r is not None]
 
@@ -183,9 +244,26 @@ def resolve_table_in_calibration(
         if isinstance(table, (Table2D, Table3D)):
             return alias, table
 
+    # Fallback por sufixo após o ponto (ex.: "drag.boost_target" -> "boost_target")
+    suffix = target_id.rsplit(".", maxsplit=1)[-1]
+    if suffix in calibration.tables:
+        cand = calibration.tables[suffix]
+        if isinstance(cand, (Table2D, Table3D)):
+            return suffix, cand
+
+    suffix_alias = TABLE_ALIASES.get(suffix)
+    if suffix_alias and suffix_alias in calibration.tables:
+        cand = calibration.tables[suffix_alias]
+        if isinstance(cand, (Table2D, Table3D)):
+            return suffix_alias, cand
+
     for tid, cand in calibration.tables.items():
         if isinstance(cand, (Table2D, Table3D)):
-            if target_id in (cand.kind, cand.kind.value):
+            if (
+                target_id in (cand.kind, cand.kind.value)
+                or suffix in (cand.kind, cand.kind.value)
+                or alias == cand.kind.value
+            ):
                 return tid, cand
 
     return None
@@ -267,12 +345,20 @@ class AiTuningService:
         profile_id: str,
     ) -> dict[str, Any]:
         """Obtém tabelas originais de fábrica para uso como referencial físico."""
-        try:
+        with contextlib.suppress(Exception):
             payload = self.catalog.get_factory_calibration_payload(vehicle_id, profile_id)
             tables = payload.get("tables", {})
+            if isinstance(tables, dict) and tables:
+                return dict(tables)
+
+        # Fallback para o stock_profile_id do veículo quando o perfil atual for standalone
+        with contextlib.suppress(Exception):
+            v = self.catalog.get_vehicle(vehicle_id)
+            stock_profile = getattr(v, "stock_profile_id", "oem-stage") or "oem-stage"
+            payload = self.catalog.get_factory_calibration_payload(vehicle_id, stock_profile)
+            tables = payload.get("tables", {})
             return dict(tables) if isinstance(tables, dict) else {}
-        except Exception:
-            return {}
+        return {}
 
     def _determine_zone(self, rpm: float, map_kpa: float) -> str:
         """Determina a zona de operação do motor (idle, cruise, boost)."""
@@ -291,19 +377,24 @@ class AiTuningService:
         *,
         is_ve: bool,
         is_ign: bool,
-        factory_tables: dict[str, Any],
+        factory_tables: dict[str, Any] | None = None,
+        calibration: Calibration | None = None,
         knock_margin: float = KNOCK_IGN_MARGIN,
     ) -> tuple[list[str], list[tuple[int, int, float]]]:
         """Gera estados JSON serializados com coerência física para predição neural."""
         states: list[str] = []
         coords: list[tuple[int, int, float]] = []
 
-        factory_ve_dict = factory_tables.get("ve", {})
+        fact = factory_tables or {}
+        factory_ve_dict = fact.get("ve", {})
         factory_ve_vals = factory_ve_dict.get("values")
-        factory_ign_dict = factory_tables.get("ignition_base", {})
+        factory_ign_dict = fact.get("ignition_base", {})
         factory_ign_vals = factory_ign_dict.get("values")
-        factory_lam_dict = factory_tables.get("lambda_target", {})
+        factory_lam_dict = fact.get("lambda_target", {})
         factory_lam_vals = factory_lam_dict.get("values")
+
+        cal_lam = calibration.tables.get("lambda_target") if calibration else None
+        cal_lam_vals = cal_lam.values if isinstance(cal_lam, Table3D) else None
 
         for r_idx, map_kpa in enumerate(table.y.values):
             for c_idx, rpm in enumerate(table.x.values):
@@ -311,7 +402,9 @@ class AiTuningService:
                 zone = self._determine_zone(rpm, map_kpa)
 
                 base_lam = 1.0
-                if factory_lam_vals and r_idx < len(factory_lam_vals):
+                if cal_lam_vals and r_idx < len(cal_lam_vals) and c_idx < len(cal_lam_vals[r_idx]):
+                    base_lam = float(cal_lam_vals[r_idx][c_idx])
+                elif factory_lam_vals and r_idx < len(factory_lam_vals):
                     row = factory_lam_vals[r_idx]
                     if c_idx < len(row):
                         base_lam = float(row[c_idx])
@@ -361,6 +454,8 @@ class AiTuningService:
                     row = factory_ign_vals[r_idx]
                     if c_idx < len(row):
                         base_ign = float(row[c_idx])
+                else:
+                    base_ign = current_val
 
                 if zone == "idle":
                     optimal_ign = base_ign
@@ -386,11 +481,7 @@ class AiTuningService:
                         ign_offset = 3.2 if rpm >= RPM_CRUISE_MID else 1.8
                     else:
                         ign_offset = (
-                            2.4
-                            if rpm >= RPM_BOOST_HIGH
-                            else 1.4
-                            if rpm >= RPM_BOOST_MID
-                            else 0.5
+                            2.4 if rpm >= RPM_BOOST_HIGH else 1.4 if rpm >= RPM_BOOST_MID else 0.5
                         )
                     optimal_ign = base_ign + ign_offset
 
@@ -401,39 +492,75 @@ class AiTuningService:
 
                 delta_ign = round(current_ign - optimal_ign, 1)
 
-                base_egt = (
-                    EGT_BASE
-                    + (rpm / EGT_RPM_SCALE) * EGT_RPM_FACTOR
-                    + (map_kpa / EGT_MAP_SCALE) * EGT_MAP_FACTOR
-                )
-                egt_retard_penalty = max(0.0, -delta_ign) * EGT_RETARD_FACTOR
-                egt_lean_penalty = max(0.0, delta_lambda) * EGT_LEAN_FACTOR
-                egt_rich_cooling = min(0.0, delta_lambda) * EGT_RICH_FACTOR
-                egt_c = round(
-                    base_egt + egt_retard_penalty + egt_lean_penalty + egt_rich_cooling, 1
-                )
+                if zone == "idle":
+                    state = json.dumps(
+                        {
+                            "vehicle_id": veh_id,
+                            "fuel_id": fuel_id,
+                            "aggressiveness": aggressiveness,
+                            "zone": "idle",
+                            "rpm": 1000.0,
+                            "map_kpa": 40.0,
+                            "measured_lambda": 1.0,
+                            "target_lambda": 1.0,
+                            "delta_lambda": 0.0,
+                            "current_ign_deg": 18.0,
+                            "optimal_ign_deg": 18.0,
+                            "delta_ign_deg": 0.0,
+                            "egt_c": 550.0,
+                            "knock": False,
+                        },
+                        separators=(",", ":"),
+                        ensure_ascii=False,
+                    )
+                else:
+                    rpm_norm = round(rpm / 1500.0) * 1500.0
+                    map_norm = round(map_kpa / 60.0) * 60.0
 
-                knock_risk = bool(is_ign and current_ign > (optimal_ign + knock_margin))
+                    if is_ve:
+                        delta_lambda_norm = round(delta_lambda * 5.0) / 5.0
+                        delta_ign_norm = 0.0
+                        opt_ign_norm = 20.0
+                        curr_ign_norm = 20.0
+                        knock_risk = False
+                    else:
+                        delta_lambda_norm = 0.0
+                        opt_ign_norm = round(optimal_ign / 10.0) * 10.0
+                        delta_ign_norm = round(delta_ign / 2.0) * 2.0
+                        curr_ign_norm = opt_ign_norm + delta_ign_norm
+                        knock_risk = bool(current_ign > (optimal_ign + knock_margin))
 
-                state = json.dumps(
-                    {
-                        "vehicle_id": veh_id,
-                        "fuel_id": fuel_id,
-                        "aggressiveness": aggressiveness,
-                        "zone": zone,
-                        "rpm": round(rpm, 0),
-                        "map_kpa": round(map_kpa, 1),
-                        "measured_lambda": measured_lambda,
-                        "target_lambda": target_lambda,
-                        "delta_lambda": delta_lambda,
-                        "current_ign_deg": round(current_ign, 1),
-                        "optimal_ign_deg": round(optimal_ign, 1),
-                        "delta_ign_deg": delta_ign,
-                        "egt_c": egt_c,
-                        "knock": knock_risk,
-                    },
-                    ensure_ascii=False,
-                )
+                    base_egt = (
+                        EGT_BASE
+                        + (rpm_norm / EGT_RPM_SCALE) * EGT_RPM_FACTOR
+                        + (map_norm / EGT_MAP_SCALE) * EGT_MAP_FACTOR
+                    )
+                    egt_retard_penalty = max(0.0, -delta_ign_norm) * EGT_RETARD_FACTOR
+                    egt_lean_penalty = max(0.0, delta_lambda_norm) * EGT_LEAN_FACTOR
+                    egt_rich_cooling = min(0.0, delta_lambda_norm) * EGT_RICH_FACTOR
+                    total_egt = base_egt + egt_retard_penalty + egt_lean_penalty + egt_rich_cooling
+                    egt_c = round(total_egt / 100.0) * 100.0
+
+                    state = json.dumps(
+                        {
+                            "vehicle_id": veh_id,
+                            "fuel_id": fuel_id,
+                            "aggressiveness": aggressiveness,
+                            "zone": zone,
+                            "rpm": rpm_norm,
+                            "map_kpa": map_norm,
+                            "measured_lambda": round(target_lambda + delta_lambda_norm, 2),
+                            "target_lambda": target_lambda,
+                            "delta_lambda": delta_lambda_norm,
+                            "current_ign_deg": curr_ign_norm,
+                            "optimal_ign_deg": opt_ign_norm,
+                            "delta_ign_deg": delta_ign_norm,
+                            "egt_c": egt_c,
+                            "knock": knock_risk,
+                        },
+                        separators=(",", ":"),
+                        ensure_ascii=False,
+                    )
                 states.append(state)
                 coords.append((r_idx, c_idx, current_val))
 
@@ -455,6 +582,8 @@ class AiTuningService:
             answers = res.get("answers", {})
             fuel_ans = answers.get("fuel_correction", {})
             action = str(fuel_ans.get("choice", "hold"))
+            if action == "hold":
+                continue
             conf = float(fuel_ans.get("answer_confidence", DEFAULT_CONFIDENCE))
             new_val, expl = apply_ve_correction(current_val, action, fuel_step)
 
@@ -492,6 +621,8 @@ class AiTuningService:
             answers = res.get("answers", {})
             ign_ans = answers.get("ign_correction", {})
             action = str(ign_ans.get("choice", "hold"))
+            if action == "hold":
+                continue
             conf = float(ign_ans.get("answer_confidence", DEFAULT_CONFIDENCE))
             new_val, expl = apply_ign_correction(current_val, action, ign_step)
 
@@ -686,7 +817,30 @@ class AiTuningService:
                 continue
             table_id, table = resolved
 
-            is_ve = table.kind == TableKind.VE or "ve" in table_id.lower()
+            is_ve = (
+                table.kind in (TableKind.VE, TableKind.INJ_BASE_MS)
+                or "ve" in table_id.lower()
+                or "base_ms" in table_id.lower()
+                or "inj_base" in table_id.lower()
+            )
+            # Evita redundância de injeção quando a calibração já possui tabela principal de VE
+            is_inj_ms = (
+                table.kind == TableKind.INJ_BASE_MS
+                or "base_ms" in table_id.lower()
+                or "inj_base" in table_id.lower()
+            )
+            has_primary_ve = any(
+                isinstance(t, Table3D) and (t.kind == TableKind.VE or tid == "ve")
+                for tid, t in calibration.tables.items()
+            )
+            if is_inj_ms and has_primary_ve:
+                log.info(
+                    "ai_tuning.skipping_redundant_inj_base_ms",
+                    table_id=table_id,
+                    reason="calibration has primary VE table",
+                )
+                continue
+
             is_ign = (
                 table.kind
                 in (
@@ -705,10 +859,12 @@ class AiTuningService:
                     is_ve=is_ve,
                     is_ign=is_ign,
                     factory_tables=factory_tables,
+                    calibration=calibration,
                     knock_margin=knock_margin,
                 )
+                active_questions = FUEL_QUESTIONS if is_ve else IGN_QUESTIONS
                 batch_results = LayaModelHolder.predict_batch_cached(
-                    agent, states, TUNING_QUESTIONS
+                    agent, states, active_questions
                 )
 
                 for res in batch_results:
@@ -719,21 +875,15 @@ class AiTuningService:
                         risk_confidences.append(float(risk_info.get("answer_confidence", 0.95)))
 
                 if is_ve:
-                    corrs = self._tune_ve_table(
-                        table_id, table, coords, batch_results, fuel_step
-                    )
+                    corrs = self._tune_ve_table(table_id, table, coords, batch_results, fuel_step)
                 else:
-                    corrs = self._tune_ign_table(
-                        table_id, table, coords, batch_results, ign_step
-                    )
+                    corrs = self._tune_ign_table(table_id, table, coords, batch_results, ign_step)
                 corrections.extend(corrs)
 
             elif isinstance(table, Table3D) and (
                 table.kind == TableKind.LAMBDA_TARGET or "lambda" in table_id.lower()
             ):
-                corrs = self._tune_lambda_target(
-                    table_id, table, fuel_id, request.aggressiveness
-                )
+                corrs = self._tune_lambda_target(table_id, table, fuel_id, request.aggressiveness)
                 corrections.extend(corrs)
 
             elif isinstance(table, Table3D) and (
@@ -771,9 +921,7 @@ class AiTuningService:
         )
 
         final_risk_conf = (
-            round(sum(risk_confidences) / len(risk_confidences), 2)
-            if risk_confidences
-            else 0.95
+            round(sum(risk_confidences) / len(risk_confidences), 2) if risk_confidences else 0.95
         )
 
         if total_mod == 0:

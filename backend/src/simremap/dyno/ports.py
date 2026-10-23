@@ -251,8 +251,8 @@ class DynoProfileSessionPort:
         state = ack.get("ecu_state", command.ecu_state)
         if state in ("oem", "awaiting_base_setup", "standalone_ready"):
             changes["ecu_state"] = state
-        rt.update(**changes)
         if command.calibration_payload_json and command.calibration_id and command.content_hash:
+            rt.update(**changes)
             rt.activate_calibration(
                 ResolvedCalibration(
                     calibration_id=command.calibration_id,
@@ -265,6 +265,10 @@ class DynoProfileSessionPort:
                     content_hash=command.content_hash,
                 )
             )
+        else:
+            changes["active_calibration_id"] = None
+            changes["active_calibration_version"] = None
+            rt.update(**changes)
         await self.service.repo.save_session(
             rt.view, data_version=rt.data_version, catalog_sha256=rt.catalog_sha256
         )

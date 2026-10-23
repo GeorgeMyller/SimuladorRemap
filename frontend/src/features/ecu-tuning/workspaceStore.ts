@@ -636,6 +636,14 @@ export class WorkspaceStore {
       this.notify("warn", MSG.stockImmutable);
       return false;
     }
+    if (this.snapshot.session?.ecu_state === "awaiting_base_setup") {
+      this.notify("warn", "A ECU selecionada aguarda configuração base antes de permitir tunagem.");
+      return false;
+    }
+    if (this.snapshot.profile && cal.profile_id !== this.snapshot.profile.profile_id) {
+      this.notify("warn", "A calibração ativa não corresponde à ECU instalada. Recarregue a sessão.");
+      return false;
+    }
     if (this.snapshot.aiTuning) return false;
 
     const SETUP_TABLE_CANDIDATES = [
@@ -723,6 +731,7 @@ export class WorkspaceStore {
       );
       return totalApplied > 0;
     } catch (err) {
+      console.error("[AiTune] Erro ao executar tunagem com IA:", err);
       const p = problemOf(err);
       this.notify("error", `Falha no ajuste por IA: ${p.detail}`);
       return false;
@@ -1098,6 +1107,9 @@ export class WorkspaceStore {
         profile,
         session: session ? { ...session, profile_id: result.profile_id, ecu_state: result.ecu_state } : session,
       });
+      if (result.calibration_id) {
+        await this.load();
+      }
       return result;
     } catch (error) {
       const p = problemOf(error);

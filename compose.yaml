@@ -19,10 +19,13 @@ services:
     volumes:
       - simremap-data:/data
       - ./data:/app/data:ro
+      - ./data/logs:/data/logs
     environment:
       SIMREMAP_ENV: ${SIMREMAP_ENV:-prod}
       SIMREMAP_LOG_LEVEL: ${SIMREMAP_LOG_LEVEL:-INFO}
       SIMREMAP_BIND_PUBLIC: ${SIMREMAP_BIND_PUBLIC:-false}
+      SIMREMAP_DATA_DIR: /data
+      SIMREMAP_LOG_FILE: /data/logs/simremap.log
     healthcheck:
       test:
         - CMD

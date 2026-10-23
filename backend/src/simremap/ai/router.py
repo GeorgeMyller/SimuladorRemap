@@ -57,5 +57,30 @@ async def ai_tune_calibration(
 
     stock_fuel = getattr(vehicle, "stock_fuel_id", "e100")
 
+    logger.info(
+        "ai_tuning.request_received",
+        calibration_id=calibration_id,
+        vehicle_id=calib.vehicle_id,
+        profile_id=calib.profile_id,
+        aggressiveness=body.aggressiveness,
+        target_tables=body.target_table_ids,
+    )
     service = AiTuningService(catalog)
-    return await asyncio.to_thread(service.tune_calibration, calib, body, fuel_id=stock_fuel)
+    try:
+        resp = await asyncio.to_thread(service.tune_calibration, calib, body, fuel_id=stock_fuel)
+        logger.info(
+            "ai_tuning.request_completed",
+            calibration_id=calibration_id,
+            total_cells_modified=resp.total_cells_modified,
+            estimated_torque_gain_pct=resp.estimated_torque_gain_pct,
+            safety_risk=resp.safety_risk,
+        )
+        return resp
+    except Exception as exc:
+        logger.error(
+            "ai_tuning.request_failed",
+            calibration_id=calibration_id,
+            error=str(exc),
+            exc_info=True,
+        )
+        raise
