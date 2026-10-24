@@ -108,7 +108,8 @@ class Settings(BaseSettings):
     sim_hz: int = Field(1000, ge=100, le=1000)
     ws_fps: int = Field(50, ge=30, le=60)
     worker_mode: Literal["process", "thread"] = WORKER_MODE_DEFAULT
-    max_active_sessions: int = Field(1, ge=1, le=2)
+    worker_start_timeout_s: float = Field(20.0, gt=0, le=60)
+    max_active_sessions: int = Field(1, ge=1, le=20)
 
     # ---------------------------------------------------------------- feature flags (D-27)
     feature_dyno: bool = True

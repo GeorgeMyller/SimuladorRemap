@@ -15,7 +15,7 @@ services:
         GIT_SHA: ${GIT_SHA:-}
         BUILD_TIME_UTC: ${BUILD_TIME_UTC:-}
     ports:
-      - "127.0.0.1:8000:8000"   # só loopback (D-32); 0.0.0.0 exige SIMREMAP_BIND_PUBLIC=true
+      - "${SIMREMAP_PORT:-8000}:8000"
     volumes:
       - simremap-data:/data
       - ./data:/app/data:ro
@@ -23,7 +23,9 @@ services:
     environment:
       SIMREMAP_ENV: ${SIMREMAP_ENV:-prod}
       SIMREMAP_LOG_LEVEL: ${SIMREMAP_LOG_LEVEL:-INFO}
-      SIMREMAP_BIND_PUBLIC: ${SIMREMAP_BIND_PUBLIC:-false}
+      SIMREMAP_BIND_PUBLIC: ${SIMREMAP_BIND_PUBLIC:-true}
+      SIMREMAP_MAX_ACTIVE_SESSIONS: ${SIMREMAP_MAX_ACTIVE_SESSIONS:-10}
+      SIMREMAP_SIM_HZ: ${SIMREMAP_SIM_HZ:-250}
       SIMREMAP_DATA_DIR: /data
       SIMREMAP_LOG_FILE: /data/logs/simremap.log
     healthcheck:

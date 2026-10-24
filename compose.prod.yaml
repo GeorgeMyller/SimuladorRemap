@@ -7,9 +7,9 @@ services:
     image: simremap:${SIMREMAP_VERSION:-0.1.0}
     environment:
       SIMREMAP_ENV: prod
-    cpus: 2.0
-    mem_limit: 4g
-    pids_limit: 256
+    cpus: ${SIMREMAP_CPUS:-3.5}
+    mem_limit: ${SIMREMAP_MEM_LIMIT:-6g}
+    pids_limit: ${SIMREMAP_PIDS_LIMIT:-512}
     restart: unless-stopped
     read_only: true
     tmpfs:

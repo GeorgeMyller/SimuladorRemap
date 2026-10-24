@@ -23,7 +23,7 @@ Garantias:
   Nenhum restart automático.
 - ``worker.overrun`` (máx. 1/s) quando ≥ 5 % dos ticks de uma janela de 1 s
   excedem ``dt``, com ``overrun_ticks`` e ``real_time_factor``.
-- ``max_active_sessions`` (1, máx. 2): acima disso 409 ``SIM_CAPACITY_EXCEEDED``.
+- ``max_active_sessions`` (1, máx. 20): acima disso 409 ``SIM_CAPACITY_EXCEEDED``.
 """
 
 from __future__ import annotations
@@ -488,6 +488,7 @@ class SimWorkerHost:
 
     @classmethod
     def from_settings(cls, settings: Settings, **overrides: Any) -> SimWorkerHost:
+        overrides.setdefault("start_timeout_s", settings.worker_start_timeout_s)
         config = WorkerConfig(mode=settings.worker_mode, **overrides)
         return cls(
             config,

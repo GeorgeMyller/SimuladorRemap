@@ -80,7 +80,7 @@ def test_database_url_precedence(monkeypatch: pytest.MonkeyPatch) -> None:
         ("ws_fps", 29),
         ("ws_fps", 61),
         ("max_active_sessions", 0),
-        ("max_active_sessions", 3),
+        ("max_active_sessions", 21),
         ("db_pool_size", 0),
         ("db_pool_size", 21),
         ("cache_max_keys", 99),

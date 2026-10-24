@@ -96,7 +96,7 @@ class WorkerConfig(BaseModel):
     heartbeat_interval_s: float = Field(0.5, gt=0, le=5)
     heartbeat_timeout_s: float = Field(2.0, gt=0, le=30)
     stop_timeout_s: float = Field(5.0, gt=0, le=30)
-    start_timeout_s: float = Field(5.0, gt=0, le=60)
+    start_timeout_s: float = Field(20.0, gt=0, le=60)
     log_lines_per_s: int = Field(50, ge=1, le=10_000)
     overrun_window_s: float = Field(1.0, gt=0, le=10)
     overrun_ratio_threshold: float = Field(0.05, gt=0, le=1)
