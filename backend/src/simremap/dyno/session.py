@@ -105,6 +105,7 @@ REALTIME_DEGRADED_SAMPLES: Final = 5
 _CROCKFORD: Final = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"
 SESSION_CALIBRATION_NAME: Final = "Sessão {vehicle} {profile}"
 FLEX_ANCHOR_FUELS: Final = ("e27", "e100")
+STALE_SESSION_MAX_AGE_S: Final = 600.0  # s, 10 min ocioso sem puxada nem clientes
 
 
 def draw_session_seed() -> int:
@@ -454,6 +455,22 @@ class DynoService:
                             await self._close(rt, AbortReason.SESSION_CLOSED)
                 active = self.active_sessions
             if len(active) >= self.host.max_active_sessions:
+                now_utc = datetime.now(UTC)
+                for sid in list(active):
+                    rt = self._sessions.get(sid)
+                    if (
+                        rt is not None
+                        and rt.stream.subscribers == 0
+                        and rt.view.active_run_id is None
+                        and (now_utc - rt.view.created_at).total_seconds() > STALE_SESSION_MAX_AGE_S
+                    ):
+                        age_s = round((now_utc - rt.view.created_at).total_seconds(), 1)
+                        log.info("dyno.reclaim_stale_session", session_id=sid, age_s=age_s)
+                        with contextlib.suppress(Exception):
+                            await self._close(rt, AbortReason.SESSION_CLOSED)
+                        break
+                active = self.active_sessions
+            if len(active) >= self.host.max_active_sessions:
                 raise SimRemapError(
                     f"Limite de {self.host.max_active_sessions} sessão(ões) ativa(s) atingido; "
                     f"sessão ativa: {', '.join(active)}.",
@@ -540,10 +557,13 @@ class DynoService:
         overrides = upgraded.physics
         cal = await self._session_calibration(vehicle, request)
         seed = request.seed if request.seed is not None else draw_session_seed()
+        configured_hz = os.environ.get("SIMREMAP_SIM_HZ")
+        max_hz = int(configured_hz) if configured_hz and configured_hz.isdigit() else request.sim_hz
+        sim_hz = min(request.sim_hz, max_hz)
         # Validação antecipada contra o veículo (sem esperar o setup do worker).
         resolve_config(
             PhysicsConfig(
-                sim_hz=request.sim_hz,
+                sim_hz=sim_hz,
                 seed=seed,
                 faults=list(request.physics_faults),
                 exhaust_backpressure_scale=overrides.exhaust_backpressure_scale,
@@ -558,7 +578,7 @@ class DynoService:
         payload = DynoInitPayload(
             session_id=session_id,
             seed=seed,
-            sim_hz=request.sim_hz,
+            sim_hz=sim_hz,
             vehicle=vehicle,
             fuel=fuel,
             calibration=cal.content,
@@ -584,9 +604,10 @@ class DynoService:
             **options,
         )
         view = SimulationSession(
-            **request.model_dump(exclude={"seed", "calibration_id", "fuel_id"}),
+            **request.model_dump(exclude={"seed", "calibration_id", "fuel_id", "sim_hz"}),
             session_id=session_id,
             seed=seed,
+            sim_hz=sim_hz,
             calibration_id=cal.calibration_id,
             active_calibration_id=cal.calibration_id,
             active_calibration_version=cal.version,
@@ -595,7 +616,7 @@ class DynoService:
             created_at=datetime.now(UTC),
         )
         handle = await self.host.start_session(
-            session_id, TASK_SPEC, payload.model_dump_json().encode("utf-8"), sim_hz=request.sim_hz
+            session_id, TASK_SPEC, payload.model_dump_json().encode("utf-8"), sim_hz=sim_hz
         )
         catalog_sha = self.vehicles.catalog_sha256()
         stored = await self.repo.save_session(
