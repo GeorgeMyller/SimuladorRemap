@@ -310,6 +310,11 @@ export function TableGrid(props: TableGridProps) {
                   aria-selected={selected}
                   aria-label={cellLabel(r, c, v)}
                   data-cell={`${r},${c}`}
+                  onClick={() => {
+                    if (focus.row === r && focus.col === c && !editing && !readOnly) {
+                      startEdit();
+                    }
+                  }}
                   onMouseDown={(e) => {
                     e.preventDefault();
                     onCellMouseDown(r, c, e.shiftKey);

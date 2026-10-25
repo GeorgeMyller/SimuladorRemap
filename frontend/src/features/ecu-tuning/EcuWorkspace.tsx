@@ -67,6 +67,7 @@ export function EcuWorkspace({ sessionId, deps, onOpenSession }: EcuWorkspacePro
   const [showShortcuts, setShowShortcuts] = useState(false);
   const [showVersions, setShowVersions] = useState(false);
   const [versionLabel, setVersionLabel] = useState("");
+  const [mobileTab, setMobileTab] = useState<"editor" | "tables" | "warnings">("editor");
 
   useEffect(() => {
     if (snap.load.kind === "error" && snap.load.code === "SESSION_NOT_FOUND") {
@@ -233,9 +234,10 @@ export function EcuWorkspace({ sessionId, deps, onOpenSession }: EcuWorkspacePro
   };
 
   const activeTable = activeTableId ? snap.tables[activeTableId] : undefined;
+  const totalNavItems = profile.navigation.reduce((acc, s) => acc + s.items.length, 0);
 
   return (
-    <div onKeyDown={onKeyDown} className="flex min-h-[calc(100vh-5rem)] max-h-[calc(100vh-5rem)] flex-col gap-2 text-zinc-100 overflow-hidden">
+    <div onKeyDown={onKeyDown} className="flex min-h-[calc(100vh-5rem)] lg:max-h-[calc(100vh-5rem)] flex-col gap-2 text-zinc-100 lg:overflow-hidden">
       <header className="flex flex-wrap items-center justify-between gap-3 rounded border border-zinc-700 bg-zinc-900 px-3 py-2 flex-shrink-0" style={{ borderLeft: `4px solid ${profile.accent_color}` }}>
         <div>
           <div className="flex items-baseline gap-2">
@@ -271,12 +273,46 @@ export function EcuWorkspace({ sessionId, deps, onOpenSession }: EcuWorkspacePro
       </header>
       <StockCalibrationBanner store={store} />
 
-      <div className="grid flex-1 min-h-0 grid-cols-1 gap-2 lg:grid-cols-[minmax(200px,260px)_minmax(0,1fr)] xl:grid-cols-[minmax(240px,300px)_minmax(0,1fr)_minmax(220px,300px)] overflow-hidden">
-        <aside className="h-full overflow-y-auto rounded border border-zinc-700 bg-zinc-900 lg:min-w-[200px] lg:max-w-[320px] lg:resize-x">
+      {/* Abas de navegação no mobile (RF-mobile para telas < lg) */}
+      <div className="flex items-center gap-1.5 rounded border border-zinc-700 bg-zinc-900 p-1 lg:hidden">
+        <button
+          type="button"
+          onClick={() => setMobileTab("editor")}
+          className={`flex-1 rounded py-1.5 text-xs font-semibold transition-colors ${
+            mobileTab === "editor" ? "bg-amber-500 text-zinc-950 shadow" : "text-zinc-300 hover:bg-zinc-800"
+          }`}
+        >
+          🗺️ Mapa / Tabela
+        </button>
+        <button
+          type="button"
+          onClick={() => setMobileTab("tables")}
+          className={`flex-1 rounded py-1.5 text-xs font-semibold transition-colors ${
+            mobileTab === "tables" ? "bg-amber-500 text-zinc-950 shadow" : "text-zinc-300 hover:bg-zinc-800"
+          }`}
+        >
+          📁 Tabelas ({totalNavItems})
+        </button>
+        <button
+          type="button"
+          onClick={() => setMobileTab("warnings")}
+          className={`flex-1 rounded py-1.5 text-xs font-semibold transition-colors ${
+            mobileTab === "warnings" ? "bg-amber-500 text-zinc-950 shadow" : "text-zinc-300 hover:bg-zinc-800"
+          }`}
+        >
+          ⚠️ Avisos {warnings.length > 0 ? `(${warnings.length})` : ""}
+        </button>
+      </div>
+
+      <div className="grid flex-1 min-h-0 grid-cols-1 gap-2 lg:grid-cols-[minmax(200px,260px)_minmax(0,1fr)] xl:grid-cols-[minmax(240px,300px)_minmax(0,1fr)_minmax(220px,300px)] lg:overflow-hidden">
+        <aside className={`${mobileTab === "tables" ? "block" : "hidden"} h-full overflow-y-auto rounded border border-zinc-700 bg-zinc-900 lg:block lg:min-w-[200px] lg:max-w-[320px] lg:resize-x`}>
           <ProfileNavigator
             descriptor={profile}
             activeItemId={snap.activeItemId}
-            onSelect={(item) => store.selectItem(item.id)}
+            onSelect={(item) => {
+              store.selectItem(item.id);
+              setMobileTab("editor");
+            }}
             isAvailable={(item) => store.itemAvailable(item)}
             isLocked={(item) => {
               const id = store.resolveTableId(item);
@@ -284,7 +320,7 @@ export function EcuWorkspace({ sessionId, deps, onOpenSession }: EcuWorkspacePro
             }}
           />
         </aside>
-        <main ref={mainRef} className="min-w-0 h-full overflow-y-auto rounded border border-zinc-700 bg-zinc-900/40 p-2" aria-label="Editor">
+        <main ref={mainRef} className={`${mobileTab === "editor" ? "block" : "hidden"} min-w-0 h-full overflow-y-auto rounded border border-zinc-700 bg-zinc-900/40 p-2 lg:block`} aria-label="Editor">
           {snap.wizardOpen && profile.requires_base_setup ? (
             <WizardHost store={store} initialStep="trigger" />
           ) : showVersions ? (
@@ -302,7 +338,7 @@ export function EcuWorkspace({ sessionId, deps, onOpenSession }: EcuWorkspacePro
             renderItem(active)
           )}
         </main>
-        <aside className="flex min-w-0 h-full overflow-y-auto flex-col gap-2 lg:col-span-2 xl:col-span-1" aria-label="Painel lateral">
+        <aside className={`${mobileTab === "warnings" ? "flex" : "hidden"} min-w-0 h-full overflow-y-auto flex-col gap-2 lg:col-span-2 lg:flex xl:col-span-1`} aria-label="Painel lateral">
           <TuningWarnings
             warnings={warnings}
             mbtAvailable={mbtAvailable({ mbtReference: snap.vehicle?.engine.mbt_reference ?? null })}
@@ -311,6 +347,7 @@ export function EcuWorkspace({ sessionId, deps, onOpenSession }: EcuWorkspacePro
               const item = profile.navigation.flatMap((s) => s.items).find((i) => store.resolveTableId(i) === tableId);
               if (item) store.selectItem(item.id);
               store.setSelection(tableId, { anchor: { row, col }, focus: { row, col }, mode: "cells" });
+              setMobileTab("editor");
             }}
           />
           <LiveTuneIndicator runActive={runActive} telemetryFresh={snap.telemetryFresh} tables={liveTables} activeTableId={activeTableId} />
