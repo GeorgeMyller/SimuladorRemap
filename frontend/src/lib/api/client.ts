@@ -9,7 +9,7 @@ export type { FieldError, ProblemDetail } from "./problem";
 export const API_PREFIX = "/api/v1";
 
 /** Timeout padrão do cliente REST da UI (contracts/rest-api.md §1.3). */
-export const DEFAULT_TIMEOUT_MS = 5000;
+export const DEFAULT_TIMEOUT_MS = 30000;
 
 export interface ApiFetchOptions<T> extends Omit<RequestInit, "body"> {
   /** Corpo serializado como JSON (define `Content-Type: application/json`). */
