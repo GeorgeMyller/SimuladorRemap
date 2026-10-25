@@ -312,7 +312,7 @@ export function DynoCockpitView({ sessionId, deps, focus = null, liveTuningDeps 
           >
             {SPLIT_LABEL}
           </button>
-          <button type="button" onClick={() => setShortcutsOpen(true)} aria-keyshortcuts="?" className="rounded border border-zinc-500 px-2 py-0.5 text-sm hover:bg-zinc-800">
+          <button type="button" onClick={() => setShortcutsOpen(true)} aria-keyshortcuts="?" className="hidden sm:inline-block rounded border border-zinc-500 px-2 py-0.5 text-sm hover:bg-zinc-800">
             Atalhos (?)
           </button>
         </header>

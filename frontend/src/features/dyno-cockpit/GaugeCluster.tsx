@@ -293,7 +293,7 @@ export function GaugeCluster({ values, limits, boostUnit, frozen = false, missin
           Gauges congelados (motor destruído)
         </p>
       )}
-      <div className="grid grid-cols-4 gap-2">
+      <div className="grid grid-cols-2 min-[460px]:grid-cols-3 sm:grid-cols-4 gap-2 sm:gap-2.5">
         {specs.map((spec, i) => (
           <Gauge
             key={spec.id}

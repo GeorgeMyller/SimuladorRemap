@@ -8,7 +8,9 @@ import { buildRoutes } from "./routes";
 import { useAppVersion } from "./useAppVersion";
 
 const navClass = ({ isActive }: { isActive: boolean }) =>
-  `rounded px-3 py-1.5 text-sm ${isActive ? "bg-zinc-800 text-amber-400" : "text-zinc-300 hover:text-white"}`;
+  `whitespace-nowrap rounded px-2.5 py-1 text-xs sm:px-3 sm:py-1.5 sm:text-sm font-medium transition-colors ${
+    isActive ? "bg-zinc-800 text-amber-400" : "text-zinc-300 hover:text-white"
+  }`;
 
 export interface AppProps {
   /** Intervalo entre tentativas de `/api/v1/version` (testes usam 0). */
@@ -27,9 +29,16 @@ export function App({ versionRetryMs, flags }: AppProps) {
 
   return (
     <div className="flex min-h-screen flex-col bg-zinc-950 text-zinc-100">
-      <header className="flex flex-wrap items-center gap-x-6 gap-y-2 border-b border-zinc-800 px-4 py-3 sm:px-6">
-        <span className="font-semibold tracking-wide">SimuladorRemap</span>
-        <nav aria-label="Navegação principal" className="flex flex-wrap gap-2">
+      <header className="sticky top-0 z-30 flex flex-col gap-2 border-b border-zinc-800 bg-zinc-950/90 backdrop-blur px-3 py-2 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-6 sm:px-6 sm:py-3">
+        <div className="flex items-center justify-between">
+          <span className="font-semibold tracking-wide text-zinc-100">SimuladorRemap</span>
+          {sessionId && (
+            <span className="rounded border border-zinc-800 bg-zinc-900 px-2 py-0.5 text-xs text-zinc-400 sm:hidden">
+              Sessão <span className="font-mono text-amber-400">{sessionId.slice(0, 8)}</span>
+            </span>
+          )}
+        </div>
+        <nav aria-label="Navegação principal" className="flex items-center gap-1.5 overflow-x-auto pb-0.5 sm:pb-0 sm:flex-wrap [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
           <NavLink to="/" end className={navClass}>
             Início
           </NavLink>
@@ -56,7 +65,7 @@ export function App({ versionRetryMs, flags }: AppProps) {
           </NavLink>
         </nav>
         {sessionId && (
-          <span className="ml-auto text-xs text-zinc-400">
+          <span className="ml-auto hidden text-xs text-zinc-400 sm:inline-block">
             Sessão <span className="font-mono text-zinc-200">{sessionId.slice(0, 8)}</span>
           </span>
         )}

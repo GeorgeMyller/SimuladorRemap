@@ -255,13 +255,13 @@ export function RunControls({ state, disabledReason = null, defaultEndRpm, onSta
           </label>
         )}
       </div>
-      <label className="flex flex-col gap-1">
-        <span className="flex items-center justify-between">
-          <span>
-            Borboleta <span className="font-mono">{throttle} %</span>
+      <div className="flex flex-col gap-1.5">
+        <div className="flex items-center justify-between">
+          <span className="font-medium text-xs sm:text-sm">
+            Borboleta: <span className="font-mono text-amber-400 font-bold">{throttle} %</span>
           </span>
-          <span className="font-mono text-xs text-zinc-400">{MSG.throttleHint}</span>
-        </span>
+          <span className="hidden sm:inline font-mono text-xs text-zinc-400">{MSG.throttleHint}</span>
+        </div>
         <input
           type="range"
           min={0}
@@ -281,16 +281,33 @@ export function RunControls({ state, disabledReason = null, defaultEndRpm, onSta
               setAndSend(next);
             }
           }}
-          className="accent-amber-400 disabled:opacity-40"
+          className="h-2 w-full cursor-pointer accent-amber-400 disabled:opacity-40"
         />
-      </label>
-      <div className="flex gap-2">
+        <div className="flex items-center gap-1.5 pt-0.5">
+          {[0, 25, 50, 75, 100].map((pct) => (
+            <button
+              key={pct}
+              type="button"
+              disabled={!throttleEnabled}
+              onClick={() => setAndSend(pct)}
+              className={`flex-1 rounded py-1 text-xs font-semibold transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
+                throttle === pct
+                  ? "bg-amber-500 text-zinc-950 shadow-sm"
+                  : "bg-zinc-800 text-zinc-300 hover:bg-zinc-700 active:bg-zinc-600"
+              }`}
+            >
+              {pct === 100 ? "100% WOT" : `${pct}%`}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div className="flex gap-2 pt-1">
         <button
           type="button"
           onClick={start}
           disabled={!canStart}
           aria-keyshortcuts="Enter"
-          className="flex-1 rounded bg-emerald-500 px-3 py-1.5 font-semibold text-zinc-950 hover:bg-emerald-400 disabled:cursor-not-allowed disabled:bg-zinc-700 disabled:text-zinc-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
+          className="flex-1 rounded-lg bg-emerald-500 py-3 sm:py-2 text-base sm:text-sm font-bold text-zinc-950 hover:bg-emerald-400 active:scale-[0.98] transition-transform disabled:cursor-not-allowed disabled:bg-zinc-700 disabled:text-zinc-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
         >
           {MSG.start}
         </button>
@@ -299,7 +316,7 @@ export function RunControls({ state, disabledReason = null, defaultEndRpm, onSta
           onClick={onAbort}
           disabled={!running}
           aria-keyshortcuts="Escape"
-          className="flex-1 rounded bg-red-600 px-3 py-1.5 font-semibold text-white hover:bg-red-500 disabled:cursor-not-allowed disabled:bg-zinc-700 disabled:text-zinc-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
+          className="flex-1 rounded-lg bg-red-600 py-3 sm:py-2 text-base sm:text-sm font-bold text-white hover:bg-red-500 active:scale-[0.98] transition-transform disabled:cursor-not-allowed disabled:bg-zinc-700 disabled:text-zinc-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
         >
           {MSG.abort}
         </button>

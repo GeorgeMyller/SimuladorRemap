@@ -223,7 +223,7 @@ export function HomePage({ api = homeApi, flags }: HomePageProps) {
         <form onSubmit={(e) => void submit(e)} className="mt-6 space-y-6">
           <fieldset>
             <legend className="mb-2 font-semibold">Carro</legend>
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-1 min-[420px]:grid-cols-2 lg:grid-cols-4 gap-3">
               {vehicles.map((v) => {
                 const checked = v.vehicle_id === vehicleId;
                 const inputId = `vehicle-${v.vehicle_id}`;
@@ -352,7 +352,7 @@ export function HomePage({ api = homeApi, flags }: HomePageProps) {
           <button
             type="submit"
             disabled={busy || !target || !vehicleId}
-            className="w-full rounded bg-amber-500 px-4 py-2 font-semibold sm:w-auto text-zinc-950 hover:bg-amber-400 disabled:opacity-60"
+            className="w-full rounded-lg bg-amber-500 px-5 py-3.5 sm:py-2.5 font-bold sm:w-auto text-zinc-950 text-base sm:text-sm shadow-md hover:bg-amber-400 active:scale-[0.98] transition-transform disabled:opacity-60"
           >
             {busy ? "A criar…" : scenario ? "Iniciar tentativa" : "Criar sessão"}
           </button>
