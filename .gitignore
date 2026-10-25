@@ -17,7 +17,6 @@ node_modules/
 frontend/dist/
 frontend/playwright-report/
 frontend/test-results/
-frontend/src/lib/api/generated/
 
 # --- Python / backend ---
 __pycache__/
