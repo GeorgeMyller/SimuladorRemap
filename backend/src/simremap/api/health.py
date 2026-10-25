@@ -46,7 +46,7 @@ TAG: Final = "platform"
 router = APIRouter(prefix="/api/v1", tags=[TAG])
 
 CheckStatus = Literal["ok", "down", "disabled"]
-_DB_TIMEOUT_S: Final = 1.0
+_DB_TIMEOUT_S: Final = 3.0
 _REDIS_TIMEOUT_S: Final = 0.5
 
 

@@ -97,7 +97,7 @@ log = get_logger("simremap.dyno")
 TASK_SPEC: Final = "simremap.dyno.runner:DynoSimTask"
 ACK_TIMEOUT_S: Final = 2.0
 INSTALL_TIMEOUT_S: Final = 10.0  # remontagem da física + 1 s de marcha lenta no worker
-RUN_RESULT_TIMEOUT_S: Final = 2.0
+RUN_RESULT_TIMEOUT_S: Final = 5.0
 CLOSE_TIMEOUT_S: Final = 1.0
 MONITOR_INTERVAL_S: Final = 1.0
 REALTIME_DEGRADED_FACTOR: Final = 0.5
@@ -444,6 +444,22 @@ class DynoService:
     async def create_session(self, request: SessionCreateRequest) -> SimulationSession:
         async with self._create_lock:
             active = self.active_sessions
+            if len(active) >= self.host.max_active_sessions:
+                for sid in list(active):
+                    rt = self._sessions.get(sid)
+                    if rt is not None and (rt.worker_failed or rt.view.state == "closed" or rt.closing):
+                        with contextlib.suppress(Exception):
+                            await self._close(rt, AbortReason.WORKER_LOST)
+                active = self.active_sessions
+            if len(active) >= self.host.max_active_sessions:
+                for sid in list(active):
+                    rt = self._sessions.get(sid)
+                    if rt is not None and rt.stream.subscribers == 0 and rt.view.active_run_id is None:
+                        log.info("dyno.reclaim_idle_session", session_id=sid)
+                        with contextlib.suppress(Exception):
+                            await self._close(rt, AbortReason.SESSION_CLOSED)
+                        break
+                active = self.active_sessions
             if len(active) >= self.host.max_active_sessions:
                 raise SimRemapError(
                     f"Limite de {self.host.max_active_sessions} sessão(ões) ativa(s) atingido; "
@@ -839,7 +855,16 @@ class DynoService:
                 state=run.state.value,
             )
         await self.send(rt, {"type": "run.abort", "run_id": run_id, "reason": reason.value})
-        return await self.wait_run(session_id, run_id, RUN_RESULT_TIMEOUT_S)
+        try:
+            return await self.wait_run(session_id, run_id, RUN_RESULT_TIMEOUT_S)
+        except TimeoutError:
+            log.warning("dyno.abort_timeout", session_id=session_id, run_id=run_id)
+            aborted = run.model_copy(update={"state": RunState.ABORTED, "abort_reason": reason})
+            rt.runs[run_id] = aborted
+            rt.update(active_run_id=None)
+            with contextlib.suppress(Exception):
+                await self.repo.save_run(aborted)
+            return aborted
 
     async def find_run(self, run_id: str) -> DynoRun | None:
         for rt in self._sessions.values():

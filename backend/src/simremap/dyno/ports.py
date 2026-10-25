@@ -33,7 +33,7 @@ __all__ = ["DynoDamagePort", "DynoEcuSessionPort", "DynoProfileSessionPort"]
 
 HEALTH_TIMEOUT_S: Final = 0.5
 RESTORE_TIMEOUT_S: Final = 2.0
-APPLY_TIMEOUT_S: Final = 1.0
+APPLY_TIMEOUT_S: Final = 3.0
 INFO_TIMEOUT_S: Final = 0.2
 
 
@@ -266,8 +266,6 @@ class DynoProfileSessionPort:
                 )
             )
         else:
-            changes["active_calibration_id"] = None
-            changes["active_calibration_version"] = None
             rt.update(**changes)
         await self.service.repo.save_session(
             rt.view, data_version=rt.data_version, catalog_sha256=rt.catalog_sha256

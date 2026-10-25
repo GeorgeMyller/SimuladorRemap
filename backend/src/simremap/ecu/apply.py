@@ -53,7 +53,7 @@ from simremap.ecu.session_port import (
 
 __all__ = ["APPLY_TIMEOUT_S", "apply_to_session", "handle_apply_command"]
 
-APPLY_TIMEOUT_S: Final = 0.1  # s, confirmação do worker (rest-api 1.3)
+APPLY_TIMEOUT_S: Final = 3.0  # s, confirmação do worker (tolerante em hosts de baixo consumo como Raspberry Pi)
 
 
 def _content_payload(cal: CalibrationContent) -> str:

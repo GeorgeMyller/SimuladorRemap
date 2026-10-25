@@ -91,6 +91,11 @@ function call<T>(path: string, init: { method?: string; json?: unknown; body?: s
     headers,
     ...(init.json !== undefined ? { json: init.json } : {}),
     ...(init.body !== undefined ? { body: init.body } : {}),
+  }).catch((err: unknown) => {
+    if (err instanceof ApiProblem && err.code === "PLAYER_PROFILE_NOT_FOUND") {
+      setActiveProfileId(null);
+    }
+    throw err;
   });
 }
 
@@ -143,7 +148,14 @@ async function exportPackage(body: PackageExportRequest): Promise<ExportedFile> 
 export const scenariosApi: ScenariosApi = {
   listProfiles: () => call("/profiles"),
   createProfile: (body) => call("/profiles", { method: "POST", json: body }),
-  listScenarios: (kind) => call(`/scenarios${query({ kind })}`),
+  listScenarios: (kind) =>
+    call<ScenarioSummary[]>(`/scenarios${query({ kind })}`).catch((err: unknown) => {
+      if (err instanceof ApiProblem && err.code === "PLAYER_PROFILE_NOT_FOUND") {
+        setActiveProfileId(null);
+        return call<ScenarioSummary[]>(`/scenarios${query({ kind })}`);
+      }
+      throw err;
+    }),
   getScenario: (id) => call(`/scenarios/${enc(id)}`),
   createScenario: (body) => call("/scenarios", { method: "POST", json: body }),
   getStats: (id) => call(`/scenarios/${enc(id)}/stats`),
