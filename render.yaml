@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: simulador-remap
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: PORT
+        value: "8000"
+      - key: SIMREMAP_ENV
+        value: "prod"
+      - key: SIMREMAP_WORKER_MODE
+        value: "thread"
+      - key: SIMREMAP_SIM_HZ
+        value: "500"
+      - key: SIMREMAP_MAX_ACTIVE_SESSIONS
+        value: "5"
+      - key: SIMREMAP_CATALOG_ALLOW_DRAFTS
+        value: "true"
+      - key: HF_HOME
+        value: "/data/hf_cache"

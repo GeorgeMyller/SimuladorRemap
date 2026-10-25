@@ -92,6 +92,7 @@ RUN useradd --uid 10001 --user-group --create-home --shell /usr/sbin/nologin sim
 WORKDIR /app
 COPY --from=backend --chown=root:root /app /app
 COPY --from=frontend --chown=root:root /fe/dist /app/static
+COPY --chown=root:root data/laya_tuning_calibration.json /app/data/laya_tuning_calibration.json
 ENV PATH="/app/.venv/bin:${PATH}" \
     PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
