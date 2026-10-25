@@ -14,7 +14,7 @@ from simremap.physics.faults import ActiveFaults
 from simremap.physics.reference import ReferenceDriver, RpmHoldRig
 
 
-def _run(  # noqa: PLR0917
+def _run(
     make_engine: Callable[..., PhysicsEngine],
     vehicle: VehicleSpec,
     rpm: float,

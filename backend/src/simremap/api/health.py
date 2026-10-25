@@ -105,7 +105,7 @@ async def _check_redis(settings: Settings, cache: Any = None) -> HealthCheck:
     if callable(check):
         status, latency, detail = await check()
         return HealthCheck(status=status, latency_ms=latency, detail=detail)
-    from redis.asyncio import Redis  # noqa: PLC0415 - import só quando Redis está configurado
+    from redis.asyncio import Redis
 
     start = time.perf_counter()
     client: Redis = Redis.from_url(settings.redis_url, socket_timeout=_REDIS_TIMEOUT_S)

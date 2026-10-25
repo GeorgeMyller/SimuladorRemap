@@ -85,7 +85,7 @@ def reference_flame_speed(t_u_k: float, p_kpa: float) -> float:
     return laminar_flame_speed(GASOLINE, 1.0, t_u_k, p_kpa, 0.0)
 
 
-def burn_duration_deg(  # noqa: PLR0917
+def burn_duration_deg(
     rpm: float,
     lam: float,
     coeffs: FlameCoefficients,

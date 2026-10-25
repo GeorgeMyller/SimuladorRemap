@@ -110,7 +110,7 @@ def worker_log() -> WorkerLogBridge:
 
 def reemit_worker_log(envelope: Mapping[str, Any], session_id: str) -> None:
     """Lado do host: reemite um envelope ``log`` pelo logging JSON com ``session_id``."""
-    from simremap.core.logging import get_logger  # noqa: PLC0415 - nunca carregado no worker
+    from simremap.core.logging import get_logger
 
     level = envelope.get("level")
     level_name = level if isinstance(level, str) and level in LOG_LEVELS else "info"

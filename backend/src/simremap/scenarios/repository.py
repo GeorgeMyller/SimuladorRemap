@@ -87,7 +87,7 @@ class AttemptCursor:
 class ImportBundle:
     """Linhas gravadas numa única transação pela importação de um pacote (RF-19 a RF-21)."""
 
-    def __init__(  # noqa: PLR0917
+    def __init__(
         self,
         package: ImportedPackageRow,
         scenario: ScenarioRow | None = None,

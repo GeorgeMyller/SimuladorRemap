@@ -46,6 +46,6 @@ FORMAT_CHANGELOG: Final[Mapping[str, Mapping[int, str]]] = MappingProxyType(
 
 def alembic_head() -> str:
     """Revisão head da cadeia Alembic em disco (igual a ``alembic heads``)."""
-    from simremap.db.migrate import script_head  # noqa: PLC0415 - evita ciclo core → db
+    from simremap.db.migrate import script_head
 
     return script_head()

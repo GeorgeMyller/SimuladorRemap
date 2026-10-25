@@ -27,6 +27,7 @@ Lado do worker (``handle_apply_command``): recompila o ``payload_json`` e chama
 from __future__ import annotations
 
 import asyncio
+import os
 import uuid
 from typing import Final, Literal
 
@@ -53,7 +54,8 @@ from simremap.ecu.session_port import (
 
 __all__ = ["APPLY_TIMEOUT_S", "apply_to_session", "handle_apply_command"]
 
-APPLY_TIMEOUT_S: Final = 3.0  # s, confirmação do worker (tolerante em hosts de baixo consumo como Raspberry Pi)
+# s, confirmação do worker (100 ms por especificação ecu-core EC-08)
+APPLY_TIMEOUT_S: Final = float(os.environ.get("SIMREMAP_APPLY_TIMEOUT_S", "0.1"))
 
 
 def _content_payload(cal: CalibrationContent) -> str:

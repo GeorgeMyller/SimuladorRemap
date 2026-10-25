@@ -384,7 +384,7 @@ async def start_attempt(
     summary="Tentativas com a última avaliação, por cursor (E-37)",
     openapi_extra=_codes(*_PROFILE_CODES, "VALIDATION_FAILED"),
 )
-async def list_attempts(  # noqa: PLR0917 - filtros de query
+async def list_attempts(
     services: Services,
     profile: Profile,
     scenario_id: Annotated[str | None, Query(max_length=64)] = None,

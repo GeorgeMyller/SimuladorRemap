@@ -162,7 +162,7 @@ class LayaModelHolder:
         """Obtém ou instancia o agente neural LAYA com checkpoint afinado se disponível."""
         if cls._instance is None:
             with contextlib.suppress(Exception):
-                import torch  # noqa: PLC0415
+                import torch
 
                 threads = min(2, max(1, os.cpu_count() or 1))
                 torch.set_num_threads(threads)
@@ -235,30 +235,30 @@ def resolve_table_in_calibration(
 ) -> tuple[str, Table2D | Table3D] | None:
     """Resolve o ID ou alias da tabela para a instância concreta (2D ou 3D) na calibração."""
     table = calibration.tables.get(target_id)
-    if isinstance(table, (Table2D, Table3D)):
+    if isinstance(table, Table2D | Table3D):
         return target_id, table
 
     alias = TABLE_ALIASES.get(target_id)
     if alias:
         table = calibration.tables.get(alias)
-        if isinstance(table, (Table2D, Table3D)):
+        if isinstance(table, Table2D | Table3D):
             return alias, table
 
     # Fallback por sufixo após o ponto (ex.: "drag.boost_target" -> "boost_target")
     suffix = target_id.rsplit(".", maxsplit=1)[-1]
     if suffix in calibration.tables:
         cand = calibration.tables[suffix]
-        if isinstance(cand, (Table2D, Table3D)):
+        if isinstance(cand, Table2D | Table3D):
             return suffix, cand
 
     suffix_alias = TABLE_ALIASES.get(suffix)
     if suffix_alias and suffix_alias in calibration.tables:
         cand = calibration.tables[suffix_alias]
-        if isinstance(cand, (Table2D, Table3D)):
+        if isinstance(cand, Table2D | Table3D):
             return suffix_alias, cand
 
     for tid, cand in calibration.tables.items():
-        if isinstance(cand, (Table2D, Table3D)):
+        if isinstance(cand, Table2D | Table3D):
             if (
                 target_id in (cand.kind, cand.kind.value)
                 or suffix in (cand.kind, cand.kind.value)

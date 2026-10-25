@@ -61,7 +61,7 @@ CASES = [
 
 
 @pytest.mark.parametrize(("method", "path", "kwargs", "status", "code"), CASES)
-def test_error_is_problem_json(  # noqa: PLR0917 - parâmetros do parametrize
+def test_error_is_problem_json(
     tc: TestClient, method: str, path: str, kwargs: dict[str, object], status: int, code: str
 ) -> None:
     options = dict(kwargs)

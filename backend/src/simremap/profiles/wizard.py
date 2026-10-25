@@ -127,7 +127,7 @@ def _pulse_ms(
     return fuel_g / hw.q_inj_ref_g_ms
 
 
-def _t3(  # noqa: PLR0917 - campos da tabela
+def _t3(
         table_id: str, kind: str, unit: str, xs: list[float], ys: list[float],
         z: list[list[float]], yq: str = "map_kpa") -> dict[str, Any]:  # fmt: skip
     return {
@@ -140,7 +140,7 @@ def _t3(  # noqa: PLR0917 - campos da tabela
     }
 
 
-def _t2(  # noqa: PLR0917 - campos da tabela
+def _t2(
         table_id: str, kind: str, unit: str, xq: str, xs: list[float],
         vs: list[float]) -> dict[str, Any]:  # fmt: skip
     return {

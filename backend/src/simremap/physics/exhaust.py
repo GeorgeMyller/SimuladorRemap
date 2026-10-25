@@ -68,7 +68,7 @@ class ExhaustEvent:
     pop_event: bool
 
 
-def exhaust_event(  # noqa: PLR0917
+def exhaust_event(
     t_evo_k: float,
     p_evo_kpa: float,
     p_exh_kpa: float,

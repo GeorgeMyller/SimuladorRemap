@@ -80,7 +80,7 @@ def main(argv: list[str] | None = None) -> int:
 
 def _startup_exit_code() -> int:
     """Código da ``StartupError`` do lifespan (ex.: 4 em ``CATALOG_INVALID``) ou 3."""
-    from simremap.api.main import last_startup_exit_code  # noqa: PLC0415 - app já importada
+    from simremap.api.main import last_startup_exit_code
 
     return last_startup_exit_code() or EXIT_STARTUP_FAILURE
 

@@ -288,7 +288,7 @@ class VehicleSource:
     ign_slope_above_wot: float = 0.08
 
 
-def _limits(  # noqa: PLR0917
+def _limits(
     rod: float,
     load_kn: float,
     pcyl: float,
@@ -1016,7 +1016,7 @@ def _grid1d(x_name: str, xs: Sequence[float], values: Sequence[float]) -> dict[s
     return {"x_name": x_name, "x_values": list(xs), "values": list(values)}
 
 
-def _grid2d(  # noqa: PLR0917
+def _grid2d(
     x_name: str,
     xs: Sequence[float],
     y_name: str,
@@ -1280,7 +1280,7 @@ def _table2d(
             "values": [_r(v, max(nd, 3)) for v in values]}  # fmt: skip
 
 
-def _table3d(  # noqa: PLR0917
+def _table3d(
     kind: str,
     xq: str,
     xs: Sequence[float],
@@ -1364,7 +1364,7 @@ def _failsafe(lim: dict[str, float | None]) -> dict[str, Any]:
     egt = float(lim["egt_max_c"])  # type: ignore[arg-type]
     max_rpm = float(lim["max_rpm"])  # type: ignore[arg-type]
 
-    def rule(  # noqa: PLR0917
+    def rule(
         rule_id: str,
         threshold: float,
         confirm: float,

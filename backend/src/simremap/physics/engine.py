@@ -981,7 +981,7 @@ class PhysicsEngine:
         v.theta_deg = (v.theta_deg + delta) % 720.0
         return out
 
-    def _fire(  # noqa: PLR0915, PLR0917
+    def _fire(  # noqa: PLR0915
         self,
         cmd: ActuatorCommands,
         idx: int,

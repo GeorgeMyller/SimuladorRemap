@@ -203,7 +203,7 @@ class ReplayService:
             mismatched=len(mismatched),
         )
 
-    async def _one(  # noqa: PLR0917
+    async def _one(
         self,
         scenario: Any,
         calibration_id: str,

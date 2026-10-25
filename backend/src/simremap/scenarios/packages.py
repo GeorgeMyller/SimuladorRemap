@@ -199,7 +199,7 @@ class PackageService:
         scenario = await self.catalog.get(row.scenario_id)
         stored = await self.repo.runs_of(row.id)
         runs_rows = [StoredRun.from_row(r) for r in stored]
-        from simremap.scenarios.attempts import attempt_from_row  # noqa: PLC0415
+        from simremap.scenarios.attempts import attempt_from_row
 
         attempt = attempt_from_row(
             row,
@@ -571,7 +571,7 @@ class PackageService:
         return StoredRun.from_row(row)
 
     @staticmethod
-    def _recompute(  # noqa: PLR0917
+    def _recompute(
         scenario: Scenario,
         attempt: Attempt,
         submission: EvaluationInput,

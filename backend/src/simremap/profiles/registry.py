@@ -262,7 +262,7 @@ def _not_found(profile_id: str) -> SimRemapError:
 
 
 @lru_cache(maxsize=64)
-def _vehicle_descriptor_cached(  # noqa: PLR0917 - chave da cache
+def _vehicle_descriptor_cached(
     pid: EcuProfileId, vehicle_id: str, rpm_max: float, map_max: float, n_cyl: int, n_gears: int
 ) -> EcuProfileDescriptor:
     axes = AxisSet(rpm_max=rpm_max, map_max_kpa=map_max, n_cyl=n_cyl, n_gears=n_gears)

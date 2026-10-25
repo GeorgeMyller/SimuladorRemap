@@ -38,7 +38,7 @@ _LAZY = frozenset({"AsyncOutputStream", "SimWorkerHost", "WorkerHandle"})
 
 def __getattr__(name: str) -> Any:
     if name in _LAZY:
-        from simremap.core.worker import host  # noqa: PLC0415 - carregamento sob demanda
+        from simremap.core.worker import host
 
         return getattr(host, name)
     raise AttributeError(name)

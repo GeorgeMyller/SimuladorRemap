@@ -81,7 +81,7 @@ class SyntheticTask:
         self.knock_every = int(options.get("knock_every", 0))
         self.report_thread = bool(options.get("report_thread", False))
         if self.work_n > 0:
-            import numpy as np  # noqa: PLC0415 - só com carga sintética
+            import numpy as np
 
             base = np.arange(self.work_n * self.work_n, dtype=np.float64)
             self._matrix = (base.reshape(self.work_n, self.work_n) % 7.0) / 7.0

@@ -132,7 +132,7 @@ class RedisCache:
         self._clock = clock
         self._reconnect_interval = reconnect_interval_s
         if client is None:
-            from redis.asyncio import Redis  # noqa: PLC0415 - só com Redis configurado
+            from redis.asyncio import Redis
 
             client = Redis.from_url(
                 url, socket_timeout=REDIS_TIMEOUT_S, socket_connect_timeout=REDIS_TIMEOUT_S

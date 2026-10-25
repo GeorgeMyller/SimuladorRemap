@@ -63,6 +63,8 @@ extend-exclude = ["src/simremap/db/migrations/versions/*.py.mako"]
 select = ["E", "F", "W", "I", "B", "UP", "S", "ASYNC", "RUF", "PL", "TID", "NPY"]
 ignore = [
     "PLR0913", # construtores com muitos parâmetros físicos são esperados
+    "PLR0917", # rotas de dependência e testes parametrizados têm muitos argumentos
+    "PLC0415", # imports sob demanda e prevenção de import circular
     "RUF001",  # textos em pt-BR usam caracteres ambíguos legítimos
     "RUF002",
     "RUF003",

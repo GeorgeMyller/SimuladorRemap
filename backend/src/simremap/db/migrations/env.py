@@ -53,7 +53,7 @@ def _database_url() -> str:
     x_args = context.get_x_argument(as_dictionary=True)
     if x_args.get("database_url"):
         return x_args["database_url"]
-    from simremap.core.config import Settings  # noqa: PLC0415 - só quando necessário
+    from simremap.core.config import Settings
 
     return Settings().db_url
 

@@ -85,8 +85,8 @@ FUELS: dict[str, FuelSpec] = _physics_fixtures().FUELS
 
 
 def _close(a: Any, b: Any, where: str) -> None:
-    if isinstance(a, (list, tuple)):
-        assert isinstance(b, (list, tuple)), where
+    if isinstance(a, list | tuple):
+        assert isinstance(b, list | tuple), where
         assert len(a) == len(b), f"{where}: tamanhos {len(a)} ≠ {len(b)}"
         for i, (x, y) in enumerate(zip(a, b, strict=True)):
             _close(x, y, f"{where}[{i}]")

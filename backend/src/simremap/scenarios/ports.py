@@ -185,7 +185,7 @@ class CalibrationPort(Protocol):
 
 
 def _record(cal: Any) -> CalibrationRecord:
-    from simremap.ecu.calibration import CONTENT_FIELDS  # noqa: PLC0415
+    from simremap.ecu.calibration import CONTENT_FIELDS
 
     full = cal.model_dump(mode="json")
     return CalibrationRecord(
@@ -213,8 +213,8 @@ class EcuCalibrationPort:
         return self._maker
 
     async def stock(self, vehicle_id: str, profile_id: str) -> CalibrationRecord | None:
-        from simremap.ecu.repository import CalibrationRepository  # noqa: PLC0415
-        from simremap.ecu.service import stock_calibration_id  # noqa: PLC0415
+        from simremap.ecu.repository import CalibrationRepository
+        from simremap.ecu.service import stock_calibration_id
 
         cal_id = stock_calibration_id(vehicle_id, profile_id)
         async with self._require()() as db:
@@ -224,14 +224,14 @@ class EcuCalibrationPort:
         return None
 
     async def get(self, calibration_id: str, version: int | None = None) -> CalibrationRecord:
-        from simremap.ecu.repository import CalibrationRepository  # noqa: PLC0415
+        from simremap.ecu.repository import CalibrationRepository
 
         async with self._require()() as db:
             return _record(await CalibrationRepository(db).get(calibration_id, version))
 
     async def create(self, content: dict[str, Any], name: str) -> CalibrationRecord:
-        from simremap.ecu.calibration import CalibrationMetadata, parse_content  # noqa: PLC0415
-        from simremap.ecu.repository import CalibrationRepository  # noqa: PLC0415
+        from simremap.ecu.calibration import CalibrationMetadata, parse_content
+        from simremap.ecu.repository import CalibrationRepository
 
         parsed = parse_content(content)
         async with self._require()() as db:
@@ -248,7 +248,7 @@ class EcuCalibrationPort:
         self, vehicle_id: str, profile_id: str, name: str
     ) -> CalibrationRecord | None:
         """Calibração do usuário a partir do payload de fábrica do catálogo (sem ⇒ ``None``)."""
-        from simremap.catalog.service import get_catalog  # noqa: PLC0415
+        from simremap.catalog.service import get_catalog
 
         try:
             payload = get_catalog().get_factory_calibration_payload(vehicle_id, profile_id)
@@ -269,7 +269,7 @@ class EcuCalibrationPort:
     def clone_hash(self, source: CalibrationRecord) -> str:
         """``content_hash`` que ``clone(source)`` grava: o servidor recalcula após o
         ``parse_content`` (não é o ``content_hash`` guardado na versão de origem)."""
-        from simremap.ecu.calibration import compute_content_hash, parse_content  # noqa: PLC0415
+        from simremap.ecu.calibration import compute_content_hash, parse_content
 
         return compute_content_hash(parse_content(source.content))
 

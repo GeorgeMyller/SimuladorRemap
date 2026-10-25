@@ -737,7 +737,7 @@ class DamageModel:
         self._failures.extend(events)
         return events
 
-    def _event(  # noqa: PLR0917
+    def _event(
         self,
         spec: ComponentSpec,
         mode: FailureMode,

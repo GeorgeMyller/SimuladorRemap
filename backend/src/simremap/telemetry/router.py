@@ -112,7 +112,7 @@ async def list_channels(
     vehicle_id: Annotated[str, Query(min_length=1, max_length=48)],
 ) -> list[TelemetryChannel]:
     del service
-    from simremap.catalog.service import get_catalog  # noqa: PLC0415 - carga sob demanda
+    from simremap.catalog.service import get_catalog
 
     vehicle = get_catalog().get_vehicle(vehicle_id)
     return list(catalog_for_vehicle(vehicle).channels)

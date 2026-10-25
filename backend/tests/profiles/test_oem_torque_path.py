@@ -34,9 +34,7 @@ RPM3 = [1000.0, 3000.0, 5000.0]
 LOAD3 = [50.0, 100.0, 150.0]
 
 
-def t3(  # noqa: PLR0917 - campos da tabela
-    kind: str, unit: str, xs: list[float], yq: str, ys: list[float], z: Any
-) -> dict[str, Any]:
+def t3(kind: str, unit: str, xs: list[float], yq: str, ys: list[float], z: Any) -> dict[str, Any]:
     values = z if isinstance(z, list) else [[float(z)] * len(xs) for _ in ys]
     return {
         "table_id": kind,

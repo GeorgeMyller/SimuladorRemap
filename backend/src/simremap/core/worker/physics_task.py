@@ -87,7 +87,7 @@ class PhysicsOnlyTask:
                 raise ValueError("'fuel' é obrigatório quando 'vehicle' é enviado")
             vehicle = VehicleSpec.model_validate(options["vehicle"])
             return vehicle, FuelSpec.model_validate(options["fuel"])
-        from simremap.catalog.loader import load_catalog_data  # noqa: PLC0415 - só sem specs
+        from simremap.catalog.loader import load_catalog_data
 
         catalog_dir = options.get("catalog_dir")
         catalog = load_catalog_data(Path(catalog_dir) if catalog_dir else None)

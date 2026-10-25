@@ -59,7 +59,7 @@ def install_dyno(app: FastAPI) -> DynoService:
     )
     forensic = getattr(state, "forensic_service", None)
     if forensic is None:
-        from simremap.damage.service import ForensicService  # noqa: PLC0415
+        from simremap.damage.service import ForensicService
 
         forensic = ForensicService(maker)
         state.forensic_service = forensic
@@ -134,7 +134,7 @@ router = APIRouter(prefix="/api/v1", tags=[TAG], lifespan=_lifespan)
 def get_service(request: Request) -> DynoService:
     service: DynoService | None = getattr(request.app.state, "dyno_service", None)
     if service is None:
-        from simremap.core.errors import SimRemapError  # noqa: PLC0415
+        from simremap.core.errors import SimRemapError
 
         raise SimRemapError("Simulação indisponível.", code="SIM_WORKER_UNAVAILABLE")
     return service

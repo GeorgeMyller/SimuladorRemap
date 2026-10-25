@@ -175,7 +175,7 @@ class ProfiledEcuStage:
     __slots__ = ("_worker", "profiled")
 
     def __init__(self, profiled: Any) -> None:
-        from simremap.profiles import worker  # noqa: PLC0415 - pré-carrega fora do tick
+        from simremap.profiles import worker
 
         self.profiled = profiled
         self._worker = worker
@@ -232,7 +232,7 @@ def build_ecu_stage(payload: DynoInitPayload, vehicle: VehicleSpec, fuel: FuelSp
         frozenset(payload.enabled_strategies) if payload.enabled_strategies is not None else None
     )
     if payload.profile_hooks == "registry" and profiles_available():
-        from simremap.profiles.adapter import build_profiled_ecu  # noqa: PLC0415
+        from simremap.profiles.adapter import build_profiled_ecu
 
         profiled = build_profiled_ecu(
             vehicle=vehicle,
@@ -270,7 +270,7 @@ def swap_ecu_stage(
     payload: DynoInitPayload, command: dict[str, object]
 ) -> tuple[EcuStage, dict[str, object]]:
     """Comando ``ecu.swap``: novo ``ProfiledEcu`` e o ``ack`` (sem ``applied_t_sim_s``)."""
-    from simremap.profiles.worker import handle_swap_command  # noqa: PLC0415
+    from simremap.profiles.worker import handle_swap_command
 
     enabled = (
         frozenset(payload.enabled_strategies) if payload.enabled_strategies is not None else None

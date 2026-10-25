@@ -40,7 +40,7 @@ _KELVIN = 273.15
 _DEFAULT_VE_PCT = 100.0  # enchimento teórico quando não há tabela ve (profile_air_model)
 
 
-def speed_density_air_g(  # noqa: PLR0917 - variáveis da equação do Apêndice B
+def speed_density_air_g(
     ve_pct: float, map_kpa: float, v_cyl_m3: float, iat_c: float, ect_c: float, blend: float
 ) -> float:
     """Massa de ar por cilindro e ciclo (g) pelo speed-density."""

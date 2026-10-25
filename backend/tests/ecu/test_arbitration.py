@@ -130,7 +130,7 @@ def test_c04_antilag_off_same_tick_on_egt(
 
 
 @pytest.mark.parametrize(("lam_base", "expected"), [(0.85, 0.80), (0.95, 0.85)])
-def test_c05_failsafe_enrich_with_two_step(  # noqa: PLR0917 - fixtures + parâmetros
+def test_c05_failsafe_enrich_with_two_step(
     content_factory: Any,
     runtime_factory: Any,
     sensors: Any,

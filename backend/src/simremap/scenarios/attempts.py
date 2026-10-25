@@ -228,7 +228,7 @@ def _failures(run: DynoRun, data: LogData | None) -> int:
 class AttemptService:
     """Tentativas locais: início, classificação, dicas, abandono e submissão."""
 
-    def __init__(  # noqa: PLR0917 - portas injetadas
+    def __init__(
         self,
         repo: ScenarioRepository,
         catalog: ScenarioCatalog,
@@ -670,7 +670,7 @@ class AttemptService:
                 stored[(r.run_id, r.pull_index)] = r
         return _sorted_runs(list(stored.values()))
 
-    async def _classify_run(  # noqa: PLR0917
+    async def _classify_run(
         self,
         row: AttemptRow,
         scenario: Scenario,

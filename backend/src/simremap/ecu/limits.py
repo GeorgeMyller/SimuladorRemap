@@ -100,7 +100,7 @@ class TableLimit:
     live_tunable: bool
 
 
-def _l(  # noqa: PLR0917 - linha do Apêndice A
+def _l(
     kind: TableKind,
     x: AxisQuantity,
     y: AxisQuantity | None,
@@ -201,7 +201,7 @@ PARAMETRIC_ACTIONS: Final[frozenset[str]] = frozenset(
 )
 
 
-def _rule(  # noqa: PLR0917 - linha do Apêndice E
+def _rule(
     rule_id: str,
     threshold: float,
     confirm_s: float,

@@ -97,7 +97,7 @@ def example_challenge() -> dict[str, Any]:
 class VehicleInfo:
     """Visão do vehicle-catalog usada pelos cenários (``rev_limit_rpm``, combustíveis)."""
 
-    def __init__(  # noqa: PLR0917
+    def __init__(
         self,
         vehicle_id: str,
         rev_limit_rpm: float,
@@ -119,8 +119,8 @@ VehicleLookup = Callable[[str], VehicleInfo | None]
 
 def catalog_vehicle(vehicle_id: str) -> VehicleInfo | None:
     """``VehicleInfo`` do catálogo real (``simremap.catalog.service.get_catalog``)."""
-    from simremap.catalog.service import get_catalog  # noqa: PLC0415
-    from simremap.ecu.calibration import compute_content_hash, parse_content  # noqa: PLC0415
+    from simremap.catalog.service import get_catalog
+    from simremap.ecu.calibration import compute_content_hash, parse_content
 
     service = get_catalog()
     try:
@@ -177,7 +177,7 @@ def validate_rules(scenario: Scenario, vehicle: VehicleInfo, *, wastegate_enable
             field="hidden_defect.kind",
         )
     if defect is not None and defect.cylinder is not None:
-        from simremap.catalog.service import get_catalog  # noqa: PLC0415
+        from simremap.catalog.service import get_catalog
 
         try:
             n_cyl = get_catalog().get_vehicle(vehicle.vehicle_id).engine.n_cyl

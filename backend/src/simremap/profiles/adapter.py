@@ -441,7 +441,7 @@ class ProfiledEcu:
             profile_events=pevents,
         )
 
-    def _status(  # noqa: PLR0917 - campos do ProfileStatus
+    def _status(
         self,
         t: float,
         ad: HardwareAdapter,

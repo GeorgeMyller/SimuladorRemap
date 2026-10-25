@@ -69,7 +69,7 @@ def psi(pr: float, gamma: float = GAMMA_AIR) -> float:
     return _psi_raw(max(pr, 0.0), gamma)
 
 
-def orifice_flow(  # noqa: PLR0917
+def orifice_flow(
     cd_area_m2: float,
     p_up_kpa: float,
     t_up_k: float,

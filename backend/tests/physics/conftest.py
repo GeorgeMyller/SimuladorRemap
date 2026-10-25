@@ -69,7 +69,7 @@ MAP_AXIS = [20, 30, 40, 50, 60, 70, 80, 90, 100, 120, 140, 160, 180, 200, 230, 2
 # --------------------------------------------------------------------------- combustíveis
 
 
-def _fuel(  # noqa: PLR0917
+def _fuel(
     fid: FuelId,
     name: str,
     afr: float,
@@ -113,7 +113,7 @@ FUELS: dict[str, FuelSpec] = {
 # --------------------------------------------------------------------------- grades
 
 
-def true_ve_grid(  # noqa: PLR0917
+def true_ve_grid(
     ve_pk: float,
     rpm_pk: float,
     rpm_span: float,

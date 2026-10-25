@@ -126,7 +126,7 @@ def clamp_lambda(value: float) -> float:
     return min(max(value, LAMBDA_MIN), LAMBDA_MAX)
 
 
-def wideband_update(  # noqa: PLR0917
+def wideband_update(
     buffer: list[float],
     index: int,
     filtered: float,

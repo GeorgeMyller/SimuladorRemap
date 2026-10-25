@@ -424,7 +424,7 @@ def _ae_table(tb: Any) -> dict[str, Any]:
 
 
 @pytest.mark.parametrize(("level", "outlier"), [(100.0, -0.53), (60.0, -0.45), (60.0, 0.45)])
-def test_single_tps_outlier_does_not_trigger_accel_enrichment(  # noqa: PLR0917 - fixtures
+def test_single_tps_outlier_does_not_trigger_accel_enrichment(
     content_factory: Any,
     runtime_factory: Any,
     sensors: Any,

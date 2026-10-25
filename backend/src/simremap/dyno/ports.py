@@ -14,6 +14,7 @@
 from __future__ import annotations
 
 import asyncio
+import os
 from typing import Any, Final
 
 from simremap.core.errors import SimRemapError
@@ -33,7 +34,7 @@ __all__ = ["DynoDamagePort", "DynoEcuSessionPort", "DynoProfileSessionPort"]
 
 HEALTH_TIMEOUT_S: Final = 0.5
 RESTORE_TIMEOUT_S: Final = 2.0
-APPLY_TIMEOUT_S: Final = 3.0
+APPLY_TIMEOUT_S: Final = float(os.environ.get("SIMREMAP_APPLY_TIMEOUT_S", "0.1"))
 INFO_TIMEOUT_S: Final = 0.2
 
 
@@ -203,7 +204,7 @@ class DynoProfileSessionPort:
         self.service = service
 
     async def get_session(self, session_id: str) -> Any:
-        from simremap.profiles.session_port import EcuSessionInfo  # noqa: PLC0415
+        from simremap.profiles.session_port import EcuSessionInfo
 
         rt = self.service.runtime(session_id)
         if rt is None:

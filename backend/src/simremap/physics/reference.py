@@ -217,8 +217,8 @@ def replay_digest(
     A rotação segue uma rampa linear ``rpm_start → rpm_end`` segurada pelo ``RpmHoldRig``,
     com ruído ligado e ``read_sensors`` em todos os ticks (ordem do barramento).
     """
-    from simremap.catalog.contracts import FuelSpec, VehicleSpec  # noqa: PLC0415
-    from simremap.physics.contracts import PhysicsConfig  # noqa: PLC0415
+    from simremap.catalog.contracts import FuelSpec, VehicleSpec
+    from simremap.physics.contracts import PhysicsConfig
 
     vehicle = VehicleSpec.model_validate_json(vehicle_json)
     fuel = FuelSpec.model_validate_json(fuel_json)

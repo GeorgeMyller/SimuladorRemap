@@ -126,7 +126,7 @@ class CycleResult:
     t_unburned_max_k: float
 
 
-def quantize_inputs(  # noqa: PLR0917
+def quantize_inputs(
     rpm: float,
     m_air_kg: float,
     lam: float,

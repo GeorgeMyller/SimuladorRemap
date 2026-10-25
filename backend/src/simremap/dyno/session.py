@@ -156,7 +156,7 @@ class CatalogVehicleSource:
     """``VehicleSource`` sobre ``simremap.catalog.service.get_catalog()``."""
 
     def _service(self) -> Any:
-        from simremap.catalog.service import get_catalog  # noqa: PLC0415 - carga sob demanda
+        from simremap.catalog.service import get_catalog
 
         return get_catalog()
 
@@ -223,7 +223,7 @@ class RepositoryCalibrationSource:
         self, calibration_id: str, vehicle_id: str, profile_id: str
     ) -> ResolvedCalibration | None:
         if self._maker is not None:
-            from simremap.ecu.repository import CalibrationRepository  # noqa: PLC0415
+            from simremap.ecu.repository import CalibrationRepository
 
             async with self._maker() as db:
                 repo = CalibrationRepository(db)
@@ -265,8 +265,8 @@ class RepositoryCalibrationSource:
         """Grava ``cal`` como calibração nova do usuário (``None`` sem banco)."""
         if self._maker is None:
             return None
-        from simremap.ecu.calibration import CalibrationMetadata  # noqa: PLC0415
-        from simremap.ecu.repository import CalibrationRepository  # noqa: PLC0415
+        from simremap.ecu.calibration import CalibrationMetadata
+        from simremap.ecu.repository import CalibrationRepository
 
         async with self._maker() as db:
             created = await CalibrationRepository(db).create(
@@ -447,18 +447,11 @@ class DynoService:
             if len(active) >= self.host.max_active_sessions:
                 for sid in list(active):
                     rt = self._sessions.get(sid)
-                    if rt is not None and (rt.worker_failed or rt.view.state == "closed" or rt.closing):
-                        with contextlib.suppress(Exception):
-                            await self._close(rt, AbortReason.WORKER_LOST)
-                active = self.active_sessions
-            if len(active) >= self.host.max_active_sessions:
-                for sid in list(active):
-                    rt = self._sessions.get(sid)
-                    if rt is not None and rt.stream.subscribers == 0 and rt.view.active_run_id is None:
-                        log.info("dyno.reclaim_idle_session", session_id=sid)
+                    if rt is not None and (
+                        rt.worker_failed or rt.view.state == "closed" or rt.closing
+                    ):
                         with contextlib.suppress(Exception):
                             await self._close(rt, AbortReason.SESSION_CLOSED)
-                        break
                 active = self.active_sessions
             if len(active) >= self.host.max_active_sessions:
                 raise SimRemapError(
@@ -627,7 +620,7 @@ class DynoService:
             initial_calibration_version=cal.version,
         )
         self._sessions[session_id] = rt
-        from simremap.dyno.output_router import OutputRouter  # noqa: PLC0415
+        from simremap.dyno.output_router import OutputRouter
 
         router: OutputRouter = OutputRouter(self, rt)
         rt.router_task = asyncio.create_task(router.run(), name=f"dyno-output-{session_id}")

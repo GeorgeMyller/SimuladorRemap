@@ -30,7 +30,7 @@ __all__ = ["SQLITE_PRAGMAS", "build_engine", "build_sessionmaker", "get_session"
 SQLITE_PRAGMAS: tuple[str, ...] = (
     "PRAGMA journal_mode=WAL",
     "PRAGMA foreign_keys=ON",
-    "PRAGMA busy_timeout=5000",
+    "PRAGMA busy_timeout=15000",
     "PRAGMA synchronous=NORMAL",
 )
 
@@ -51,12 +51,12 @@ def build_engine(settings: Settings) -> AsyncEngine:
         if settings.sqlite_path is None:
             engine = create_async_engine(
                 url,
-                connect_args={"timeout": 5, "check_same_thread": False},
+                connect_args={"timeout": 15, "check_same_thread": False},
                 poolclass=StaticPool,
             )
         else:
             settings.sqlite_path.parent.mkdir(parents=True, exist_ok=True)
-            engine = create_async_engine(url, connect_args={"timeout": 5})
+            engine = create_async_engine(url, connect_args={"timeout": 15})
         event.listen(engine.sync_engine, "connect", _apply_sqlite_pragmas)
         return engine
     return create_async_engine(url, pool_size=settings.db_pool_size, pool_pre_ping=True)

@@ -40,7 +40,7 @@ def chen_flynn_fmep_kpa(spec: ChenFlynnSpec, p_max_kpa: float, piston_speed_m_s:
     return fmep_bar * 100.0
 
 
-def brake_torque_nm(  # noqa: PLR0917
+def brake_torque_nm(
     imep_g_kpa: float,
     pmep: float,
     fmep: float,
