@@ -193,6 +193,10 @@ class _Loop:
             try:
                 if self._drain_commands(task):
                     return WorkerState.STOPPED
+                mono_after_cmd = time.monotonic()
+                if mono_after_cmd - last_heartbeat >= cfg.heartbeat_interval_s:
+                    last_heartbeat = mono_after_cmd
+                    self.stats[StatsSlot.LAST_HEARTBEAT] = mono_after_cmd
                 task.tick()
                 self.tick_index += 1
                 self._emit_outputs(task)
@@ -222,8 +226,11 @@ class _Loop:
             delay = next_deadline - clock()
             if delay > _SLEEP_MIN_S:
                 time.sleep(delay)
-            elif delay < -_MAX_LAG_S:
-                next_deadline = clock()
+            else:
+                if delay < -_MAX_LAG_S:
+                    next_deadline = clock()
+                if cfg.mode == "thread":
+                    time.sleep(0)
         return WorkerState.STOPPED
 
     def _crash(self, exc: BaseException) -> None:

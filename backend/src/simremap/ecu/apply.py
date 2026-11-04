@@ -54,8 +54,8 @@ from simremap.ecu.session_port import (
 
 __all__ = ["APPLY_TIMEOUT_S", "apply_to_session", "handle_apply_command"]
 
-# s, confirmação do worker (100 ms por especificação ecu-core EC-08)
-APPLY_TIMEOUT_S: Final = float(os.environ.get("SIMREMAP_APPLY_TIMEOUT_S", "0.1"))
+# s, confirmação do worker (3.0s tolerante para nuvem/containers)
+APPLY_TIMEOUT_S: Final = float(os.environ.get("SIMREMAP_APPLY_TIMEOUT_S", "3.0"))
 
 
 def _content_payload(cal: CalibrationContent) -> str:
@@ -69,8 +69,9 @@ async def apply_to_session(
     port: SessionRegistryPort | None,
     repo: CalibrationRepository,
     hooks: ProfileHooks,
-    timeout_s: float = APPLY_TIMEOUT_S,
+    timeout_s: float | None = None,
 ) -> ApplyCalibrationResult:
+    effective_timeout_s = timeout_s if timeout_s is not None else APPLY_TIMEOUT_S
     info = await port.get_session(session_id) if port is not None else None
     if info is None or port is None:
         raise ecu_error(
@@ -145,13 +146,14 @@ async def apply_to_session(
     )
     try:
         applied = await asyncio.wait_for(
-            port.apply_calibration(session_id, command), timeout=timeout_s
+            port.apply_calibration(session_id, command), timeout=effective_timeout_s
         )
     except TimeoutError:
         await port.cancel_apply(session_id, command.request_id)
+        ms = int(effective_timeout_s * 1000)
         raise ecu_error(
             "CALIBRATION_APPLY_TIMEOUT",
-            f"O worker não confirmou a troca em {int(timeout_s * 1000)} ms; nada foi aplicado.",
+            f"O worker não confirmou a troca em {ms} ms; nada foi aplicado.",
             apply_request_id=command.request_id,
         ) from None
     await repo.set_session_calibration(session_id, cal, applied)

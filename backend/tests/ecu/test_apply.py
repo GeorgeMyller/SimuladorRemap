@@ -150,8 +150,13 @@ async def test_full_apply_outside_run(
 
 
 async def test_ack_timeout_returns_504_and_cancels(
-    client: httpx.AsyncClient, app: FastAPI, port: FakeWorkerPort, tb: Any
+    client: httpx.AsyncClient,
+    app: FastAPI,
+    port: FakeWorkerPort,
+    tb: Any,
+    monkeypatch: pytest.MonkeyPatch,
 ) -> None:
+    monkeypatch.setattr("simremap.ecu.apply.APPLY_TIMEOUT_S", 0.1)
     cal = await _setup(client, app, port, tb)
     port.delay_s = 0.3
     port.step()
@@ -168,8 +173,13 @@ async def test_ack_timeout_returns_504_and_cancels(
 
 
 async def test_ack_within_100ms(
-    client: httpx.AsyncClient, app: FastAPI, port: FakeWorkerPort, tb: Any
+    client: httpx.AsyncClient,
+    app: FastAPI,
+    port: FakeWorkerPort,
+    tb: Any,
+    monkeypatch: pytest.MonkeyPatch,
 ) -> None:
+    monkeypatch.setattr("simremap.ecu.apply.APPLY_TIMEOUT_S", 0.1)
     cal = await _setup(client, app, port, tb)
     port.delay_s = 0.05
     resp = await client.post(_apply_url(), json={"calibration_id": cal["calibration_id"]})

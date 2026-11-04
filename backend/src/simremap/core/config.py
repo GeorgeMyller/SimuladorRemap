@@ -109,6 +109,8 @@ class Settings(BaseSettings):
     ws_fps: int = Field(50, ge=30, le=60)
     worker_mode: Literal["process", "thread"] = WORKER_MODE_DEFAULT
     worker_start_timeout_s: float = Field(20.0, gt=0, le=60)
+    worker_heartbeat_timeout_s: float = Field(10.0, gt=0, le=30)
+    apply_timeout_s: float = Field(3.0, gt=0, le=30)
     max_active_sessions: int = Field(1, ge=1, le=20)
 
     # ---------------------------------------------------------------- feature flags (D-27)

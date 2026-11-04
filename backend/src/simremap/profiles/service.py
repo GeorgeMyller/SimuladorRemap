@@ -25,6 +25,7 @@ do modo de injeção do ``ft-pro`` (RF-14). Timeout do worker ⇒ base gravada, 
 from __future__ import annotations
 
 import asyncio
+import os
 import uuid
 from dataclasses import dataclass, field, replace
 from typing import TYPE_CHECKING, Final
@@ -84,7 +85,7 @@ if TYPE_CHECKING:
 
 __all__ = ["SWAP_ACK_TIMEOUT_S", "ProfileService"]
 
-SWAP_ACK_TIMEOUT_S: Final = 0.1  # s, confirmação do worker (rest-api 1.3, EC-05)
+SWAP_ACK_TIMEOUT_S: Final = float(os.environ.get("SIMREMAP_APPLY_TIMEOUT_S", "3.0"))
 
 
 @dataclass(slots=True)
@@ -122,7 +123,7 @@ class ProfileService:
         guard: ProfileSessionGuard,
         idempotency: SwapIdempotency,
         profile_enabled: Callable[[str], bool] | None = None,
-        ack_timeout_s: float = SWAP_ACK_TIMEOUT_S,
+        ack_timeout_s: float | None = None,
     ) -> None:
         self.port = port
         self.repo = repo
@@ -132,7 +133,7 @@ class ProfileService:
         self.guard = guard
         self.idempotency = idempotency
         self.profile_enabled = profile_enabled or (lambda _pid: True)
-        self.ack_timeout_s = ack_timeout_s
+        self.ack_timeout_s = SWAP_ACK_TIMEOUT_S if ack_timeout_s is None else ack_timeout_s
 
     # ------------------------------------------------------------------ contexto
 

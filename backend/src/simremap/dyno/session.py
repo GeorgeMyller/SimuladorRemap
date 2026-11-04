@@ -105,7 +105,9 @@ REALTIME_DEGRADED_SAMPLES: Final = 5
 _CROCKFORD: Final = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"
 SESSION_CALIBRATION_NAME: Final = "Sessão {vehicle} {profile}"
 FLEX_ANCHOR_FUELS: Final = ("e27", "e100")
-STALE_SESSION_MAX_AGE_S: Final = 600.0  # s, 10 min ocioso sem puxada nem clientes
+STALE_SESSION_MAX_AGE_S: Final = float(
+    os.environ.get("SIMREMAP_STALE_SESSION_MAX_AGE_S", "120.0")
+)  # s, tempo ocioso sem puxada nem clientes antes de reciclar vaga
 
 
 def draw_session_seed() -> int:

@@ -13,9 +13,21 @@ services:
       - key: SIMREMAP_WORKER_MODE
         value: "thread"
       - key: SIMREMAP_SIM_HZ
-        value: "500"
+        value: "100"
+      - key: SIMREMAP_WS_FPS
+        value: "30"
       - key: SIMREMAP_MAX_ACTIVE_SESSIONS
-        value: "5"
+        value: "2"
+      - key: SIMREMAP_APPLY_TIMEOUT_S
+        value: "5.0"
+      - key: SIMREMAP_WORKER_HEARTBEAT_TIMEOUT_S
+        value: "15.0"
+      - key: SIMREMAP_STALE_SESSION_MAX_AGE_S
+        value: "60.0"
+      - key: SIMREMAP_TORCH_THREADS
+        value: "1"
+      - key: MALLOC_ARENA_MAX
+        value: "2"
       - key: SIMREMAP_CATALOG_ALLOW_DRAFTS
         value: "true"
       - key: HF_HOME

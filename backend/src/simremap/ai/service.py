@@ -164,10 +164,10 @@ class LayaModelHolder:
             with contextlib.suppress(Exception):
                 import torch
 
-                threads = min(2, max(1, os.cpu_count() or 1))
+                threads = max(1, int(os.environ.get("SIMREMAP_TORCH_THREADS", "1")))
                 torch.set_num_threads(threads)
                 if hasattr(torch, "set_num_interop_threads"):
-                    torch.set_num_interop_threads(threads)
+                    torch.set_num_interop_threads(1)
 
             tuned_dir = cls._find_data_path("laya_ecu_tuned")
             if (tuned_dir / "rl_agent_config.json").exists() and (

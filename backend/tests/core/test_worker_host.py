@@ -421,7 +421,10 @@ async def test_host_stop_leaves_no_workers(host_factory: Callable[..., SimWorker
 
 
 async def test_from_settings(settings_factory: Any) -> None:
-    host = SimWorkerHost.from_settings(settings_factory(max_active_sessions=2, sim_hz=500))
+    host = SimWorkerHost.from_settings(
+        settings_factory(max_active_sessions=2, sim_hz=500, worker_heartbeat_timeout_s=15.0)
+    )
     assert host.mode == "thread"
     assert host.max_active_sessions == 2
     assert host.default_sim_hz == 500
+    assert host.config.heartbeat_timeout_s == 15.0

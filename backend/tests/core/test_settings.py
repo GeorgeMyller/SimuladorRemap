@@ -20,6 +20,8 @@ def _clean_env(monkeypatch: pytest.MonkeyPatch) -> None:
         "ECU_PROFILES_ENABLED",
         "SIMREMAP_ECU_STRATEGIES_ENABLED",
         "SIMREMAP_ECU_PROFILES_ENABLED",
+        "SIMREMAP_WORKER_HEARTBEAT_TIMEOUT_S",
+        "SIMREMAP_APPLY_TIMEOUT_S",
     ):
         monkeypatch.delenv(name, raising=False)
 
@@ -41,6 +43,8 @@ def test_spec_defaults() -> None:
     assert s.sim_hz == 1000
     assert s.ws_fps == 50
     assert s.worker_mode == "process"
+    assert s.worker_heartbeat_timeout_s == 10.0
+    assert s.apply_timeout_s == 3.0
     assert s.max_active_sessions == 1
     assert s.db_connect_retries == 5
 
@@ -87,6 +91,10 @@ def test_database_url_precedence(monkeypatch: pytest.MonkeyPatch) -> None:
         ("max_body_bytes", 1023),
         ("max_body_bytes", 256 * 1024 * 1024 + 1),
         ("worker_mode", "asyncio"),
+        ("worker_heartbeat_timeout_s", 0),
+        ("worker_heartbeat_timeout_s", 31),
+        ("apply_timeout_s", 0),
+        ("apply_timeout_s", 31),
         ("env", "qa"),
         ("log_level", "TRACE"),
         ("app_version", "1.0"),

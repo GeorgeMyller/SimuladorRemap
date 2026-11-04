@@ -489,6 +489,7 @@ class SimWorkerHost:
     @classmethod
     def from_settings(cls, settings: Settings, **overrides: Any) -> SimWorkerHost:
         overrides.setdefault("start_timeout_s", settings.worker_start_timeout_s)
+        overrides.setdefault("heartbeat_timeout_s", settings.worker_heartbeat_timeout_s)
         config = WorkerConfig(mode=settings.worker_mode, **overrides)
         return cls(
             config,

@@ -259,9 +259,10 @@ async def test_prefill_from_hardware_sheet(api: Any) -> None:
 
 
 async def test_apply_timeout_keeps_base_ec05(
-    api: Any, base_payload: Callable[..., dict[str, Any]]
+    api: Any, base_payload: Callable[..., dict[str, Any]], monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    """EC-05: sem ``ack`` em 100 ms ⇒ 504, base gravada e ``base_map`` em ``invalid``."""
+    """EC-05: sem ``ack`` dentro do timeout ⇒ 504, base gravada e ``base_map`` em ``invalid``."""
+    monkeypatch.setattr("simremap.profiles.service.SWAP_ACK_TIMEOUT_S", 0.1)
     api.port.add(CLASSIC)
     await swap(api)
     api.port.hang = True

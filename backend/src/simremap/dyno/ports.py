@@ -32,10 +32,16 @@ from simremap.ecu.session_port import CalibrationApplyCommand, SessionCalibratio
 
 __all__ = ["DynoDamagePort", "DynoEcuSessionPort", "DynoProfileSessionPort"]
 
-HEALTH_TIMEOUT_S: Final = 0.5
-RESTORE_TIMEOUT_S: Final = 2.0
-APPLY_TIMEOUT_S: Final = float(os.environ.get("SIMREMAP_APPLY_TIMEOUT_S", "0.1"))
-INFO_TIMEOUT_S: Final = 0.2
+HEALTH_TIMEOUT_S: Final = float(os.environ.get("SIMREMAP_HEALTH_TIMEOUT_S", "2.0"))
+RESTORE_TIMEOUT_S: Final = float(os.environ.get("SIMREMAP_RESTORE_TIMEOUT_S", "5.0"))
+APPLY_TIMEOUT_S: Final = float(os.environ.get("SIMREMAP_APPLY_TIMEOUT_S", "3.0"))
+INFO_TIMEOUT_S: Final = float(os.environ.get("SIMREMAP_INFO_TIMEOUT_S", "1.0"))
+_ACK_HEADROOM_RATIO: Final = 0.85
+
+
+def _ack_timeout(timeout_s: float) -> float:
+    """Reserva margem para persistência pós-ACK antes de ``wait_for`` externo expirar."""
+    return max(0.05, timeout_s * _ACK_HEADROOM_RATIO)
 
 
 def _active(service: DynoService, session_id: str) -> SessionRuntime | None:
@@ -69,7 +75,7 @@ class DynoEcuSessionPort:
         rt = _active(self.service, session_id)
         if rt is None:
             raise SimRemapError(f"A sessão {session_id} não existe.", code="SESSION_NOT_FOUND")
-        ack = await self.service.request(rt, command.to_command(), APPLY_TIMEOUT_S)
+        ack = await self.service.request(rt, command.to_command(), _ack_timeout(APPLY_TIMEOUT_S))
         if not ack.get("ok", False):
             raise SimRemapError(
                 f"O worker recusou a calibração: {ack.get('detail', ack.get('code'))}",
@@ -242,7 +248,7 @@ class DynoProfileSessionPort:
         rt = _active(self.service, session_id)
         if rt is None:
             raise SimRemapError(f"A sessão {session_id} não existe.", code="SESSION_NOT_FOUND")
-        ack = await self.service.request(rt, command.to_command(), APPLY_TIMEOUT_S)
+        ack = await self.service.request(rt, command.to_command(), _ack_timeout(APPLY_TIMEOUT_S))
         if not ack.get("ok", False):
             raise SimRemapError(
                 f"O worker recusou a troca de ECU: {ack.get('detail', ack.get('code'))}",
